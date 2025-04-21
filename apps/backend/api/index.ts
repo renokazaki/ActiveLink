@@ -1,8 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-
 import { handle } from "hono/vercel";
-import { prisma } from "../prisma/prisma";
+import user from "./routes/user";
 
 //👷開発用
 // import { serve } from "@hono/node-server";
@@ -22,11 +21,7 @@ const app = new Hono()
   .get("/", (c) => {
     return c.json({ message: "Hello Hono!" });
   })
-
-  .get("/user", async (c) => {
-    const gettodos = await prisma.user.findMany();
-    return c.json(gettodos);
-  });
+  .route("/user", user);
 
 // 👷開発用
 // const port = 8085;
