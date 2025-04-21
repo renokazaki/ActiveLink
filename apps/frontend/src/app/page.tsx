@@ -9,7 +9,7 @@ export default function Home() {
     alert(data.message);
   };
   return (
-    <div>
+    <div className="text-white mt-12">
       <button onClick={handleClick}>Click me</button>
     </div>
   );
