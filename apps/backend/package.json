@@ -3,15 +3,19 @@
   "scripts": {
     "start": "vercel dev",
     "deploy": "vercel",
-    "dev": "tsx watch api/index.ts"
+    "dev": "tsx watch api/index.ts",
+    "build": "bunx prisma generate  --no-engine"
   },
   "dependencies": {
-    "@hono/node-server": "^1.14.1",
+    "prisma": "^6.6.0",
+    "@prisma/client": "^6.6.0",
+    "@prisma/extension-accelerate": "^1.3.0",
     "hono": "^4.7.7",
-    "tsx": "^4.19.3",
     "types": "workspace:*"
   },
   "devDependencies": {
-    "vercel": "^32.4.1"
+    "vercel": "^32.4.1",
+    "tsx": "^4.19.3",
+    "@hono/node-server": "^1.14.1"
   }
 }
