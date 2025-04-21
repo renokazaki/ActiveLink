@@ -3,10 +3,11 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/_components/ui/button";
 import { client } from "@/utils/client";
+import { User } from "types/type";
 
 export default async function Friends() {
   const res = await client.api.user.allFriends.$get();
-  const friendsData = await res.json();
+  const friendsData = (await res.json()) as User[];
   // User型の配列に修正
 
   return (
