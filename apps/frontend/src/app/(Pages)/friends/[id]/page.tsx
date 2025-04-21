@@ -1,4 +1,5 @@
 import { client } from "@/utils/client";
+import { User } from "types/type";
 
 export default async function FriendsInfo({
   params,
@@ -12,7 +13,7 @@ export default async function FriendsInfo({
     param: { id: id },
   });
 
-  const friendsData = await res.json();
+  const friendsData = (await res.json()) as User;
 
   return (
     <div>
