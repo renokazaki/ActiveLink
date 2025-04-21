@@ -1,15 +1,13 @@
-"use client";
-
 import Link from "next/link";
 
 import { Plus } from "lucide-react";
 import { Button } from "@/_components/ui/button";
-import { useState } from "react";
-import { User } from "types/type";
+import { client } from "@/utils/client";
 
-export default function Friends() {
+export default async function Friends() {
+  const res = await client.api.user.allFriends.$get();
+  const friendsData = await res.json();
   // User型の配列に修正
-  const [friends] = useState<User[]>([]);
 
   return (
     <div className="text-black min-h-screen">
@@ -24,11 +22,11 @@ export default function Friends() {
           </Link>
         </div>
         <div className="grid gap-4">
-          {friends.length > 0 ? (
-            friends.map((friend) => (
+          {friendsData.length > 0 ? (
+            friendsData.map((friend) => (
               <Link
                 key={friend.id}
-                href={`/Friends/${friend.id}`}
+                href={`/friends/${friend.id}`}
                 className="block"
               >
                 <div className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between hover:bg-blue-500 transition-colors text-black">
