@@ -23,7 +23,7 @@ export default async function Friends() {
           </Link>
         </div>
         <div className="grid gap-4">
-          {friendsData.length > 0 ? (
+          {friendsData &&
             friendsData.map((friend) => (
               <Link
                 key={friend.id}
@@ -58,10 +58,7 @@ export default async function Friends() {
                   />
                 </div>
               </Link>
-            ))
-          ) : (
-            <div>友達がいません</div>
-          )}
+            ))}
         </div>
       </div>
     </div>
