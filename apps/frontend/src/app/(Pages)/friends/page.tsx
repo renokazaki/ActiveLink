@@ -2,12 +2,12 @@ import Link from "next/link";
 
 import { Plus } from "lucide-react";
 import { Button } from "@/_components/ui/button";
-import { client } from "@/utils/client";
-import { User } from "types/type";
+// import { client } from "@/utils/client";
+// import { User } from "types/type";
 
 export default async function Friends() {
-  const res = await client.api.user.allFriends.$get();
-  const friendsData = (await res.json()) as User[];
+  // const res = await client.api.user.allFriends.$get();
+  // const friendsData = (await res.json()) as User[];
   // User型の配列に修正
 
   return (
@@ -22,7 +22,7 @@ export default async function Friends() {
             </Button>
           </Link>
         </div>
-        <div className="grid gap-4">
+        {/* <div className="grid gap-4">
           {friendsData &&
             friendsData.map((friend) => (
               <Link
@@ -59,7 +59,7 @@ export default async function Friends() {
                 </div>
               </Link>
             ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );
