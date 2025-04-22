@@ -10,6 +10,7 @@ datasource db {
 
 model User {
   id            Int      @id @default(autoincrement())
+  clerk_id      String?
   display_name  String
   profile_image String
   target        String
