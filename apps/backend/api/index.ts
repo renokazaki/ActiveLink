@@ -4,7 +4,8 @@ import { handle } from "hono/vercel";
 import user from "./routes/user";
 
 //👷開発用
-// import { serve } from "@hono/node-server";
+import { serve } from "@hono/node-server";
+import webhookRouter from "./routes/webhooks";
 
 export const config = {
   runtime: "edge",
@@ -21,16 +22,17 @@ const app = new Hono()
   .get("/", (c) => {
     return c.json({ message: "Hello Hono!" });
   })
-  .route("/user", user);
+  .route("/user", user)
+  .route("/webhookRouter", webhookRouter);
 
 // 👷開発用
-// const port = 8085;
-// console.log(`Server is running on http://localhost:${port}`);
+const port = 8085;
+console.log(`Server is running on http://localhost:${port}`);
 
-// serve({
-//   fetch: app.fetch,
-//   port,
-// });
+serve({
+  fetch: app.fetch,
+  port,
+});
 
 export type AppType = typeof app;
 
