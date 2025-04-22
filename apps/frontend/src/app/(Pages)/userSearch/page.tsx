@@ -22,8 +22,8 @@ export default function UserSearch() {
       profile_image: "/placeholder.svg?height=40&width=40",
       target: "毎日30分の読書習慣をつける",
       is_active: true,
-      created_at: new Date("2024-01-01"),
-      updated_at: new Date("2024-04-10"),
+      created_at: "2024-01-01",
+      updated_at: "2024-01-01",
     },
     {
       id: 2,
@@ -31,8 +31,8 @@ export default function UserSearch() {
       profile_image: "/placeholder.svg?height=40&width=40",
       target: "週3回のジョギングを継続する",
       is_active: false,
-      created_at: new Date("2024-01-15"),
-      updated_at: new Date("2024-04-05"),
+      created_at: "2024-01-01",
+      updated_at: "2024-01-01",
     },
     {
       id: 3,
@@ -40,8 +40,8 @@ export default function UserSearch() {
       profile_image: "/placeholder.svg?height=40&width=40",
       target: "プログラミングスキルを向上させる",
       is_active: true,
-      created_at: new Date("2024-02-10"),
-      updated_at: new Date("2024-04-20"),
+      created_at: "2024-01-01",
+      updated_at: "2024-01-01",
     },
   ]);
 

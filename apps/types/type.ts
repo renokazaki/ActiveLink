@@ -9,8 +9,8 @@ export type User = {
   profile_image: string;
   target: string;
   is_active: boolean;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 
   // リレーション（オプション）
   activities?: Activity[];
