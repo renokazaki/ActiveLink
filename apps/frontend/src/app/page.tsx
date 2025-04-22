@@ -1,16 +1,17 @@
-"use client";
-
 import { client } from "@/utils/client";
+import { User } from "types/type";
 
-export default function Home() {
-  const handleClick = async () => {
-    const res = await client.api.$get();
-    const data = await res.json();
-    alert(data.message);
-  };
+export default async function Home() {
+  const res = await client.api.user.$get();
+  const userData = (await res.json()) as User;
+
   return (
     <div className="text-white mt-12">
-      <button onClick={handleClick}>Click me</button>
+      {userData ? (
+        <>hello {userData.display_name}</>
+      ) : (
+        <>ユーザーデータが見つかりませんでした</>
+      )}
     </div>
   );
 }
