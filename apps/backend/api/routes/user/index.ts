@@ -9,8 +9,53 @@ const user = new Hono()
   })
 
   .get("/allFriends", async (c) => {
-    const userFriends = await prisma.user.findMany();
-    return c.json(userFriends);
+    const clerk_id = c.req.query("clerk_id");
+
+    if (!clerk_id) {
+      return c.json({ error: "clerk_idパラメータがありません" }, 400);
+    }
+
+    try {
+      // clerk_idからユーザーを検索
+      const currentUser = await prisma.user.findUnique({
+        where: { clerk_id },
+      });
+
+      if (!currentUser) {
+        return c.json({ error: "ユーザーが見つかりません" }, 404);
+      }
+
+      // ユーザーIDを使用して、友達関係にあるユーザーを検索
+      const friends = await prisma.user.findMany({
+        where: {
+          OR: [
+            // 自分がsender_idとなっている承認済みの友達関係
+            {
+              received_friendships: {
+                some: {
+                  sender_id: currentUser.id,
+                  status: "accepted",
+                },
+              },
+            },
+            // 自分がreceiver_idとなっている承認済みの友達関係
+            {
+              sent_friendships: {
+                some: {
+                  receiver_id: currentUser.id,
+                  status: "accepted",
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      return c.json(friends);
+    } catch (error) {
+      console.error("友達検索エラー:", error);
+      return c.json({ error: "データベースクエリが失敗しました" }, 500);
+    }
   })
 
   .get("/friends/:id", async (c) => {
