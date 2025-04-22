@@ -19,13 +19,28 @@ const user = new Hono()
     // 文字列をNumber型に変換
     const numericId = parseInt(id, 10);
 
-    const friendData = await prisma.user.findFirst({
-      where: {
-        id: numericId, // 数値型のIDを使用
-      },
-    });
+    // 数値変換が成功したかチェック
+    if (isNaN(numericId)) {
+      return c.json({ error: "Invalid ID format" }, 400);
+    }
 
-    return c.json(friendData);
+    try {
+      // findManyではなくfindUniqueを使用
+      const friendData = await prisma.user.findUnique({
+        where: {
+          id: numericId,
+        },
+      });
+
+      if (!friendData) {
+        return c.json({ error: "User not found" }, 404);
+      }
+
+      return c.json(friendData);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return c.json({ error: "Failed to fetch user data" }, 500);
+    }
   });
 
 export default user;
