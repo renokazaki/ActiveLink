@@ -7,6 +7,7 @@ erDiagram
     
     users {
         int id PK "ユーザーID"
+        string clerk_id "clerkで生成されたID"
         string display_name "ユーザー名"
         string profile_image "プロフィール画像のパス"
         string target "実現したい目標"
