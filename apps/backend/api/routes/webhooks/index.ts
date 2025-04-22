@@ -41,7 +41,7 @@ const webhookRouter = new Hono().post("/", async (c) => {
     try {
       await prisma.user.create({
         data: {
-          id: parseInt(evt.data.id), // IDが数値の場合はparseIntで変換
+          clerk_id: evt.data.id,
           display_name: evt.data.username || "New User", // 型に合わせて修正
           profile_image: evt.data.image_url || "/default-avatar.png", // 型に合わせて修正
           target: "", // User型に必要なフィールド
