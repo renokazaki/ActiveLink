@@ -19,7 +19,7 @@ const user = new Hono()
     // 文字列をNumber型に変換
     const numericId = parseInt(id, 10);
 
-    const friendData = await prisma.user.findMany({
+    const friendData = await prisma.user.findFirst({
       where: {
         id: numericId, // 数値型のIDを使用
       },
