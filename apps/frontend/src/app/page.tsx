@@ -1,8 +1,9 @@
 import { client } from "@/utils/client";
+import { User } from "types/type";
 
 export default async function Home() {
   const res = await client.api.user.$get();
-  const userData = await res.json();
+  const userData = (await res.json()) as User;
 
   return (
     <div className="text-white mt-12">
