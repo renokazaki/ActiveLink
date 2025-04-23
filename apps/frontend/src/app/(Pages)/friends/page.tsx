@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { Button } from "@/_components/ui/button";
+import { Button } from "@/_components/shadcn_ui/button";
 import { client } from "@/utils/client";
 import { User } from "types/type";
 import { auth } from "@clerk/nextjs/server";

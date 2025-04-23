@@ -33,7 +33,6 @@ export default function Header() {
                   }`}
                 >
                   <Icon className="mr-1 w-5 h-5" />
-                  {item.name}
                 </Link>
               );
             })}
