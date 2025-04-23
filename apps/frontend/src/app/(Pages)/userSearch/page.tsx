@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { User } from "types/type";
 
-import { Button } from "@/_components/ui/button";
-import { Input } from "@/_components/ui/input";
+import { Button } from "@/_components/shadcn_ui/button";
+import { Input } from "@/_components/shadcn_ui/input";
 
 export default function UserSearch() {
   const [query, setQuery] = useState("");
