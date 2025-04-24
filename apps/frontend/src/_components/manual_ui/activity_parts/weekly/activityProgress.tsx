@@ -1,12 +1,21 @@
-"use client";
+// import { client } from "@/utils/client";
 import { Clock } from "lucide-react";
-import { WeeklyTarget } from "types/type";
+import { User, WeeklyTarget } from "types/type";
 
-interface WeeklyProgressProps {
-  weeklyData: WeeklyTarget[];
-}
+export async function WeeklyProgress({ data }: { data: User }) {
+  // try {
+  //   // clerk_idを使ってAPIからユーザーデータを取得
+  //   const res = await client.api.user.weeklyTarget.$get({
+  //     param: { user_id: data.id },
+  //   });
 
-export function WeeklyProgress({ weeklyData }: WeeklyProgressProps) {
+  //   if (!res.ok) {
+  //     throw new Error(`APIエラー: ${res.status}`);
+  //   }
+
+  //   const weeklyTarget = (await res.json()) as WeeklyTarget[];
+  const weeklyTarget = [] as WeeklyTarget[];
+
   // 日付をフォーマットする関数
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("ja-JP", {
@@ -17,7 +26,7 @@ export function WeeklyProgress({ weeklyData }: WeeklyProgressProps) {
 
   return (
     <div className="space-y-8">
-      {weeklyData.map((target, index) => {
+      {weeklyTarget.map((target, index) => {
         // 日数の計算
         const startDate = new Date(target.target_start_date);
         const endDate = new Date(target.target_end_date);

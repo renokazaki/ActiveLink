@@ -1,5 +1,5 @@
 import { ActivityTabs } from "@/_components/manual_ui/activity_parts/ActivityTabs";
-import { PageHeader } from "@/_components/manual_ui/activity_parts/PageHeader";
+import { PageHeader } from "@/_components/manual_ui/PageHeader";
 import { client } from "@/utils/client";
 import { User } from "types/type";
 
