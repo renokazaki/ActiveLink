@@ -23,10 +23,10 @@ export type User = {
 // 活動モデル
 export type Activity = {
   id: number;
-  user_id: number;
-  activity_date: Date;
-  created_at: Date;
-  updated_at: Date;
+  user_clerk_id: string;
+  activity_date: string;
+  created_at: string;
+  updated_at: string;
 
   // リレーション（オプション）
   user?: User;
@@ -50,16 +50,16 @@ export type ActivityDetail = {
 // 週間目標モデル
 export type WeeklyTarget = {
   id: number;
-  user_id: number;
+  user_clerk_id: string;
   title: string;
   description: string;
-  target_start_date: Date;
-  target_end_date: Date;
-  actual_start_date: Date | null;
-  actual_end_date: Date | null;
+  target_start_date: string;
+  target_end_date: string;
+  actual_start_date: string | null;
+  actual_end_date: string | null;
   status: WeeklyTargetStatus;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 
   // リレーション（オプション）
   user?: User;
@@ -68,8 +68,8 @@ export type WeeklyTarget = {
 // 友達関係モデル
 export type Friendship = {
   id: number;
-  sender_id: number;
-  receiver_id: number;
+  sender_clerk_id: string;
+  receiver_clerk_id: string;
   status: FriendshipStatus;
   created_at: Date;
   updated_at: Date;

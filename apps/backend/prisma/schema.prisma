@@ -29,16 +29,16 @@ model User {
 
 model Activity {
   id            Int      @id @default(autoincrement())
-  user_id       Int
+  user_clerk_id String
   activity_date DateTime
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
   // リレーション
-  user             User             @relation(fields: [user_id], references: [id])
+  user             User             @relation(fields: [user_clerk_id], references: [clerk_id])
   activity_details ActivityDetail[]
 
-  @@index([user_id])
+  @@index([user_clerk_id])
   @@map("activities")
 }
 
@@ -66,7 +66,7 @@ enum WeeklyTargetStatus {
 
 model WeeklyTarget {
   id                Int                @id @default(autoincrement())
-  user_id           Int
+  user_clerk_id     String
   title             String
   description       String
   target_start_date DateTime
@@ -78,9 +78,9 @@ model WeeklyTarget {
   updated_at        DateTime           @updatedAt
 
   // リレーション
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_clerk_id], references: [clerk_id])
 
-  @@index([user_id])
+  @@index([user_clerk_id])
   @@map("weekly_targets")
 }
 
@@ -91,19 +91,19 @@ enum FriendshipStatus {
 }
 
 model Friendship {
-  id          Int              @id @default(autoincrement())
-  sender_id   Int
-  receiver_id Int
-  status      FriendshipStatus @default(pending)
-  created_at  DateTime         @default(now())
-  updated_at  DateTime         @updatedAt
+  id                Int              @id @default(autoincrement())
+  sender_clerk_id   String
+  receiver_clerk_id String
+  status            FriendshipStatus @default(pending)
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt
 
   // リレーション
-  sender   User @relation("SentFriendships", fields: [sender_id], references: [id])
-  receiver User @relation("ReceivedFriendships", fields: [receiver_id], references: [id])
+  sender   User @relation("SentFriendships", fields: [sender_clerk_id], references: [clerk_id])
+  receiver User @relation("ReceivedFriendships", fields: [receiver_clerk_id], references: [clerk_id])
 
-  @@unique([sender_id, receiver_id])
-  @@index([sender_id])
-  @@index([receiver_id])
+  @@unique([sender_clerk_id, receiver_clerk_id])
+  @@index([sender_clerk_id])
+  @@index([receiver_clerk_id])
   @@map("friendships")
 }

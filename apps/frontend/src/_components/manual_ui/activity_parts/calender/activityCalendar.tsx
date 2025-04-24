@@ -1,142 +1,62 @@
-// "use client";
+"use client";
 
-// import { useState, useEffect } from "react";
-// import { format } from "date-fns";
-// import { Calendar } from "@/shared/components/ui/calendar";
-// import { cn } from "@/lib/utils";
-// import type { FriendData } from "@/lib/data";
-// import { ActivityDetail } from "./activityDetail";
-// import { friendsData } from "@/lib/data";
-// import { ActivityData } from "@/shared/types/type";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import { Star } from "lucide-react";
+import { Activity } from "types/type";
 
-// interface ActivityCalendarProps {
-//   activityData: ActivityData[];
-//   friendId?: string;
-// }
+export default function ActivityCalendar({
+  activity,
+}: {
+  activity: Activity[];
+}) {
+  // 日付だけを抽出した単純なイベント配列を作成
+  const events = activity.map((item) => ({
+    // 最小限のプロパティだけを設定
+    date: new Date(item.activity_date).toISOString().split("T")[0],
+    display: "background",
+    backgroundColor: "rgba(100, 50, 230)",
+  }));
 
-// export function ActivityCalendar({
-//   activityData,
-//   friendId,
-// }: ActivityCalendarProps) {
-//   const [date, setDate] = useState<Date>(new Date());
-//   const [mounted, setMounted] = useState(false);
-//   const [selectedFriend, setSelectedFriend] = useState<FriendData | null>(null);
+  const renderEventContent = () => {
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        <Star className="h-5 w-5 text-white" />
+      </div>
+    );
+  };
 
-//   useEffect(() => {
-//     setMounted(true);
-//     if (friendId) {
-//       const friend = friendsData.find((f) => f.id === friendId);
-//       setSelectedFriend(friend || null);
-//     } else {
-//       setSelectedFriend(friendsData[0]);
-//     }
-//   }, [friendId]);
-
-//   const getActivityLevel = (date: Date) => {
-//     const dateString = format(date, "yyyy-MM-dd");
-//     const activity = activityData.find((a) => a.date === dateString);
-//     return activity ? activity.duration : 0;
-//   };
-
-//   const renderDay = (day: Date) => {
-//     if (!mounted) {
-//       return (
-//         <div className="h-10 w-10 p-0 font-normal rounded-full flex items-center justify-center">
-//           <div className="flex flex-col items-center justify-center">
-//             {format(day, "d")}
-//           </div>
-//         </div>
-//       );
-//     }
-
-//     const activityLevel = getActivityLevel(day);
-//     const isSelected =
-//       date && format(date, "yyyy-MM-dd") === format(day, "yyyy-MM-dd");
-//     const isToday =
-//       format(new Date(), "yyyy-MM-dd") === format(day, "yyyy-MM-dd");
-
-//     let bgGradient = "";
-//     if (activityLevel > 0) {
-//       bgGradient = "bg-gradient-to-br from-blue-500 to-blue-600";
-//     }
-
-//     return (
-//       <div
-//         className={cn(
-//           "h-10 w-10 p-0 font-normal rounded-full flex items-center justify-center relative transition-all duration-200",
-//           bgGradient,
-//           isSelected &&
-//             "ring-2 ring-purple-500 ring-offset-2 ring-offset-slate-900",
-//           isToday && !isSelected && "ring-2 ring-pink-500",
-//           activityLevel > 0 && "cursor-pointer hover:scale-105"
-//         )}
-//         onClick={() => {
-//           if (activityLevel > 0) {
-//             setDate(day);
-//           }
-//         }}
-//       >
-//         <div className="flex flex-col items-center justify-center">
-//           {format(day, "d")}
-//         </div>
-//       </div>
-//     );
-//   };
-
-//   const selectedDateActivity = getActivityLevel(date);
-
-//   const generateActivities = (count: number, date: Date) => {
-//     if (!selectedFriend) return [];
-
-//     const activities = [];
-//     const baseTime = new Date(date);
-//     baseTime.setHours(9, 0, 0);
-
-//     const activityTypes = selectedFriend.activityTypes;
-
-//     for (let i = 0; i < Math.min(count, activityTypes.length); i++) {
-//       const activityTime = new Date(baseTime);
-//       activityTime.setHours(activityTime.getHours() + i * 2);
-
-//       activities.push({
-//         id: i,
-//         date: format(activityTime, "yyyy-MM-dd"),
-//         duration: activityTypes[i].duration,
-//         name: activityTypes[i].name,
-//       });
-//     }
-
-//     return activities;
-//   };
-
-//   const activities = generateActivities(selectedDateActivity, date);
-//   return (
-//     <div className="space-y-6">
-//       <div className="flex flex-col md:flex-row gap-6">
-//         <div className="md:w-1/2">
-//           <Calendar
-//             mode="single"
-//             selected={date}
-//             onSelect={(newDate) => {
-//               if (newDate) {
-//                 setDate(newDate);
-//               }
-//             }}
-//             className="h-full flex items-center justify-center  rounded-md border border-slate-700/50 bg-slate-800/30 text-white "
-//             components={{
-//               Day: ({ date: day }) => renderDay(day),
-//             }}
-//           />
-//         </div>
-
-//         <div className="md:w-1/2">
-//           <ActivityDetail
-//             date={date}
-//             activityLevel={selectedDateActivity}
-//             activities={activities}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div className="h-full w-full">
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        initialView="dayGridMonth"
+        headerToolbar={{
+          left: "prev",
+          center: "title",
+          right: "today next",
+        }}
+        events={events}
+        eventContent={renderEventContent}
+        height="auto"
+        contentHeight="auto"
+        fixedWeekCount={false} // これにより月の実際の週数に合わせてカレンダーが表示されます
+        showNonCurrentDates={true} // 現在の月の前後の日付も表示します
+        // タイトル形式を「4/2025」のように設定
+        titleFormat={{ month: "numeric", year: "numeric" }}
+        // 曜日を表示する設定
+        dayHeaderFormat={{ weekday: "short" }} // 'short'で月、火などの短い表示
+        dayHeaderClassNames="text-slate-700 bg-white py-2 text-sm" // 曜日ヘッダーのスタイル
+        // 現在の日付をハイライト
+        dayMaxEventRows={3}
+        nowIndicator={true}
+        // 今日ボタンのテキストをカスタマイズ
+        buttonText={{
+          today: "今日",
+        }}
+        // ナビゲーションを改善
+        navLinks={true} // 日付や曜日をクリックしてビュー切替可能に
+      />
+    </div>
+  );
+}
