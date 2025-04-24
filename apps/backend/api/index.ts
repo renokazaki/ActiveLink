@@ -5,7 +5,8 @@ import user from "./routes/user";
 import webhookRouter from "./routes/webhooks";
 
 //👷開発用
-// import { serve } from "@hono/node-server";
+import { serve } from "@hono/node-server";
+import weeklyTarget from "./routes/weeklyTarget";
 
 export const config = {
   runtime: "edge",
@@ -23,16 +24,17 @@ const app = new Hono()
     return c.json({ message: "Hello Hono!" });
   })
   .route("/user", user)
+  .route("/weeklyTarget", weeklyTarget)
   .route("/webhookRouter", webhookRouter);
 
 // 👷開発用
-// const port = 8085;
-// console.log(`Server is running on http://localhost:${port}`);
+const port = 8085;
+console.log(`Server is running on http://localhost:${port}`);
 
-// serve({
-//   fetch: app.fetch,
-//   port,
-// });
+serve({
+  fetch: app.fetch,
+  port,
+});
 
 export type AppType = typeof app;
 

@@ -31,7 +31,7 @@ export default async function Home() {
       <div className="min-h-screen text-white">
         <div className="container mx-auto py-8 px-4 space-y-8">
           <div className="flex flex-col md:flex-row justify-between gap-6 items-start md:items-center"></div>
-          <PageHeader>{userData.display_name}</PageHeader>
+          <PageHeader>Your Page</PageHeader>
           <ActiveButton />
           <ActivityTabs data={userData} />
         </div>

@@ -77,22 +77,6 @@ const user = new Hono()
     return c.json(friendData);
   })
 
-  .get("/weeklyTarget", async (c) => {
-    const clerk_id = c.req.query("clerk_id");
-
-    const weeklyTarget = await prisma.weeklyTarget.findMany({
-      where: {
-        user_clerk_id: clerk_id,
-      },
-    });
-
-    if (!weeklyTarget) {
-      return c.json({ error: "User not found" }, 404);
-    }
-
-    return c.json(weeklyTarget);
-  })
-
   .get("/activity", async (c) => {
     const clerk_id = c.req.query("clerk_id");
 
