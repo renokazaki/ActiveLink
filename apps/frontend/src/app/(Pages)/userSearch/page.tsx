@@ -18,6 +18,7 @@ export default function UserSearch() {
   const [users] = useState<User[]>([
     {
       id: 1,
+      clerk_id: "test1",
       display_name: "山田太郎",
       profile_image: "/placeholder.svg?height=40&width=40",
       target: "毎日30分の読書習慣をつける",
@@ -27,6 +28,7 @@ export default function UserSearch() {
     },
     {
       id: 2,
+      clerk_id: "test2",
       display_name: "鈴木花子",
       profile_image: "/placeholder.svg?height=40&width=40",
       target: "週3回のジョギングを継続する",
@@ -36,6 +38,7 @@ export default function UserSearch() {
     },
     {
       id: 3,
+      clerk_id: "test3",
       display_name: "佐藤健太",
       profile_image: "/placeholder.svg?height=40&width=40",
       target: "プログラミングスキルを向上させる",

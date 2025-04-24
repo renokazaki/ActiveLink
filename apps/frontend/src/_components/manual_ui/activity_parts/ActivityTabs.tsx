@@ -5,8 +5,9 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/_components/shadcn_ui/tabs";
-import { User } from "types/type";
 import { WeeklyProgress } from "./weekly/activityProgress";
+import { ActivityGraph } from "./graph/activityGraph";
+import { User } from "types/type";
 
 export function ActivityTabs({ data }: { data: User }) {
   return (
@@ -68,12 +69,7 @@ export function ActivityTabs({ data }: { data: User }) {
         <TabsContent value="graphs" className="h-full">
           <Card className="bg-slate-800/50 border-slate-700/50 overflow-hidden backdrop-blur-sm shadow-xl h-full">
             <CardContent className="h-full p-6">
-              {/* グラフコンテンツ */}
-              <div className="flex items-center justify-center h-full">
-                <p className="text-slate-400">
-                  グラフコンテンツがここに表示されます
-                </p>
-              </div>
+              <ActivityGraph />
             </CardContent>
           </Card>
         </TabsContent>
@@ -81,13 +77,7 @@ export function ActivityTabs({ data }: { data: User }) {
         <TabsContent value="weekly" className="h-full">
           <Card className="bg-slate-800/50 border-slate-700/50 overflow-hidden backdrop-blur-sm shadow-xl h-full">
             <CardContent className="h-full p-6">
-              {data.weekly_targets ? (
-                <WeeklyProgress weeklyData={data.weekly_targets} />
-              ) : (
-                <div className="flex items-center justify-center h-full text-slate-400">
-                  週次目標がまだ設定されていません
-                </div>
-              )}
+              <WeeklyProgress data={data} />
             </CardContent>
           </Card>
         </TabsContent>
