@@ -10,7 +10,6 @@ export default async function FriendsInfo({
 }) {
   const { id } = await params;
 
-  // idを数値に変換するのではなく、文字列のまま渡す
   const res = await client.api.user.friends[":id"].$get({
     param: { id: id },
   });
