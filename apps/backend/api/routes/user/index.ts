@@ -87,5 +87,33 @@ const user = new Hono()
       return c.json({ error: "Failed to fetch user data" }, 500);
     }
   });
+// .get("/weeklyTarget", async (c) => {
+//   const id = c.req.param("id");
 
+//   // 文字列をNumber型に変換
+//   const numericId = parseInt(id, 10);
+
+//   // 数値変換が成功したかチェック
+//   if (isNaN(numericId)) {
+//     return c.json({ error: "Invalid ID format" }, 400);
+//   }
+
+//   try {
+//     // findManyではなくfindUniqueを使用
+//     const friendData = await prisma.weeklyTarget.findMany({
+//       where: {
+//         user_id: numericId,
+//       },
+//     });
+
+//     if (!friendData) {
+//       return c.json({ error: "User not found" }, 404);
+//     }
+
+//     return c.json(friendData);
+//   } catch (error) {
+//     console.error("Error fetching user:", error);
+//     return c.json({ error: "Failed to fetch user data" }, 500);
+//   }
+// });
 export default user;

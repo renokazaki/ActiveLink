@@ -5,6 +5,7 @@ export type FriendshipStatus = "pending" | "accepted" | "rejected";
 // ユーザーモデル
 export type User = {
   id: number;
+  clerk_id: string;
   display_name: string;
   profile_image: string;
   target: string;
