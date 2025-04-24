@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/_components/shadcn_ui/button";
 import { client } from "@/utils/client";
-import { User } from "types/type";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { User } from "types/type";
 
 export default async function Friends() {
   // Clerkから認証情報を取得

@@ -15,15 +15,13 @@ import {
 } from "recharts";
 import { Activity } from "types/type";
 
-export function ActivityGraph() {
+export function ActivityGraph({ activity }: { activity: Activity[] }) {
   const [period, setPeriod] = useState<"week" | "month">("month");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
 
-  const activityData = [] as Activity[];
-
   // データを処理
   const processData = () => {
-    const sortedData = [...activityData].sort(
+    const sortedData = [...activity].sort(
       (a, b) =>
         new Date(a.activity_date).getTime() -
         new Date(b.activity_date).getTime()
