@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.17.0",
+    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/react": "^6.1.17",
     "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-tabs": "^1.1.8",
     "backend": "workspace:*",

@@ -7,9 +7,20 @@ import {
 } from "@/_components/shadcn_ui/tabs";
 import { WeeklyProgress } from "./weekly/activityProgress";
 import { ActivityGraph } from "./graph/activityGraph";
-import { User } from "types/type";
+import { Activity, User } from "types/type";
+import { client } from "@/utils/client";
+import ActivityCalendar from "./calender/activityCalendar";
 
-export function ActivityTabs({ data }: { data: User }) {
+export async function ActivityTabs({ data }: { data: User }) {
+  const res = await client.api.user.activity.$get({
+    param: { clerk_id: data.clerk_id },
+  });
+  if (!res.ok) {
+    throw new Error(`APIエラー: ${res.status}`);
+  }
+
+  const activity = (await res.json()) as Activity[];
+
   return (
     <Tabs defaultValue="pet" className="flex flex-col h-full w-full">
       <TabsList className="bg-slate-800/50 border border-slate-700/50 p-1 rounded-full mb-6">
@@ -53,15 +64,10 @@ export function ActivityTabs({ data }: { data: User }) {
           </Card>
         </TabsContent>
 
-        <TabsContent value="calendar" className="h-full">
-          <Card className="bg-slate-800/50 border-slate-700/50 overflow-hidden backdrop-blur-sm shadow-xl h-full">
-            <CardContent className="h-full p-6">
-              {/* カレンダーコンテンツ */}
-              <div className="flex items-center justify-center h-full">
-                <p className="text-slate-400">
-                  カレンダーコンテンツがここに表示されます
-                </p>
-              </div>
+        <TabsContent value="calendar" className="">
+          <Card className="bg-slate-800/50 border-slate-700/50  backdrop-blur-sm shadow-xl ">
+            <CardContent className=" p-6">
+              <ActivityCalendar activity={activity} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -69,7 +75,7 @@ export function ActivityTabs({ data }: { data: User }) {
         <TabsContent value="graphs" className="h-full">
           <Card className="bg-slate-800/50 border-slate-700/50 overflow-hidden backdrop-blur-sm shadow-xl h-full">
             <CardContent className="h-full p-6">
-              <ActivityGraph />
+              <ActivityGraph activity={activity} />
             </CardContent>
           </Card>
         </TabsContent>

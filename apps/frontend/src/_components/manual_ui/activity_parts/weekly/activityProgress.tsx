@@ -1,28 +1,26 @@
-// import { client } from "@/utils/client";
+import { client } from "@/utils/client";
 import { Clock } from "lucide-react";
 import { User, WeeklyTarget } from "types/type";
 
 export async function WeeklyProgress({ data }: { data: User }) {
-  // try {
-  //   // clerk_idを使ってAPIからユーザーデータを取得
-  //   const res = await client.api.user.weeklyTarget.$get({
-  //     param: { user_id: data.id },
+  // clerk_idを使ってAPIからユーザーデータを取得
+  const res = await client.api.user.weeklyTarget.$get({
+    param: { user_id: data.id },
+  });
+
+  if (!res.ok) {
+    throw new Error(`APIエラー: ${res.status}`);
+  }
+
+  const weeklyTarget = (await res.json()) as WeeklyTarget[];
+
+  // // 日付をフォーマットする関数
+  // const formatDate = (date: Date) => {
+  //   return new Date(date).toLocaleDateString("ja-JP", {
+  //     month: "short",
+  //     day: "numeric",
   //   });
-
-  //   if (!res.ok) {
-  //     throw new Error(`APIエラー: ${res.status}`);
-  //   }
-
-  //   const weeklyTarget = (await res.json()) as WeeklyTarget[];
-  const weeklyTarget = [] as WeeklyTarget[];
-
-  // 日付をフォーマットする関数
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString("ja-JP", {
-      month: "short",
-      day: "numeric",
-    });
-  };
+  // };
 
   return (
     <div className="space-y-8">
@@ -38,14 +36,6 @@ export async function WeeklyProgress({ data }: { data: User }) {
           (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
         );
         const daysRemaining = Math.max(0, totalDays - daysElapsed);
-
-        // 進捗状況に応じたステータスの色を設定
-        let statusColor = "bg-blue-500";
-        if (target.status === "completed") {
-          statusColor = "bg-green-500";
-        } else if (target.status === "pending") {
-          statusColor = "bg-yellow-500";
-        }
 
         return (
           <div
@@ -84,22 +74,22 @@ export async function WeeklyProgress({ data }: { data: User }) {
             </div>
 
             <div className="flex justify-between items-center text-xs text-slate-500 pt-2">
-              <span className="flex items-center">
+              {/* <span className="flex items-center">
                 <div
                   className={`w-1.5 h-1.5 rounded-full ${statusColor} mr-1.5`}
                 ></div>
-                開始: {formatDate(target.target_start_date)}
-              </span>
+                開始: {formatDate(target.)}
+              </span> */}
               <div className="flex items-center bg-slate-900/50 px-2 py-1 rounded-full">
                 <Clock className="h-3 w-3 text-slate-400 mr-1" />
                 <span className="text-slate-300">残り {daysRemaining} 日</span>
               </div>
-              <span className="flex items-center">
+              {/* <span className="flex items-center">
                 <div
                   className={`w-1.5 h-1.5 rounded-full ${statusColor} mr-1.5`}
                 ></div>
                 期限: {formatDate(target.target_end_date)}
-              </span>
+              </span> */}
             </div>
           </div>
         );
