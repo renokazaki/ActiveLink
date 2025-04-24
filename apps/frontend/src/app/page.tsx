@@ -2,9 +2,9 @@ import { auth } from "@clerk/nextjs/server";
 import { client } from "@/utils/client";
 import { User } from "types/type";
 import { redirect } from "next/navigation";
-import { PageHeader } from "@/_components/manual_ui/activity_parts/PageHeader";
 import ActiveButton from "@/_components/manual_ui/activity_parts/ActiveButton";
 import { ActivityTabs } from "@/_components/manual_ui/activity_parts/ActivityTabs";
+import { PageHeader } from "@/_components/manual_ui/PageHeader";
 
 export default async function Home() {
   // Clerkのauth関数を使って認証情報を取得
