@@ -2,7 +2,7 @@
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { Star } from "lucide-react";
+import { SmileIcon } from "lucide-react";
 import { Activity } from "types/type";
 
 export default function ActivityCalendar({
@@ -15,13 +15,13 @@ export default function ActivityCalendar({
     // 最小限のプロパティだけを設定
     date: new Date(item.activity_date).toISOString().split("T")[0],
     display: "background",
-    backgroundColor: "rgba(100, 50, 230)",
+    backgroundColor: "rgba(10, 300, 100)",
   }));
 
   const renderEventContent = () => {
     return (
       <div className="flex items-center justify-center w-full h-full">
-        <Star className="h-5 w-5 text-white" />
+        <SmileIcon className="h-5 w-5 text-white" />
       </div>
     );
   };

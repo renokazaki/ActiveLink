@@ -75,22 +75,6 @@ const user = new Hono()
     }
 
     return c.json(friendData);
-  })
-
-  .get("/activity", async (c) => {
-    const clerk_id = c.req.query("clerk_id");
-
-    const activity = await prisma.activity.findMany({
-      where: {
-        user_clerk_id: clerk_id,
-      },
-    });
-
-    if (!activity) {
-      return c.json({ error: "User not found" }, 404);
-    }
-
-    return c.json(activity);
   });
 
 export default user;
