@@ -7,19 +7,33 @@ import {
 } from "@/_components/shadcn_ui/tabs";
 import { WeeklyProgress } from "./weekly/activityProgress";
 import { ActivityGraph } from "./graph/activityGraph";
-import { Activity, User } from "types/type";
+import { Activity, ActivityDetail, User } from "types/type";
 import { client } from "@/utils/client";
 import ActivityCalendar from "./calender/activityCalendar";
 
 export async function ActivityTabs({ data }: { data: User }) {
-  const res = await client.api.user.activity.$get({
-    param: { clerk_id: data.clerk_id },
+  const res = await client.api.activity.$get({
+    query: { clerk_id: data.clerk_id },
   });
   if (!res.ok) {
     throw new Error(`APIエラー: ${res.status}`);
   }
 
   const activity = (await res.json()) as Activity[];
+
+  // 取得したアクティビティに基づいてアクティビティの詳細をフィルタリング
+  // activity_idの配列を作成
+  const activityIds = activity.map((item) => item.id);
+
+  // バックエンドAPIも修正する必要があります
+  const res2 = await client.api.activity.activityDetail.$get({
+    query: { activity_ids: activityIds.join(",") }, // カンマ区切りのIDリスト
+  });
+  if (!res2.ok) {
+    throw new Error(`APIエラー: ${res2.status}`);
+  }
+
+  const activityDetail = (await res2.json()) as ActivityDetail[];
 
   return (
     <Tabs defaultValue="pet" className="flex flex-col h-full w-full">
@@ -56,15 +70,13 @@ export async function ActivityTabs({ data }: { data: User }) {
             <CardContent className="h-full p-6">
               {/* ペットコンテンツ */}
               <div className="flex items-center justify-center h-full">
-                <p className="text-slate-400">
-                  ペットコンテンツがここに表示されます
-                </p>
+                <p className="text-slate-400">ペットコンテンツ検討中</p>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="calendar" className="">
+        <TabsContent value="calendar">
           <Card className="bg-slate-800/50 border-slate-700/50  backdrop-blur-sm shadow-xl ">
             <CardContent className=" p-6">
               <ActivityCalendar activity={activity} />
@@ -75,7 +87,10 @@ export async function ActivityTabs({ data }: { data: User }) {
         <TabsContent value="graphs" className="h-full">
           <Card className="bg-slate-800/50 border-slate-700/50 overflow-hidden backdrop-blur-sm shadow-xl h-full">
             <CardContent className="h-full p-6">
-              <ActivityGraph activity={activity} />
+              <ActivityGraph
+                activity={activity}
+                activityDetail={activityDetail}
+              />
             </CardContent>
           </Card>
         </TabsContent>

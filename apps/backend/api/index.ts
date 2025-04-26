@@ -7,6 +7,7 @@ import weeklyTarget from "./routes/weeklyTarget";
 
 //👷開発用
 // import { serve } from "@hono/node-server";
+import activity from "./routes/activity";
 
 export const config = {
   runtime: "edge",
@@ -25,7 +26,8 @@ const app = new Hono()
   })
   .route("/user", user)
   .route("/weeklyTarget", weeklyTarget)
-  .route("/webhookRouter", webhookRouter);
+  .route("/webhookRouter", webhookRouter)
+  .route("/activity", activity);
 
 // 👷開発用
 // const port = 8085;
