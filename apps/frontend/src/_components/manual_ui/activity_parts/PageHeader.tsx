@@ -3,8 +3,7 @@ export function PageHeader({ children }: { children: React.ReactNode }) {
     <div>
       <div className="flex items-center gap-2">
         <h1 className="text-4xl font-bold tracking-tight ">
-          👋
-          {children}
+          {children}のページ
         </h1>
       </div>
     </div>

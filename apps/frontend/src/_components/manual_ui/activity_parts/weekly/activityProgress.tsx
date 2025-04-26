@@ -7,7 +7,7 @@ import { createWeeklyTarget } from "./action";
 export async function WeeklyProgress({ data }: { data: User }) {
   // clerk_idを使ってAPIからユーザーデータを取得
   const res = await client.api.weeklyTarget.$get({
-    param: { clerk_id: data.clerk_id },
+    query: { clerk_id: data.clerk_id },
   });
 
   if (!res.ok) {

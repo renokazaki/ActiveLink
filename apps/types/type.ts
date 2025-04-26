@@ -40,8 +40,8 @@ export type ActivityDetail = {
   description: string;
   duration_minutes: number;
   category: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 
   // リレーション（オプション）
   activity?: Activity;
@@ -71,8 +71,8 @@ export type Friendship = {
   sender_clerk_id: string;
   receiver_clerk_id: string;
   status: FriendshipStatus;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 
   // リレーション（オプション）
   sender?: User;

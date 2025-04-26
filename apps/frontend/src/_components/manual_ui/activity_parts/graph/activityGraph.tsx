@@ -13,35 +13,91 @@ import {
   Area,
   AreaChart,
 } from "recharts";
-import { Activity } from "types/type";
+import { Activity, ActivityDetail } from "types/type";
 
-export function ActivityGraph({ activity }: { activity: Activity[] }) {
-  const [period, setPeriod] = useState<"week" | "month">("month");
+export function ActivityGraph({
+  activity,
+  activityDetail,
+}: {
+  activity: Activity[];
+  activityDetail: ActivityDetail[];
+}) {
+  const [period, setPeriod] = useState<"week" | "month" | "year">("week");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
 
   // データを処理
   const processData = () => {
-    const sortedData = [...activity].sort(
+    // Activity配列を日付でソート
+    const sortedActivities = [...activity].sort(
       (a, b) =>
         new Date(a.activity_date).getTime() -
         new Date(b.activity_date).getTime()
     );
 
-    const limit = period === "week" ? 7 : 30;
-    const limitedData = sortedData.slice(-limit);
+    // 現在の日付を取得
+    const today = new Date();
 
-    return limitedData.map((item) => ({
-      date: new Date(item.activity_date).toLocaleDateString("ja-JP", {
+    // 期間に基づいてデータをフィルタリング
+    let filteredActivities = sortedActivities;
+
+    if (period === "week") {
+      // 過去7日間のデータを取得
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(today.getDate() - 7);
+      filteredActivities = sortedActivities.filter(
+        (item) => new Date(item.activity_date) >= oneWeekAgo
+      );
+    } else if (period === "month") {
+      // 過去30日間のデータを取得
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setDate(today.getDate() - 30);
+      filteredActivities = sortedActivities.filter(
+        (item) => new Date(item.activity_date) >= oneMonthAgo
+      );
+    } else if (period === "year") {
+      // 過去365日間のデータを取得
+      const oneYearAgo = new Date();
+      oneYearAgo.setDate(today.getDate() - 365);
+      filteredActivities = sortedActivities.filter(
+        (item) => new Date(item.activity_date) >= oneYearAgo
+      );
+    }
+
+    // データがなければ空の配列を返す
+    if (filteredActivities.length === 0) {
+      return [];
+    }
+
+    // 日付ごとのデータと各日付に紐づくactivity_idを取得
+    return filteredActivities.map((item) => {
+      // この活動日に関連するすべてのActivityDetail
+      const relatedDetails = activityDetail.filter(
+        (detail) => detail.activity_id === item.id
+      );
+
+      // ActivityDetailの合計時間を計算
+      const totalDuration = relatedDetails.reduce(
+        (sum, detail) => sum + detail.duration_minutes,
+        0
+      );
+
+      // 日付表示のフォーマットを期間に応じて変更
+      let dateFormat: Intl.DateTimeFormatOptions = {
         month: "numeric",
         day: "numeric",
-      }),
-      // 活動時間の集計例（実際のデータ構造に合わせて調整してください）
-      duration:
-        item.activity_details?.reduce(
-          (sum, detail) => sum + detail.duration_minutes,
-          0
-        ) || 0,
-    }));
+      };
+      if (period === "year") {
+        dateFormat = { month: "numeric", day: "numeric" };
+      }
+
+      return {
+        date: new Date(item.activity_date).toLocaleDateString(
+          "ja-JP",
+          dateFormat
+        ),
+        duration: totalDuration,
+      };
+    });
   };
 
   const chartData = processData();
@@ -53,7 +109,7 @@ export function ActivityGraph({ activity }: { activity: Activity[] }) {
         <h3 className="text-white font-medium">活動時間グラフ</h3>
         <Tabs
           value={period}
-          onValueChange={(v) => setPeriod(v as "week" | "month")}
+          onValueChange={(v) => setPeriod(v as "week" | "month" | "year")}
         >
           <TabsList className="bg-slate-800/50 border border-slate-700/50 rounded-full">
             <TabsTrigger
@@ -67,6 +123,12 @@ export function ActivityGraph({ activity }: { activity: Activity[] }) {
               className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white"
             >
               月
+            </TabsTrigger>
+            <TabsTrigger
+              value="year"
+              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white"
+            >
+              年
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -96,7 +158,7 @@ export function ActivityGraph({ activity }: { activity: Activity[] }) {
       </div>
 
       {/* グラフ表示エリア */}
-      <div className="h-[300px] bg-slate-800/30 border border-slate-700/50 rounded-lg p-4 shadow-xl">
+      <div className="h-[500px] w-full bg-slate-800/30 border border-slate-700/50 rounded-lg p-4 shadow-xl">
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "area" ? (
             <AreaChart data={chartData}>
@@ -138,8 +200,15 @@ export function ActivityGraph({ activity }: { activity: Activity[] }) {
         </ResponsiveContainer>
       </div>
 
+      {/* データがない場合のメッセージ */}
+      {chartData.length === 0 && (
+        <div className="flex justify-center items-center h-20 text-slate-400">
+          選択した期間のデータがありません
+        </div>
+      )}
+
       {/* 凡例 */}
-      <div className="flex items-center justify-center space-x-2 text-sm">
+      <div className="flex items-center justify-center space-x-2 text-sm ">
         <div className="w-3 h-3 rounded-sm bg-blue-500"></div>
         <span className="text-slate-400">1日あたりの活動時間（分）</span>
       </div>
