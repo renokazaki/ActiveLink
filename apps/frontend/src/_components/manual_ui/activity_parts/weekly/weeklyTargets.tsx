@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/_components/shadcn_ui/card";
 import { Button } from "@/_components/shadcn_ui/button";
 import { createWeeklyTarget } from "./action";
 
-export async function WeeklyProgress({ data }: { data: User }) {
+export async function WeeklyTargets({ data }: { data: User }) {
   // clerk_idを使ってAPIからユーザーデータを取得
   const res = await client.api.weeklyTarget.$get({
     query: { clerk_id: data.clerk_id },

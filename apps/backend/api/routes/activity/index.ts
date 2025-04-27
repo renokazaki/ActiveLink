@@ -39,34 +39,6 @@ const activity = new Hono()
       console.error("Error creating activity:", error);
       return c.json({ error: "Failed to create activity" }, 500);
     }
-  })
-  .get("/activityDetail", async (c) => {
-    const activityIdsParam = c.req.query("activity_ids");
-    console.log(`受け取ったactivity_ids: ${activityIdsParam}`);
-
-    let where = {};
-
-    if (activityIdsParam) {
-      // カンマ区切りのIDリストを配列に変換
-      const activityIds = activityIdsParam
-        .split(",")
-        .map((id) => parseInt(id, 10));
-
-      where = {
-        activity_id: {
-          in: activityIds,
-        },
-      };
-    }
-
-    const activityDetail = await prisma.activityDetail.findMany({
-      where: where,
-    });
-
-    if (!activityDetail || activityDetail.length === 0) {
-      return c.json({ error: "ActivityData not found" }, 404);
-    }
-
-    return c.json(activityDetail);
   });
+
 export default activity;
