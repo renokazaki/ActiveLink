@@ -18,7 +18,7 @@ export default async function Home() {
   try {
     // clerk_idを使ってAPIからユーザーデータを取得
     const res = await client.api.user.$get({
-      param: { clerk_id: userId },
+      query: { clerk_id: userId },
     });
 
     if (!res.ok) {
