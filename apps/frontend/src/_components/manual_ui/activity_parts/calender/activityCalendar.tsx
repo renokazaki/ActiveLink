@@ -116,11 +116,10 @@ export default function ActivityCalendar({
       const responseData = await activityResponse.json();
       // TypeScriptのエラーを回避するために型アサーションを使用
       const activities = Array.isArray(responseData) ? responseData : [];
-
       // 指定した日付に一致するアクティビティを検索
       const targetActivity = activities.find((act: Activity) => {
         return act.activity_date.split("T")[0] === activity_date;
-      });
+      }) as Activity | undefined;
 
       let activityId;
 
@@ -140,7 +139,10 @@ export default function ActivityCalendar({
           throw new Error("活動の作成に失敗しました");
         }
 
-        const newActivity = await newActivityResponse.json();
+        // レスポンスを型アサーションを使って処理
+        const newActivityData = await newActivityResponse.json();
+        // TypeScriptエラーを回避するために型アサーションを使用
+        const newActivity = newActivityData as Activity;
         activityId = newActivity.id;
       } else {
         // 既存のActivityを使用
