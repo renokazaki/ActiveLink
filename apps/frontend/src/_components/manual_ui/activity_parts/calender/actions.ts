@@ -52,7 +52,7 @@ export async function createActivityDetail(formData: FormData) {
       throw new Error("活動データの取得に失敗しました");
     }
 
-    const activities = await activityResponse.json();
+    const activities: Activity[] = await activityResponse.json();
 
     // 指定した日付に一致するアクティビティを検索
     const targetActivity = activities.find((act: Activity) => {
