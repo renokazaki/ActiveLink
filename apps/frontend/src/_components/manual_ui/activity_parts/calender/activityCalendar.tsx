@@ -4,12 +4,28 @@ import { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { DateClickArg } from "@fullcalendar/interaction"; // 日付クリック引数の型をインポート
+import { DateClickArg } from "@fullcalendar/interaction";
 import { SmileIcon, Edit, X } from "lucide-react";
 import { Activity, ActivityDetail } from "types/type";
 import { Button } from "@/_components/shadcn_ui/button";
 import { useRouter } from "next/navigation";
-import { createActivityDetail } from "./actions";
+import { client } from "@/utils/client"; // Honoクライアントを直接インポート
+
+// ISO-8601形式の日本時間を取得する関数
+function getJapanTimeISOString(dateStr?: string) {
+  let date;
+
+  if (dateStr) {
+    date = new Date(dateStr);
+  } else {
+    date = new Date();
+  }
+
+  // 日本時間に調整（UTC+9時間）
+  const jpTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+
+  return jpTime.toISOString();
+}
 
 export default function ActivityCalendar({
   activity,
@@ -26,6 +42,7 @@ export default function ActivityCalendar({
   const [selectedDetail, setSelectedDetail] = useState<ActivityDetail | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(false); // ローディング状態を追加
 
   // 日付だけを抽出した単純なイベント配列を作成
   const events = activity.map((item) => ({
@@ -72,12 +89,88 @@ export default function ActivityCalendar({
     setIsEditModalOpen(true);
   };
 
-  // フォーム送信ハンドラー（新規作成のみ）
-  const handleSubmit = async (formData: FormData) => {
-    await createActivityDetail(formData);
-    router.refresh();
-    setIsEditModalOpen(false);
-    setSelectedDetail(null);
+  // フォーム送信ハンドラー（新規作成のみ）- サーバーアクションを使わない版
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const user_clerk_id = formData.get("user_clerk_id") as string;
+      const activity_date = formData.get("activity_date") as string;
+      const description = formData.get("description") as string;
+      const duration_minutes = parseInt(
+        formData.get("duration_minutes") as string
+      );
+      const category = formData.get("category") as string;
+
+      // 1. 指定された日付のActivityを検索
+      const activityResponse = await client.api.activity.$get({
+        query: { clerk_id: user_clerk_id },
+      });
+
+      if (!activityResponse.ok) {
+        throw new Error("活動データの取得に失敗しました");
+      }
+
+      const responseData = await activityResponse.json();
+      // TypeScriptのエラーを回避するために型アサーションを使用
+      const activities = Array.isArray(responseData) ? responseData : [];
+
+      // 指定した日付に一致するアクティビティを検索
+      const targetActivity = activities.find((act: Activity) => {
+        return act.activity_date.split("T")[0] === activity_date;
+      });
+
+      let activityId;
+
+      // 2. 該当日のActivityが存在しない場合は新規作成
+      if (!targetActivity) {
+        // ISO-8601形式の完全な日時文字列を生成
+        const isoDateString = getJapanTimeISOString(activity_date);
+
+        const newActivityResponse = await client.api.activity.$post({
+          json: {
+            user_clerk_id,
+            activity_date: isoDateString,
+          },
+        });
+
+        if (!newActivityResponse.ok) {
+          throw new Error("活動の作成に失敗しました");
+        }
+
+        const newActivity = await newActivityResponse.json();
+        activityId = newActivity.id;
+      } else {
+        // 既存のActivityを使用
+        activityId = targetActivity.id;
+      }
+
+      // 3. ActivityDetailを作成
+      const detailResponse = await client.api.activityDetail.$post({
+        json: {
+          activity_id: activityId,
+          description,
+          duration_minutes,
+          category,
+        },
+      });
+
+      if (!detailResponse.ok) {
+        throw new Error("活動詳細の登録に失敗しました");
+      }
+
+      // 成功したらUIを更新
+      router.refresh();
+      setIsEditModalOpen(false);
+      setSelectedDetail(null);
+    } catch (error) {
+      console.error("Error creating activity detail:", error);
+      // エラー処理をここに追加することもできます
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 選択をクリア
@@ -184,7 +277,7 @@ export default function ActivityCalendar({
 
             <form
               id="activity-detail-form"
-              action={handleSubmit}
+              onSubmit={handleSubmit}
               className="space-y-3"
             >
               <input type="hidden" name="user_clerk_id" value={userId} />
@@ -255,8 +348,9 @@ export default function ActivityCalendar({
                   <Button
                     type="submit"
                     className="flex-1 bg-green-600 hover:bg-green-700"
+                    disabled={isLoading}
                   >
-                    追加
+                    {isLoading ? "送信中..." : "追加"}
                   </Button>
                 )}
               </div>
