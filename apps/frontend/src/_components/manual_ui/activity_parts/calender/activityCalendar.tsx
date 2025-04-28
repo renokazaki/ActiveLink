@@ -10,7 +10,6 @@ import { Activity, ActivityDetail } from "types/type";
 import { Button } from "@/_components/shadcn_ui/button";
 import { useRouter } from "next/navigation";
 import { createActivityDetail } from "./actions";
-// import { updateActivityDetail } from "./updateActivityDetail";
 
 export default function ActivityCalendar({
   activity,
@@ -43,7 +42,7 @@ export default function ActivityCalendar({
     );
   };
 
-  // 日付をクリックしたときのハンドラー (any型からDateClickArg型に変更)
+  // 日付をクリックしたときのハンドラー
   const handleDateClick = (info: DateClickArg) => {
     setSelectedDate(info.dateStr);
     setIsEditModalOpen(false);
@@ -67,27 +66,19 @@ export default function ActivityCalendar({
         )
       : [];
 
-  // 編集モードに切り替える
+  // 編集モードに切り替える（詳細を表示するだけ）
   const handleEditDetail = (detail: ActivityDetail) => {
     setSelectedDetail(detail);
     setIsEditModalOpen(true);
   };
 
-  // フォーム送信ハンドラー
+  // フォーム送信ハンドラー（新規作成のみ）
   const handleSubmit = async (formData: FormData) => {
     await createActivityDetail(formData);
     router.refresh();
     setIsEditModalOpen(false);
     setSelectedDetail(null);
   };
-
-  // // ActivityDetailの更新
-  // const handleUpdateDetail = async (formData: FormData) => {
-  //   // await updateActivityDetail(formData);
-  //   router.refresh();
-  //   setIsEditModalOpen(false);
-  //   setSelectedDetail(null);
-  // };
 
   // 選択をクリア
   const handleClearSelection = () => {
@@ -149,7 +140,6 @@ export default function ActivityCalendar({
                   >
                     <div className="flex justify-between items-center">
                       <h4 className="font-medium">
-                        {/* カテゴリーを入力に変更 */}
                         {detail.category || "未分類"}
                       </h4>
                       <button
@@ -183,18 +173,17 @@ export default function ActivityCalendar({
           </div>
         )}
 
-        {/* 追加/編集フォーム - 別セクションとして表示 */}
+        {/* 追加フォーム - 別セクションとして表示 */}
         {isEditModalOpen && selectedDate && (
           <div className="bg-slate-700/90 border border-slate-500 p-4 rounded-lg shadow-lg text-white">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">
-                {selectedDetail ? "活動詳細を編集" : "新しい活動詳細を追加"}
+                {selectedDetail ? "活動詳細を表示" : "新しい活動詳細を追加"}
               </h3>
             </div>
 
             <form
               id="activity-detail-form"
-              // action={selectedDetail ? handleUpdateDetail : handleSubmit}
               action={handleSubmit}
               className="space-y-3"
             >
@@ -215,6 +204,7 @@ export default function ActivityCalendar({
                   className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-md text-white text-sm"
                   placeholder="どのような活動を行いましたか？"
                   defaultValue={selectedDetail?.description || ""}
+                  readOnly={!!selectedDetail}
                 ></textarea>
               </div>
 
@@ -230,6 +220,7 @@ export default function ActivityCalendar({
                   className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-md text-white text-sm"
                   placeholder="例: 30"
                   defaultValue={selectedDetail?.duration_minutes || ""}
+                  readOnly={!!selectedDetail}
                 />
               </div>
 
@@ -245,6 +236,7 @@ export default function ActivityCalendar({
                   placeholder="例: 勉強、運動、趣味など"
                   defaultValue={selectedDetail?.category || ""}
                   list="category-suggestions"
+                  readOnly={!!selectedDetail}
                 />
               </div>
 
@@ -257,14 +249,16 @@ export default function ActivityCalendar({
                   }}
                   className="flex-1 bg-red-500 hover:bg-red-400"
                 >
-                  キャンセル
+                  {selectedDetail ? "閉じる" : "キャンセル"}
                 </Button>
-                <Button
-                  type="submit"
-                  className="flex-1 bg-green-600 hover:bg-green-700"
-                >
-                  {selectedDetail ? "更新" : "追加"}
-                </Button>
+                {!selectedDetail && (
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                  >
+                    追加
+                  </Button>
+                )}
               </div>
             </form>
           </div>
