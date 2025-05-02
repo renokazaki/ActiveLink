@@ -91,7 +91,6 @@ export default function ActivityCalendar({
 
   // 活動詳細の削除ハンドラー
   const handleDeleteDetail = async (id: string) => {
-    if (!window.confirm('この活動詳細を削除しますか？')) return;
 
     setIsLoading(true);
 
