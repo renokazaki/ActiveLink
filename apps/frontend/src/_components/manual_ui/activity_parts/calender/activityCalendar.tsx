@@ -89,6 +89,30 @@ export default function ActivityCalendar({
     setIsEditModalOpen(true);
   };
 
+  // 活動詳細の削除ハンドラー
+  const handleDeleteDetail = async (id: string) => {
+    if (!window.confirm('この活動詳細を削除しますか？')) return;
+
+    setIsLoading(true);
+
+    try {
+      const response = await client.api.activityDetail[":id"].$delete({
+        param: { id },
+      });
+
+      if (!response.ok) {
+        throw new Error("活動詳細の削除に失敗しました");
+      }
+
+      // 成功したらUIを更新
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting activity detail:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // フォーム送信ハンドラー（新規作成のみ）- サーバーアクションを使わない版
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -237,12 +261,20 @@ export default function ActivityCalendar({
                       <h4 className="font-medium">
                         {detail.category || "未分類"}
                       </h4>
-                      <button
-                        onClick={() => handleEditDetail(detail)}
-                        className="text-blue-400 hover:text-blue-300"
-                      >
-                        <Edit size={25} />
-                      </button>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEditDetail(detail)}
+                          className="text-blue-400 hover:text-blue-300"
+                        >
+                          <Edit size={20} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteDetail(detail.id.toString())}
+                          className="text-red-400 hover:text-red-300"
+                        >
+                          <X size={20} />
+                        </button>
+                      </div>
                     </div>
                     <p className="text-sm text-slate-300 mt-1">
                       {detail.description}

@@ -68,34 +68,24 @@ const activityDetail = new Hono()
       console.error("Error creating activity detail:", error);
       return c.json({ error: "Failed to create activity detail" }, 500);
     }
+  })
+  .delete("/:id", async (c) => {
+    try {
+      const id = parseInt(c.req.param("id"), 10);
+      if (isNaN(id)) {
+        return c.json({ error: "Invalid id format" }, 400);
+      }
+
+      // データの削除
+      const deletedDetail = await prisma.activityDetail.delete({
+        where: { id },
+      });
+
+      return c.json(deletedDetail);
+    } catch (error) {
+      console.error("Error deleting activity detail:", error);
+      return c.json({ error: "Failed to delete activity detail" }, 500);
+    }
   });
-// activity.detail API に追加する更新エンドポイント
-// .put("/:id", async (c) => {
-//   try {
-//     const id = parseInt(c.req.param("id"), 10);
-//     const body = await c.req.json();
-//     const { description, duration_minutes, category } = body;
-
-//     // バリデーション
-//     if (!description || !duration_minutes || !category) {
-//       return c.json({ error: "Required fields missing" }, 400);
-//     }
-
-//     // 既存データの更新
-//     const updatedDetail = await prisma.activityDetail.update({
-//       where: { id },
-//       data: {
-//         description,
-//         duration_minutes,
-//         category,
-//       },
-//     });
-
-//     return c.json(updatedDetail);
-//   } catch (error) {
-//     console.error("Error updating activity detail:", error);
-//     return c.json({ error: "Failed to update activity detail" }, 500);
-//   }
-// });
 
 export default activityDetail;
