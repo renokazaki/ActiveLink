@@ -6,7 +6,6 @@ import { SmileIcon, Edit, X } from "lucide-react";
 import { Activity, ActivityDetail } from "types/type";
 import { Button } from "@/_components/shadcn_ui/button";
 import { DeleteDetail } from "./utils/utils";
-import { useRouter } from "next/navigation";
 
 interface CalendarProps {
   activity: Activity[];
@@ -28,14 +27,6 @@ export function Calendar({
   setSelectedDetail,
 }: CalendarProps) {
   
-  const router = useRouter();
-
-// handleDeleteDetailを次のように置き換える
-const handleDeleteDetail = async(id: string) => {
-    await DeleteDetail(id);
-    router.refresh();
-};
-
   // 選択した日付のActivityを取得
   const selectedActivity = selectedDate
     ? activity.find(
@@ -156,7 +147,7 @@ const handleDeleteDetail = async(id: string) => {
                         </button>
                         <button
                           onClick={() =>
-                            handleDeleteDetail(detail.id.toString())
+                            DeleteDetail(detail.id.toString())
                           }
                           className="text-red-400 hover:text-red-300"
                         >
