@@ -58,21 +58,12 @@ export default async function Friends() {
                         <h3 className="font-medium">{friend.display_name}</h3>
                       </div>
                       <p className="text-sm text-gray-500">
-                        {friend.is_active ? (
-                          <span>活動中</span>
-                        ) : (
-                          <span>
-                            最終活動:{" "}
-                            {new Date(friend.updated_at).toLocaleDateString()}
-                          </span>
-                        )}
+                        <span>
+                          最終活動:
+                          {new Date(friend.updated_at).toLocaleDateString()}
+                        </span>
                       </p>
                     </div>
-                    <div
-                      className={`w-3 h-3 rounded-full ${
-                        friend.is_active ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    />
                   </div>
                 </Link>
               ))
