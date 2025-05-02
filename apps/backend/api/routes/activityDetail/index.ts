@@ -86,6 +86,32 @@ const activityDetail = new Hono()
       console.error("Error deleting activity detail:", error);
       return c.json({ error: "Failed to delete activity detail" }, 500);
     }
-  });
-
+  })
+  .put("/:id", async (c) => {
+    try {
+      const id = parseInt(c.req.param("id"), 10);
+      if (isNaN(id)) {
+        return c.json({ error: "Invalid id format" }, 400);
+      }
+  
+      const body = await c.req.json();
+      const { activity_id, description, duration_minutes, category } = body;
+  
+      // データの更新
+      const updatedDetail = await prisma.activityDetail.update({
+        where: { id },
+        data: {
+          activity_id,
+          description,
+          duration_minutes,
+          category,
+        },
+      });
+  
+      return c.json(updatedDetail);
+    } catch (error) {
+      console.error("Error updating activity detail:", error);
+      return c.json({ error: "Failed to update activity detail" }, 500);
+    }
+  })
 export default activityDetail;
