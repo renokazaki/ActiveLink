@@ -6,7 +6,7 @@ import webhookRouter from "./routes/webhooks";
 import weeklyTarget from "./routes/weeklyTarget";
 
 //👷開発用
-// import { serve } from "@hono/node-server";
+import { serve } from "@hono/node-server";
 import activity from "./routes/activity";
 import activityDetail from "./routes/activityDetail";
 
@@ -32,13 +32,13 @@ const app = new Hono()
   .route("/activityDetail", activityDetail);
 
 // 👷開発用
-// const port = 8085;
-// console.log(`Server is running on http://localhost:${port}`);
+const port = 8085;
+console.log(`Server is running on http://localhost:${port}`);
 
-// serve({
-//   fetch: app.fetch,
-//   port,
-// });
+serve({
+  fetch: app.fetch,
+  port,
+});
 
 export type AppType = typeof app;
 
