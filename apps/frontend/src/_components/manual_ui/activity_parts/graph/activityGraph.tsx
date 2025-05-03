@@ -25,80 +25,83 @@ export function ActivityGraph({
   const [period, setPeriod] = useState<"week" | "month" | "year">("week");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
 
-  // データを処理
-  const processData = () => {
-    // Activity配列を日付でソート
-    const sortedActivities = [...activity].sort(
-      (a, b) =>
-        new Date(a.activity_date).getTime() -
-        new Date(b.activity_date).getTime()
+// データを処理
+const processData = () => {
+  // Activity配列を日付でソート
+  const sortedActivities = [...activity].sort(
+    (a, b) =>
+      new Date(a.activity_date).getTime() -
+      new Date(b.activity_date).getTime()
+  );
+
+  // 現在の日付を取得
+  const today = new Date();
+
+  // 期間に基づいてデータをフィルタリング
+  let filteredActivities = sortedActivities;
+
+  if (period === "week") {
+    // 過去7日間のデータを取得
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(today.getDate() - 7);
+    filteredActivities = sortedActivities.filter(
+      (item) => new Date(item.activity_date) >= oneWeekAgo
+    );
+  } else if (period === "month") {
+    // 過去30日間のデータを取得
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setDate(today.getDate() - 30);
+    filteredActivities = sortedActivities.filter(
+      (item) => new Date(item.activity_date) >= oneMonthAgo
+    );
+  } else if (period === "year") {
+    // 過去365日間のデータを取得
+    const oneYearAgo = new Date();
+    oneYearAgo.setDate(today.getDate() - 365);
+    filteredActivities = sortedActivities.filter(
+      (item) => new Date(item.activity_date) >= oneYearAgo
+    );
+  }
+
+  // データがなければ空の配列を返す
+  if (filteredActivities.length === 0) {
+    return [];
+  }
+
+  // 日付ごとにグループ化して時間を集約
+  const groupedData: { [key: string]: number } = {};
+
+  filteredActivities.forEach((item) => {
+    const dateKey = new Date(item.activity_date).toLocaleDateString("ja-JP", {
+      month: "numeric",
+      day: "numeric",
+    });
+
+    // この活動日に関連するすべてのActivityDetail
+    const relatedDetails = activityDetail.filter(
+      (detail) => detail.activity_id === item.id
     );
 
-    // 現在の日付を取得
-    const today = new Date();
+    // ActivityDetailの合計時間を計算
+    const totalDuration = relatedDetails.reduce(
+      (sum, detail) => sum + detail.duration_minutes,
+      0
+    );
 
-    // 期間に基づいてデータをフィルタリング
-    let filteredActivities = sortedActivities;
-
-    if (period === "week") {
-      // 過去7日間のデータを取得
-      const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(today.getDate() - 7);
-      filteredActivities = sortedActivities.filter(
-        (item) => new Date(item.activity_date) >= oneWeekAgo
-      );
-    } else if (period === "month") {
-      // 過去30日間のデータを取得
-      const oneMonthAgo = new Date();
-      oneMonthAgo.setDate(today.getDate() - 30);
-      filteredActivities = sortedActivities.filter(
-        (item) => new Date(item.activity_date) >= oneMonthAgo
-      );
-    } else if (period === "year") {
-      // 過去365日間のデータを取得
-      const oneYearAgo = new Date();
-      oneYearAgo.setDate(today.getDate() - 365);
-      filteredActivities = sortedActivities.filter(
-        (item) => new Date(item.activity_date) >= oneYearAgo
-      );
+    // 同じ日付のデータがすでに存在する場合は加算する
+    if (groupedData[dateKey]) {
+      groupedData[dateKey] += totalDuration;
+    } else {
+      groupedData[dateKey] = totalDuration;
     }
+  });
 
-    // データがなければ空の配列を返す
-    if (filteredActivities.length === 0) {
-      return [];
-    }
-
-    // 日付ごとのデータと各日付に紐づくactivity_idを取得
-    return filteredActivities.map((item) => {
-      // この活動日に関連するすべてのActivityDetail
-      const relatedDetails = activityDetail.filter(
-        (detail) => detail.activity_id === item.id
-      );
-
-      // ActivityDetailの合計時間を計算
-      const totalDuration = relatedDetails.reduce(
-        (sum, detail) => sum + detail.duration_minutes,
-        0
-      );
-
-      // 日付表示のフォーマットを期間に応じて変更
-      let dateFormat: Intl.DateTimeFormatOptions = {
-        month: "numeric",
-        day: "numeric",
-      };
-      if (period === "year") {
-        dateFormat = { month: "numeric", day: "numeric" };
-      }
-
-      return {
-        date: new Date(item.activity_date).toLocaleDateString(
-          "ja-JP",
-          dateFormat
-        ),
-        duration: totalDuration,
-      };
-    });
-  };
+  // グループ化されたデータを配列に変換
+  return Object.entries(groupedData).map(([date, duration]) => ({
+    date,
+    duration,
+  }));
+};
 
   const chartData = processData();
 
