@@ -2,7 +2,9 @@ import { client } from "@/utils/client";
 import { User, WeeklyTarget } from "types/type";
 import { Card, CardContent } from "@/_components/shadcn_ui/card";
 import { Button } from "@/_components/shadcn_ui/button";
-import { createWeeklyTarget } from "./action";
+import { createWeeklyTarget ,deleteWeeklyTarget} from "./action";
+import { Edit, X } from "lucide-react";
+// import { deleteWeeklyTarget } from "./utils/utils";
 
 export async function WeeklyTargets({ data }: { data: User }) {
   // clerk_idを使ってAPIからユーザーデータを取得
@@ -57,6 +59,7 @@ export async function WeeklyTargets({ data }: { data: User }) {
                         </p>
                       </div>
                     </div>
+                    
                     <div
                       className={`px-2 py-1 rounded-full text-xs ${
                         target.status === "completed"
@@ -66,6 +69,7 @@ export async function WeeklyTargets({ data }: { data: User }) {
                           : "bg-yellow-500/20 text-yellow-300"
                       }`}
                     >
+                      
                       {target.status === "completed"
                         ? "完了"
                         : target.status === "started"
@@ -85,6 +89,23 @@ export async function WeeklyTargets({ data }: { data: User }) {
                       期限: {formatDate(target.target_end_date.toString())}
                     </span>
                   </div>
+                  <div className="flex space-x-2 justify-end">
+                                  <button
+                                    // onClick={() => handleEditDetail(detail)}
+                                    className="text-blue-400 hover:text-blue-300"
+                                  >
+                                    <Edit size={20} />
+                                  </button>
+                                  <form action={deleteWeeklyTarget} style={{ display: 'inline' }}>
+    <input type="hidden" name="id" value={target.id} />
+    <button
+      type="submit"
+      className="text-red-400 hover:text-red-300"
+    >
+      <X size={20} />
+    </button>
+  </form>
+                                </div>
                 </CardContent>
               </Card>
             );
@@ -133,6 +154,7 @@ export async function WeeklyTargets({ data }: { data: User }) {
             className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-md text-white"
             placeholder="目標の詳細や達成したい内容を入力してください"
           ></textarea>
+
         </div>
 
         <Button
