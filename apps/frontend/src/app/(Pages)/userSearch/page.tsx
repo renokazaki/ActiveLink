@@ -5,6 +5,7 @@ import { User } from "types/type";
 
 import { Button } from "@/_components/shadcn_ui/button";
 import { Input } from "@/_components/shadcn_ui/input";
+import { client } from "@/utils/client";
 
 export default function UserSearch() {
   const [query, setQuery] = useState("");
@@ -13,43 +14,52 @@ export default function UserSearch() {
   const [loading] = useState(false);
   const [sending] = useState<number | null>(null); // 数値型に修正
 
-  //const [users, setUsers] = useState<User[]>([
+  const [users, setUsers] = useState<User[]>([]);
 
-  const [users] = useState<User[]>([
-    {
-      id: 1,
-      clerk_id: "test1",
-      display_name: "山田太郎",
-      profile_image: "/placeholder.svg?height=40&width=40",
-      target: "毎日30分の読書習慣をつける",
-      is_active: true,
-      created_at: "2024-01-01",
-      updated_at: "2024-01-01",
-    },
-    {
-      id: 2,
-      clerk_id: "test2",
-      display_name: "鈴木花子",
-      profile_image: "/placeholder.svg?height=40&width=40",
-      target: "週3回のジョギングを継続する",
-      is_active: false,
-      created_at: "2024-01-01",
-      updated_at: "2024-01-01",
-    },
-    {
-      id: 3,
-      clerk_id: "test3",
-      display_name: "佐藤健太",
-      profile_image: "/placeholder.svg?height=40&width=40",
-      target: "プログラミングスキルを向上させる",
-      is_active: true,
-      created_at: "2024-01-01",
-      updated_at: "2024-01-01",
-    },
-  ]);
+  // const [users] = useState<User[]>([
+  //   {
+  //     id: 1,
+  //     clerk_id: "test1",
+  //     display_name: "山田太郎",
+  //     profile_image: "/placeholder.svg?height=40&width=40",
+  //     target: "毎日30分の読書習慣をつける",
+  //     is_active: true,
+  //     created_at: "2024-01-01",
+  //     updated_at: "2024-01-01",
+  //   },
+  //   {
+  //     id: 2,
+  //     clerk_id: "test2",
+  //     display_name: "鈴木花子",
+  //     profile_image: "/placeholder.svg?height=40&width=40",
+  //     target: "週3回のジョギングを継続する",
+  //     is_active: false,
+  //     created_at: "2024-01-01",
+  //     updated_at: "2024-01-01",
+  //   },
+  //   {
+  //     id: 3,
+  //     clerk_id: "test3",
+  //     display_name: "佐藤健太",
+  //     profile_image: "/placeholder.svg?height=40&width=40",
+  //     target: "プログラミングスキルを向上させる",
+  //     is_active: true,
+  //     created_at: "2024-01-01",
+  //     updated_at: "2024-01-01",
+  //   },
+  // ]);
 
-  const searchUsers = () => {
-    console.log("ユーザー検索します" + query);
+  const searchUsers = async () => {
+    const clerkId = "user_2wGRgmGQeZWbMXPg9axVbwsNsPg";
+    const res = await client.api.friendRequest.search.$get({
+      query: { clerk_id: clerkId },
+    });
+
+    const usersData = (await res.json()) as User[];
+
+
+    console.log("ユーザー検索の結果" + usersData);
+    setUsers(usersData);
   };
 
   const sendFriendRequest = (userId: number) => {
