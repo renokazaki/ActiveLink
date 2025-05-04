@@ -6,65 +6,51 @@ import { User } from "types/type";
 import { Button } from "@/_components/shadcn_ui/button";
 import { Input } from "@/_components/shadcn_ui/input";
 import { client } from "@/utils/client";
+import { useAuth } from "@clerk/nextjs"; // useAuthフックをインポート
 
 export default function UserSearch() {
+
+  const { userId } = useAuth(); // useAuthフックを使用してユーザーIDを取得
+
   const [query, setQuery] = useState("");
-  // const [loading, setLoading] = useState(false);
-  // const [sending, setSending] = useState<string | null>(null);
   const [loading] = useState(false);
-  const [sending] = useState<number | null>(null); // 数値型に修正
+  const [sending] = useState<string | null>(null); // 数値型に修正
 
   const [users, setUsers] = useState<User[]>([]);
 
-  // const [users] = useState<User[]>([
-  //   {
-  //     id: 1,
-  //     clerk_id: "test1",
-  //     display_name: "山田太郎",
-  //     profile_image: "/placeholder.svg?height=40&width=40",
-  //     target: "毎日30分の読書習慣をつける",
-  //     is_active: true,
-  //     created_at: "2024-01-01",
-  //     updated_at: "2024-01-01",
-  //   },
-  //   {
-  //     id: 2,
-  //     clerk_id: "test2",
-  //     display_name: "鈴木花子",
-  //     profile_image: "/placeholder.svg?height=40&width=40",
-  //     target: "週3回のジョギングを継続する",
-  //     is_active: false,
-  //     created_at: "2024-01-01",
-  //     updated_at: "2024-01-01",
-  //   },
-  //   {
-  //     id: 3,
-  //     clerk_id: "test3",
-  //     display_name: "佐藤健太",
-  //     profile_image: "/placeholder.svg?height=40&width=40",
-  //     target: "プログラミングスキルを向上させる",
-  //     is_active: true,
-  //     created_at: "2024-01-01",
-  //     updated_at: "2024-01-01",
-  //   },
-  // ]);
 
+  //友達検索機能
   const searchUsers = async () => {
-    const clerkId = "user_2wGRgmGQeZWbMXPg9axVbwsNsPg";
+    const friendsClerkId = "user_2wGRgmGQeZWbMXPg9axVbwsNsPg";
     const res = await client.api.friendRequest.search.$get({
-      query: { clerk_id: clerkId },
+      query: { clerk_id: friendsClerkId },
     });
 
-    const usersData = (await res.json()) as User[];
+    const friendsData = (await res.json()) as User[];
 
 
-    console.log("ユーザー検索の結果" + usersData);
-    setUsers(usersData);
+    console.log("友達検索の結果" + friendsData);
+    setUsers(friendsData);
   };
 
-  const sendFriendRequest = (userId: number) => {
-    // 数値型に修正
-    console.log("友達申請を送信します" + userId);
+  //友達申請機能
+  const sendFriendRequest = async (friendsClerkId: string) => {
+    try {
+      console.log("友達申請を送信します自分のid:" + userId);
+      console.log("友達申請を送信します友達のid:" + friendsClerkId);
+  
+      const res = await client.api.friendRequest.sendRequest.$post({
+        json: { myClerkId: userId, friendsClerkId }, // bodyをjsonに変更
+      });
+      
+      if (!res.ok) {
+        throw new Error("友達申請に失敗しました");
+      }
+      
+      console.log("友達申請を行いました。");
+    } catch (error) {
+      console.error("友達申請エラー:", error);
+    }
   };
 
   return (
@@ -100,12 +86,12 @@ export default function UserSearch() {
               <span>{user.display_name}</span>
             </div>
             <Button
-              onClick={() => sendFriendRequest(user.id)}
+              onClick={() => sendFriendRequest(user.clerk_id)}
               variant="outline"
-              disabled={sending === user.id}
+              disabled={sending === user.clerk_id}
               className="bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700"
             >
-              {sending === user.id ? "送信中..." : "友達申請を送信"}
+              {sending === user.clerk_id ? "送信中..." : "友達申請を送信"}
             </Button>
           </div>
         ))}
