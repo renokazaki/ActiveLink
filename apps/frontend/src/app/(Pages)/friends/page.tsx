@@ -27,15 +27,7 @@ export default async function Friends() {
 
     const friendsData = (await res.json()) as User[];
 
-    // const res2 = await client.api.user.allFriendRequest.$get({
-    //   query: { clerk_id: userId },
-    // });
-
-    // if (!res2.ok) {
-    //   throw new Error(`APIエラー: ${res2.status}`);
-    // }
-
-    // const friendRequestData = (await res2.json()) as [];
+ 
 
     return (
       <div className="text-black min-h-screen">
@@ -82,41 +74,7 @@ export default async function Friends() {
             )}
           </div>
 
-          <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-blue-400">
-            <h1 className="text-2xl font-bold text-white">友達申請状況</h1>
-          </div>
-          <div className="grid gap-4">
-            {friendsData && friendsData.length > 0 ? (
-              friendsData.map((friend) => (
-                <Link
-                  key={friend.id}
-                  href={`/friends/${friend.id}`}
-                  className="block"
-                >
-                  <div className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between hover:bg-blue-500 transition-colors text-black">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={friend.profile_image}
-                          alt={friend.display_name}
-                          className="w-10 h-10 rounded-full"
-                        />
-                        <h3 className="font-medium">{friend.display_name}</h3>
-                      </div>
-                      <p className="text-sm text-gray-500">
-                        <span>
-                          最終活動:
-                          {new Date(friend.updated_at).toLocaleDateString()}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className="text-white">申請状況はありません</div>
-            )}
-          </div>
+      
 
 
 
