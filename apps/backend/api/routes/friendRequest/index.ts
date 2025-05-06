@@ -1,6 +1,17 @@
 import { Hono } from "hono";
 import { prisma } from "../../../prisma/prisma";
-
+// Prismaから返されるUser型を定義
+type PrismaUser = {
+  id: number;
+  clerk_id: string;
+  display_name: string;
+  profile_image: string;
+  target: string;
+  is_active: boolean;
+  created_at: Date; // Dateオブジェクト
+  updated_at: Date; // Dateオブジェクト
+  // 他のフィールド
+};
 const friendRequest = new Hono()
 
 //友達検索用API
@@ -22,7 +33,7 @@ const friendRequest = new Hono()
   
   // 友達関係の情報を付加したユーザー情報を作成
   const usersWithFriendship = await Promise.all(
-    users.map(async (user) => {
+    users.map(async (user:PrismaUser) => {
       // 友達関係の検索
       const friendship = await prisma.friendship.findFirst({
         where: {
