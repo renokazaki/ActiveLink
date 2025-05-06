@@ -52,7 +52,7 @@ export default function UserSearch() {
       });
       
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as FriendRequest[];
         setPendingRequests(data);
       }
     } catch (error) {
@@ -73,7 +73,7 @@ export default function UserSearch() {
         },
       });
 
-      const friendsData = await res.json();
+      const friendsData = (await res.json()) as UserWithFriendship[];
       setUsers(friendsData);
       
     } catch (error) {
