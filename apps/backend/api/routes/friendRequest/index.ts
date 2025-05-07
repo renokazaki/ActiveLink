@@ -127,7 +127,7 @@ const friendRequest = new Hono()
   }
 })
 
-//友達申請の削除用API
+//友達申請の削除用(拒否)API
 .delete("/deleteRequest", async (c) => {
   const body = await c.req.json();
   const { requestId } = body;
@@ -135,6 +135,38 @@ const friendRequest = new Hono()
   try {
     const deletedFriendship = await prisma.friendship.delete({
       where: { id: parseInt(requestId) }
+    });
+    
+    return c.json(deletedFriendship);
+  } catch (error) {
+    console.error("友達申請削除エラー:", error);
+    return c.json({ error: "友達申請の削除に失敗しました" }, 500);
+  }
+})
+
+//友達の削除用API
+.delete("/deleteFriend", async (c) => {
+  const body = await c.req.json();
+  const { myClerkId, friendClerkId } = body;
+  
+  try {
+    const deletedFriendship = await prisma.friendship.deleteMany({
+      where: {
+        OR: [
+          // 自分が送信者で相手が受信者のケース
+          {
+            sender_clerk_id: myClerkId,
+            receiver_clerk_id: friendClerkId,
+            status: "accepted" // 承認済みのみ削除
+          },
+          // 自分が受信者で相手が送信者のケース
+          {
+            sender_clerk_id: friendClerkId,
+            receiver_clerk_id: myClerkId,
+            status: "accepted" // 承認済みのみ削除
+          }
+        ]
+      }
     });
     
     return c.json(deletedFriendship);
