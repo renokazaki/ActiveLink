@@ -1,7 +1,6 @@
 // actions.ts
 "use server";
-
-import { prisma } from "backend/prisma/prisma";
+import { prisma } from "../../../../../backend/prisma/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function deleteFriend(formData: FormData) {
