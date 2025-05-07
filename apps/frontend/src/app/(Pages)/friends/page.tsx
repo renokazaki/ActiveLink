@@ -5,6 +5,7 @@ import { client } from "@/utils/client";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { User } from "types/type";
+import { deleteFriend } from "./action";
 
 export default async function Friends() {
   // Clerkから認証情報を取得
@@ -44,8 +45,8 @@ export default async function Friends() {
           <div className="grid gap-4">
             {friendsData && friendsData.length > 0 ? (
               friendsData.map((friend) => (
+                <div key={friend.id} className="relative">
                 <Link
-                  key={friend.id}
                   href={`/friends/${friend.id}`}
                   className="block"
                 >
@@ -59,15 +60,21 @@ export default async function Friends() {
                         />
                         <h3 className="font-medium">{friend.display_name}</h3>
                       </div>
-                      <p className="text-sm text-gray-500">
-                        <span>
-                          最終活動:
-                          {new Date(friend.updated_at).toLocaleDateString()}
-                        </span>
-                      </p>
                     </div>
                   </div>
                 </Link>
+                {/* 削除フォーム - 中央右に配置するよう修正 */}
+                <form 
+                  action={deleteFriend}
+                  className="absolute top-1/2 right-4 transform -translate-y-1/2"
+                >
+                  <input type="hidden" name="friendshipId" value={friend.clerk_id} />
+                  <input type="hidden" name="myClerkId" value={userId} />
+                  <Button type="submit" variant="destructive" size="sm">
+                    削除
+                  </Button>
+                </form>
+              </div>
               ))
             ) : (
               <div className="text-white">友達がいません</div>
