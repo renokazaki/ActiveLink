@@ -81,7 +81,7 @@ export default async function Friends() {
             <Link href="/userSearch">
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
-                友達を追加する
+                友達を追加
               </Button>
             </Link>
           </div>
