@@ -61,7 +61,7 @@ export default async function Friends() {
                     <input type="hidden" name="friendshipId" value={friend.clerk_id} />
                     <input type="hidden" name="myClerkId" value={userId} />
                     <Button type="submit" variant="destructive" size="sm">
-                      削除
+                      ✕
                     </Button>
                   </form>
                 </div>

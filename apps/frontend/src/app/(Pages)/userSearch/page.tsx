@@ -248,11 +248,7 @@ const respondToRequest = async (requestId: number, action: "accept" | "reject") 
             />
             <div>
               <h3 className="font-medium">{otherUser.display_name}</h3>
-              <p className="text-sm text-gray-500">
-                <span>
-                  最終活動: {new Date(otherUser.updated_at).toLocaleDateString()}
-                </span>
-              </p>
+          
             </div>
           </div>
           
