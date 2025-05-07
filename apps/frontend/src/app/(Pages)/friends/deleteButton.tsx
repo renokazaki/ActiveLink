@@ -43,7 +43,7 @@ const DeleteButton = ({friendClerkId, myClerkId}: {friendClerkId: string, myCler
         size="sm"
         disabled={isLoading}
       >
-        {isLoading ? "..." : "✕"}
+        {isLoading ? "..." : "削除"}
       </Button>
     </div>
   );
