@@ -1,6 +1,6 @@
 // actions.ts
 "use server";
-import { prisma } from "../../../../../backend/prisma/prisma";
+import { client } from "@/utils/client";
 import { revalidatePath } from "next/cache";
 
 export async function deleteFriend(formData: FormData) {
@@ -15,29 +15,15 @@ export async function deleteFriend(formData: FormData) {
   }
   
   try {
-    // 友達関係を検索して削除
-    const deletedFriendship = await prisma.friendship.deleteMany({
-      where: {
-        OR: [
-          // 自分が送信者で相手が受信者のケース
-          {
-            sender_clerk_id: myClerkId,
-            receiver_clerk_id: friendClerkId,
-            status: "accepted" // 承認済みのみ削除
-          },
-          // 自分が受信者で相手が送信者のケース
-          {
-            sender_clerk_id: friendClerkId,
-            receiver_clerk_id: myClerkId,
-            status: "accepted" // 承認済みのみ削除
-          }
-        ]
-      }
-    });
+   const deletedFriendship = await client.api.friendRequest.deleteFriend.$delete({
+    body: {
+      myClerkId,
+      friendClerkId,
+    },
+   });
     
     
-    
-    if (deletedFriendship.count === 0) {
+    if (!deletedFriendship.ok) {
       console.log("削除対象のレコードが見つかりませんでした");
     }
     
