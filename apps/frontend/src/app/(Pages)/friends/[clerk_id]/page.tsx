@@ -6,12 +6,12 @@ import { User } from "types/type";
 export default async function FriendsInfo({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ clerk_id: string }>;
 }) {
-  const { id } = await params;
+  const { clerk_id } = await params;
 
-  const res = await client.api.user.friends[":id"].$get({
-    param: { id: id },
+  const res = await client.api.user.friends[":clerk_id"].$get({
+    param: { clerk_id: clerk_id },
   });
 
   const friendsData = (await res.json()) as User;
