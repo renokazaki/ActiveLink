@@ -52,21 +52,12 @@ const user = new Hono()
     return c.json(friends);
   })
 
-  .get("/friends/:id", async (c) => {
-    const id = c.req.param("id");
+  .get("/friends/:clerk_id", async (c) => {
+    const clerk_id = c.req.param("clerk_id");
 
-    // 文字列をNumber型に変換
-    const numericId = parseInt(id, 10);
-
-    // 数値変換が成功したかチェック
-    if (isNaN(numericId)) {
-      return c.json({ error: "Invalid ID format" }, 400);
-    }
-
-    // findManyではなくfindUniqueを使用
     const friendData = await prisma.user.findUnique({
       where: {
-        id: numericId,
+        clerk_id: clerk_id,
       },
     });
 

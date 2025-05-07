@@ -45,7 +45,7 @@ export default async function Friends() {
               friendsData.map((friend) => (
                 <div key={friend.id} className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between text-black">
                   <Link
-                    href={`/friends/${friend.id}`}
+                    href={`/friends/${friend.clerk_id}`}
                     className="flex-grow flex items-center hover:text-blue-500 transition-colors"
                   >
                     <div className="flex items-center gap-2">
