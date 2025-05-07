@@ -5,7 +5,7 @@ import { client } from "@/utils/client";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { User } from "types/type";
-import { deleteFriend } from "./action";
+import DeleteButton from "./deleteButton";
 
 export default async function Friends() {
   // Clerkから認証情報を取得
@@ -57,13 +57,10 @@ export default async function Friends() {
                       <h3 className="font-medium">{friend.display_name}</h3>
                     </div>
                   </Link>
-                  <form action={deleteFriend}>
-                    <input type="hidden" name="friendshipId" value={friend.clerk_id} />
-                    <input type="hidden" name="myClerkId" value={userId} />
-                    <Button type="submit" variant="destructive" size="sm">
-                      ✕
-                    </Button>
-                  </form>
+                 <DeleteButton 
+                 friendClerkId={friend.clerk_id}
+                 myClerkId={userId}
+                 />
                 </div>
               ))
             ) : (
