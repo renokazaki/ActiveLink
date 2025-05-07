@@ -63,7 +63,6 @@ export default async function Friends() {
                     </div>
                   </div>
                 </Link>
-                {/* 削除フォーム - 中央右に配置するよう修正 */}
                 <form 
                   action={deleteFriend}
                   className="absolute top-1/2 right-4 transform -translate-y-1/2"
