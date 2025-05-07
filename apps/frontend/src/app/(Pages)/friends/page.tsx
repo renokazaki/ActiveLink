@@ -28,8 +28,6 @@ export default async function Friends() {
 
     const friendsData = (await res.json()) as User[];
 
- 
-
     return (
       <div className="text-black min-h-screen">
         <div className="container mx-auto py-8 px-4 space-y-8 mt-12">
@@ -45,45 +43,33 @@ export default async function Friends() {
           <div className="grid gap-4">
             {friendsData && friendsData.length > 0 ? (
               friendsData.map((friend) => (
-                <div key={friend.id} className="relative">
-                <Link
-                  href={`/friends/${friend.id}`}
-                  className="block"
-                >
-                  <div className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between hover:bg-blue-500 transition-colors text-black">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={friend.profile_image}
-                          alt={friend.display_name}
-                          className="w-10 h-10 rounded-full"
-                        />
-                        <h3 className="font-medium">{friend.display_name}</h3>
-                      </div>
+                <div key={friend.id} className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between text-black">
+                  <Link
+                    href={`/friends/${friend.id}`}
+                    className="flex-grow flex items-center hover:text-blue-500 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={friend.profile_image}
+                        alt={friend.display_name}
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <h3 className="font-medium">{friend.display_name}</h3>
                     </div>
-                  </div>
-                </Link>
-                <form 
-                  action={deleteFriend}
-                  className="absolute top-1/2 right-4 transform -translate-y-1/2"
-                >
-                  <input type="hidden" name="friendshipId" value={friend.clerk_id} />
-                  <input type="hidden" name="myClerkId" value={userId} />
-                  <Button type="submit" variant="destructive" size="sm">
-                    削除
-                  </Button>
-                </form>
-              </div>
+                  </Link>
+                  <form action={deleteFriend}>
+                    <input type="hidden" name="friendshipId" value={friend.clerk_id} />
+                    <input type="hidden" name="myClerkId" value={userId} />
+                    <Button type="submit" variant="destructive" size="sm">
+                      削除
+                    </Button>
+                  </form>
+                </div>
               ))
             ) : (
               <div className="text-white">友達がいません</div>
             )}
           </div>
-
-      
-
-
-
         </div>
       </div>
     );
