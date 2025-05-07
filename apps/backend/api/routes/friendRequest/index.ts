@@ -106,5 +106,41 @@ const friendRequest = new Hono()
     return c.json(friendRequest);
   })
 
+// friendRequest/index.ts に追加
+.put("/respondRequest", async (c) => {
+  const body = await c.req.json();
+  const { requestId, action } = body; // actionは "accept" または "reject"
+  
+  try {
+    // friendshipテーブルの更新
+    const status = action === "accept" ? "accepted" : "rejected";
+    
+    const updatedFriendship = await prisma.friendship.update({
+      where: { id: parseInt(requestId) },
+      data: { status }
+    });
+    
+    return c.json(updatedFriendship);
+  } catch (error) {
+    console.error("友達申請応答エラー:", error);
+    return c.json({ error: "友達申請の応答に失敗しました" }, 500);
+  }
+})
 
+//友達申請の削除用API
+.delete("/deleteRequest", async (c) => {
+  const body = await c.req.json();
+  const { requestId } = body;
+  
+  try {
+    const deletedFriendship = await prisma.friendship.delete({
+      where: { id: parseInt(requestId) }
+    });
+    
+    return c.json(deletedFriendship);
+  } catch (error) {
+    console.error("友達申請削除エラー:", error);
+    return c.json({ error: "友達申請の削除に失敗しました" }, 500);
+  }
+})
   export default friendRequest;

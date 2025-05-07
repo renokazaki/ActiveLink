@@ -34,6 +34,7 @@ export default function UserSearch() {
   const [sending, setSending] = useState<string | null>(null);
   const [users, setUsers] = useState<UserWithFriendship[]>([]);
   const [pendingRequests, setPendingRequests] = useState<FriendRequest[]>([]);
+  const [responding, setResponding] = useState<string | null>(null);
 
   // コンポーネントがマウントされたときに保留中のリクエストを取得
   useEffect(() => {
@@ -180,16 +181,6 @@ export default function UserSearch() {
       }
     }
 
-    // その他の状態
-    return (
-      <Button
-        onClick={() => sendFriendRequest(user.clerk_id)}
-        variant="outline"
-        className="bg-gray-500"
-      >
-        再申請
-      </Button>
-    );
   };
 
   // 友達申請状況を表示する関数
@@ -206,29 +197,95 @@ export default function UserSearch() {
       ? "bg-yellow-500/20 text-yellow-600" 
       : "bg-blue-500/20 text-blue-600";
     
-    return (
-      <div key={request.id} className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between text-black">
-        <div className="flex items-center gap-2">
-          <img
-            src={otherUser.profile_image}
-            alt={otherUser.display_name}
-            className="w-10 h-10 rounded-full"
-          />
-          <div>
-            <h3 className="font-medium">{otherUser.display_name}</h3>
-            <p className="text-sm text-gray-500">
-              <span>
-                最終活動: {new Date(otherUser.updated_at).toLocaleDateString()}
-              </span>
-            </p>
+
+
+
+// 友達申請への応答関数
+const respondToRequest = async (requestId: number, action: "accept" | "reject") => {
+  if (!userId) return;
+  
+  setResponding(requestId.toString());
+  try {
+    let res;
+    
+    if (action === "accept") {
+      // 承認の場合はstatusを更新
+      res = await client.api.friendRequest.respondRequest.$put({
+        json: { requestId, action }
+      });
+    } else {
+      // 拒否の場合はレコードを削除
+      res = await client.api.friendRequest.deleteRequest.$delete({
+        json: { requestId }
+      });
+    }
+    
+    if (!res.ok) {
+      throw new Error(action === "accept" ? "承認に失敗しました" : "拒否に失敗しました");
+    }
+    
+    // 成功したら保留中のリクエストを再取得
+    fetchPendingRequests();
+    
+    // 成功メッセージ（オプション）
+    const message = action === "accept" ? "友達申請を承認しました" : "友達申請を拒否しました";
+    console.log(message);
+    
+  } catch (error) {
+    console.error("友達申請応答エラー:", error);
+  } finally {
+    setResponding(null);
+  }
+};
+
+      return (
+        <div key={request.id} className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between text-black">
+          <div className="flex items-center gap-2">
+            <img
+              src={otherUser.profile_image}
+              alt={otherUser.display_name}
+              className="w-10 h-10 rounded-full"
+            />
+            <div>
+              <h3 className="font-medium">{otherUser.display_name}</h3>
+              <p className="text-sm text-gray-500">
+                <span>
+                  最終活動: {new Date(otherUser.updated_at).toLocaleDateString()}
+                </span>
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {!isSender && (
+              // 自分が受信者の場合だけ承認・拒否ボタンを表示
+              <div className="flex space-x-2">
+                       <Button
+                  onClick={() => respondToRequest(request.id, "reject")}
+                  disabled={responding === request.id.toString()}
+                  size="sm"
+                  className="bg-red-500 hover:bg-red-600 text-white"
+                >
+                  {responding === request.id.toString() ? "処理中..." : "拒否"}
+                </Button>
+                <Button
+                  onClick={() => respondToRequest(request.id, "accept")}
+                  disabled={responding === request.id.toString()}
+                  size="sm"
+                  className="bg-green-500 hover:bg-green-600 text-white"
+                >
+                  {responding === request.id.toString() ? "処理中..." : "承認"}
+                </Button>
+         
+              </div>
+            )}
+            <div className={`px-3 py-1 rounded-full ${statusClass}`}>
+              {statusText}
+            </div>
           </div>
         </div>
-        <div className={`px-3 py-1 rounded-full ${statusClass}`}>
-          {statusText}
-        </div>
-      </div>
-    );
-  };
+      );
+    };
 
   return (
     <div className="space-y-8 p-16">
@@ -272,14 +329,15 @@ export default function UserSearch() {
         </div>
       )}
 
-      <div className="flex items-center justify-center mb-6 pb-2 border-b-2 border-blue-400">
+      <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-blue-400">
       <h2 className="text-xl font-semibold text-white">あなたのUserID</h2>
-      
-          <p className="text-blue-500">
+      </div>
+      <div className="space-y-4">
+          <p className="text-white">
             {userId}
           </p>
-
       </div>
+
       {/* 友達申請状況 */}
       <div>
         <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-blue-400">
