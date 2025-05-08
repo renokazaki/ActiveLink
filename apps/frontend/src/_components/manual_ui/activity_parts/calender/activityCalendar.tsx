@@ -11,10 +11,12 @@ export default function ActivityCalendar({
   activity,
   activityDetail = [],
   userId,
+  isMyPage,
 }: {
   activity: Activity[];
   activityDetail?: ActivityDetail[];
   userId: string;
+  isMyPage: boolean;
 }) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -22,7 +24,7 @@ export default function ActivityCalendar({
     null
   );
 
-
+  
   return (
     <div>
       {/* カレンダー部分 */}
@@ -34,19 +36,20 @@ export default function ActivityCalendar({
         isEditModalOpen={isEditModalOpen}
         setIsEditModalOpen={setIsEditModalOpen}
         setSelectedDetail={setSelectedDetail}
+        isMyPage={isMyPage}
       />
 
-
-
-        {/* 追加フォーム - 別セクションとして表示 */}
-     <InputForm
-        userId={userId}
-        selectedDate={selectedDate}
-        isEditModalOpen={isEditModalOpen}
-        setIsEditModalOpen={setIsEditModalOpen}
-        selectedDetail={selectedDetail}
-        setSelectedDetail={setSelectedDetail}
-      />
-      </div>
+      {/* 自分のページの場合のみ追加フォームを表示 */}
+      {isMyPage && (
+        <InputForm
+          userId={userId}
+          selectedDate={selectedDate}
+          isEditModalOpen={isEditModalOpen}
+          setIsEditModalOpen={setIsEditModalOpen}
+          selectedDetail={selectedDetail}
+          setSelectedDetail={setSelectedDetail}
+        />
+      )}
+    </div>
   );
 }

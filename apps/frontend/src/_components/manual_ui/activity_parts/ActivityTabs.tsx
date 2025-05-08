@@ -10,8 +10,15 @@ import { Activity, ActivityDetail, User } from "types/type";
 import { client } from "@/utils/client";
 import ActivityCalendar from "./calender/activityCalendar";
 import { WeeklyTargets } from "./weekly/weeklyTargets";
+import { auth } from "@clerk/nextjs/server";
 
 export async function ActivityTabs({ data }: { data: User }) {
+
+  // Clerkから自分の認証情報を取得
+  const { userId } = await auth();
+    // 自分のページかどうかを確認（ログインユーザーとページのユーザーが一致するか）
+    const isMyPage = userId === data.clerk_id;
+
   const clerk_id = data.clerk_id;
   let activity: Activity[] = [];
   let activityDetail: ActivityDetail[] = [];
@@ -98,6 +105,7 @@ export async function ActivityTabs({ data }: { data: User }) {
                 activity={activity}
                 activityDetail={activityDetail}
                 userId={clerk_id}
+                isMyPage={isMyPage}
               />
             </CardContent>
           </Card>
@@ -117,7 +125,7 @@ export async function ActivityTabs({ data }: { data: User }) {
         <TabsContent value="weekly" className="h-full">
           <Card className="bg-slate-800/50 border-slate-700/50 overflow-hidden backdrop-blur-sm shadow-xl h-full">
             <CardContent className="h-full p-6">
-              <WeeklyTargets data={data} />
+              <WeeklyTargets data={data} isMyPage={isMyPage}/>
             </CardContent>
           </Card>
         </TabsContent>

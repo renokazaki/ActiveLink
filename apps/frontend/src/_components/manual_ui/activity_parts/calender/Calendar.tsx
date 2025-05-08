@@ -15,6 +15,7 @@ interface CalendarProps {
   setSelectedDate: (date: string | null) => void;
   setIsEditModalOpen: (open: boolean) => void;
   setSelectedDetail: (detail: ActivityDetail | null) => void;
+  isMyPage: boolean;
 }
 
 export function Calendar({
@@ -25,6 +26,7 @@ export function Calendar({
   isEditModalOpen,
   setIsEditModalOpen,
   setSelectedDetail,
+  isMyPage,
 }: CalendarProps) {
   
   // 選択した日付のActivityを取得
@@ -44,7 +46,7 @@ export function Calendar({
         )
       : [];
 
-  // 編集モードに切り替える（詳細を表示するだけ）
+  // 編集モードに切り替える
   const handleEditDetail = (detail: ActivityDetail) => {
     setSelectedDetail(detail);
     setIsEditModalOpen(true);
@@ -138,6 +140,8 @@ export function Calendar({
                       <h4 className="font-medium">
                         {detail.category || "未分類"}
                       </h4>
+                      {isMyPage && (
+
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEditDetail(detail)}
@@ -154,6 +158,7 @@ export function Calendar({
                           <X size={20} />
                         </button>
                       </div>
+                      )}
                     </div>
                     <p className="text-sm text-slate-300 mt-1">
                       {detail.description}
@@ -168,7 +173,7 @@ export function Calendar({
               <p className="text-slate-400">この日の活動詳細はありません</p>
             )}
 
-            {!isEditModalOpen && (
+            {!isEditModalOpen && isMyPage && (
               <Button
                 onClick={() => setIsEditModalOpen(true)}
                 className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"

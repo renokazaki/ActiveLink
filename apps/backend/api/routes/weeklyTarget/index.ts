@@ -87,6 +87,33 @@ const weeklyTarget = new Hono()
       console.error("Error deleting weekly target:", error);
       return c.json({ error: "Failed to delete weekly target" }, 500);
     }
-  });
+  })
+  .put("/", async (c) => {
+      try {
+      
+  
+        // リクエストボディを取得
+        const body = await c.req.json();
+        const { id, title, description, status } = body;
+  
+      
+  
+        // ActivityDetailを更新
+        const updatedActivityDetail = await prisma.weeklyTarget.update({
+          where: { id: id },
+          data: {
+            title,
+            description,
+            status,
+          },
+        });
+  
+        return c.json(updatedActivityDetail);
+      } catch (error) {
+        console.error("Error updating weekly target:", error);
+        
+       
+      }
+    })
 
 export default weeklyTarget;
