@@ -5,6 +5,7 @@ import { ActivityDetail } from "types/type";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { client } from "@/utils/client"; // Honoクライアントをインポート
+import { createActivityDetail } from "./action"; // サーバーアクションをインポート
 
 export function InputForm({
     selectedDate,
@@ -13,7 +14,6 @@ export function InputForm({
     selectedDetail,
     setSelectedDetail,
     userId,
-    activityId, // 活動IDを追加
 }: {
     selectedDate: string | null;
     isEditModalOpen: boolean;
@@ -21,7 +21,6 @@ export function InputForm({
     selectedDetail: ActivityDetail | null;
     setSelectedDetail: (detail: ActivityDetail | null) => void;
     userId: string;
-    activityId: number; // 活動IDの型を追加
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,47 +39,38 @@ export function InputForm({
       const form = e.currentTarget;
       const formData = new FormData(form);
       
-      // オブジェクトに変換
-      const description = formData.get("description") as string;
-      const duration_minutes = parseInt(formData.get("duration_minutes") as string, 10);
-      const category = formData.get("category") as string;
-      
-      // バリデーション
-      if (!description || !duration_minutes || !category) {
-        throw new Error("必須項目が入力されていません");
-      }
-      
-      let response;
-      
       // 更新か新規作成かを判断
       if (selectedDetail) {
-        // PUT操作で更新
-        response = await client.api.activityDetail[":id"].$put({
-          param: {
-            id: selectedDetail.id.toString()
-          },
-          json: {
-            description,
-            duration_minutes,
-            category
-          }
-        });
+        // PUT操作で更新 - 既存のActivityDetailを更新する場合
+        const description = formData.get("description") as string;
+        const duration_minutes = parseInt(formData.get("duration_minutes") as string, 10);
+        const category = formData.get("category") as string;
         
-       
-      } else {
-        // 新規作成
-        response = await client.api.activityDetail.$post({
+        // バリデーション
+        if (!description || !duration_minutes || !category) {
+          throw new Error("必須項目が入力されていません");
+        }
+        
+        const response = await client.api.activityDetail.$put({
           json: {
-            activity_id: activityId,
+            id: selectedDetail.id,
             description,
             duration_minutes,
-            category
+            category,
           }
         });
         
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "作成中にエラーが発生しました");
+          console.error("Update failed");
+        }
+      } else {
+        // 新規作成 - サーバーアクションを使用してActivityがない場合はそれも作成
+        try {
+          // サーバーアクションを使用
+          await createActivityDetail(formData);
+        } catch (error) {
+          console.error("Server action error:", error);
+          throw new Error("活動詳細の作成に失敗しました");
         }
       }
       
@@ -128,7 +118,7 @@ export function InputForm({
             className="space-y-3"
           >
             <input type="hidden" name="user_clerk_id" value={userId} />
-            <input type="hidden" name="activity_date" value={selectedDate} />
+            <input type="hidden" name="activity_date" value={selectedDate || ""} />
             {selectedDetail && (
               <input type="hidden" name="id" value={selectedDetail.id} />
             )}

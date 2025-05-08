@@ -87,20 +87,19 @@ const activityDetail = new Hono()
       return c.json({ error: "Failed to delete activity detail" }, 500);
     }
   })
-  .put("/:id", async (c) => {
+  .put("/", async (c) => {
     try {
-      const id = parseInt(c.req.param("id"), 10);
     
 
       // リクエストボディを取得
-      const body = await c.req.json<{ description: string; duration_minutes: number; category: string }>();
-      const { description, duration_minutes, category } = body;
+      const body = await c.req.json();
+      const { id, description, duration_minutes, category } = body;
 
     
 
       // ActivityDetailを更新
       const updatedActivityDetail = await prisma.activityDetail.update({
-        where: { id },
+        where: { id: id },
         data: {
           description,
           duration_minutes,

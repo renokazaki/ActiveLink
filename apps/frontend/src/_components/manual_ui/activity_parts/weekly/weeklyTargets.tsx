@@ -2,12 +2,19 @@ import { client } from "@/utils/client";
 import { User, WeeklyTarget } from "types/type";
 import { Card, CardContent } from "@/_components/shadcn_ui/card";
 import { Button } from "@/_components/shadcn_ui/button";
-import { createWeeklyTarget ,deleteWeeklyTarget} from "./action";
-import { Edit, X } from "lucide-react";
-// import { deleteWeeklyTarget } from "./utils/utils";
+import { createWeeklyTarget } from "./action";
+import EditDelete from "./editDelete";
 
-export async function WeeklyTargets({ data }: { data: User }) {
-  // clerk_idを使ってAPIからユーザーデータを取得
+interface WeeklyTargetsProps {
+  data: User;
+  isMyPage: boolean;
+}
+
+export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
+
+
+
+  // clerk_idを使ってAPIからフレンドのデータを取得
   const res = await client.api.weeklyTarget.$get({
     query: { clerk_id: data.clerk_id },
   });
@@ -39,7 +46,7 @@ export async function WeeklyTargets({ data }: { data: User }) {
           {weeklyTargets.map((target, index) => {
             return (
               <Card
-                key={index}
+                key={target.id}
                 className="bg-slate-800/30 border border-slate-700/50 shadow-xl hover:shadow-blue-900/10 transition-all duration-300"
               >
                 <CardContent className="p-5 space-y-3">
@@ -89,23 +96,9 @@ export async function WeeklyTargets({ data }: { data: User }) {
                       期限: {formatDate(target.target_end_date.toString())}
                     </span>
                   </div>
-                  <div className="flex space-x-2 justify-end">
-                                  <button
-                                    // onClick={() => handleEditDetail(detail)}
-                                    className="text-blue-400 hover:text-blue-300"
-                                  >
-                                    <Edit size={20} />
-                                  </button>
-                                  <form action={deleteWeeklyTarget} style={{ display: 'inline' }}>
-    <input type="hidden" name="id" value={target.id} />
-    <button
-      type="submit"
-      className="text-red-400 hover:text-red-300"
-    >
-      <X size={20} />
-    </button>
-  </form>
-                                </div>
+                  {isMyPage && (
+                    <EditDelete target={target} />
+                  )}
                 </CardContent>
               </Card>
             );
@@ -121,49 +114,51 @@ export async function WeeklyTargets({ data }: { data: User }) {
         </div>
       )}
 
-      <form action={createWeeklyTargetWithId} className="space-y-4">
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-slate-300 mb-1"
+       {/* 自分のページの場合のみ目標作成フォームを表示 */}
+       {isMyPage && (
+        <form action={createWeeklyTargetWithId} className="space-y-4">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-slate-300 mb-1"
+            >
+              目標タイトル
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-md text-white"
+              placeholder="例: 毎日30分の読書"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-slate-300 mb-1"
+            >
+              詳細説明
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              required
+              rows={3}
+              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-md text-white"
+              placeholder="目標の詳細や達成したい内容を入力してください"
+            ></textarea>
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-4 rounded-md transition-all duration-300"
           >
-            目標タイトル
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            required
-            className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-md text-white"
-            placeholder="例: 毎日30分の読書"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-slate-300 mb-1"
-          >
-            詳細説明
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            required
-            rows={3}
-            className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-md text-white"
-            placeholder="目標の詳細や達成したい内容を入力してください"
-          ></textarea>
-
-        </div>
-
-        <Button
-          type="submit"
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-4 rounded-md transition-all duration-300"
-        >
-          週間目標を作成
-        </Button>
-      </form>
+            週間目標を作成
+          </Button>
+        </form>
+      )}
     </div>
   );
 }

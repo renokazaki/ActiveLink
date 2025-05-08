@@ -70,3 +70,34 @@ export async function deleteWeeklyTarget(formData: FormData) {
   // 何も返さない（Promise<void>）
 }
 
+export async function updateWeeklyTarget(formData: FormData) {
+  const id = formData.get("id") as string;
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const status = formData.get("status") as string;
+    try {
+    // APIを使って週間目標を更新
+    const response = await client.api.weeklyTarget.$put({
+      json: {
+        id: parseInt(id),
+        title,
+        description,
+        status,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("週間目標の更新に失敗しました");
+    }
+
+    // ページを再検証して最新データを表示
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error updating weekly target:", error);
+    // エラーを投げるか、ログに記録するだけにする
+  }
+
+  // 何も返さない（Promise<void>）
+}
+
+
