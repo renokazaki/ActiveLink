@@ -6,6 +6,7 @@ import { SmileIcon, Edit, X } from "lucide-react";
 import { Activity, ActivityDetail } from "types/type";
 import { Button } from "@/_components/shadcn_ui/button";
 import { DeleteDetail } from "./utils/utils";
+import { toast } from "sonner";
 
 interface CalendarProps {
   activity: Activity[];
@@ -150,8 +151,10 @@ export function Calendar({
                           <Edit size={20} />
                         </button>
                         <button
-                          onClick={() =>
-                            DeleteDetail(detail.id.toString())
+                          onClick={async () =>{
+                            await DeleteDetail(detail.id.toString())
+                            toast.success("活動を削除しました");
+                          }
                           }
                           className="text-red-400 hover:text-red-300"
                         >

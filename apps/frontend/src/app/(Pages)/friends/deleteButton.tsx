@@ -4,6 +4,7 @@ import { Button } from "@/_components/shadcn_ui/button";
 import { client } from "@/utils/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const DeleteButton = ({friendClerkId, myClerkId}: {friendClerkId: string, myClerkId: string}) => {
   const router = useRouter();
@@ -23,12 +24,13 @@ const DeleteButton = ({friendClerkId, myClerkId}: {friendClerkId: string, myCler
       if (!response.ok) {
         throw new Error("友達の削除に失敗しました");
       }
+      toast.success("友達を削除しました");
 
       // ページを更新する
       router.refresh();
     } catch (error) {
       console.error("削除エラー:", error);
-      alert("削除に失敗しました");
+      toast.error("削除に失敗しました");
     } finally {
       setIsLoading(false);
     }
