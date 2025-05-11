@@ -11,9 +11,6 @@ interface WeeklyTargetsProps {
 }
 
 export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
-
-
-
   // clerk_idを使ってAPIからフレンドのデータを取得
   const res = await client.api.weeklyTarget.$get({
     query: { clerk_id: data.clerk_id },
