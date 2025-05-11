@@ -6,6 +6,7 @@ import { Button } from "@/_components/shadcn_ui/button";
 import { Input } from "@/_components/shadcn_ui/input";
 import { client } from "@/utils/client";
 import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 // 拡張されたUserインターフェース
 interface UserWithFriendship extends User {
@@ -93,6 +94,7 @@ export default function UserSearch() {
       const res = await client.api.friendRequest.sendRequest.$post({
         json: { myClerkId: userId, friendsClerkId },
       });
+      toast("友達申請を送信しました");
       
       if (!res.ok) {
         throw new Error("友達申請に失敗しました");
@@ -116,7 +118,6 @@ export default function UserSearch() {
       
       // 保留中のリクエストを再取得
       fetchPendingRequests();
-      
     } catch (error) {
       console.error("友達申請エラー:", error);
     } finally {
@@ -213,11 +214,13 @@ const respondToRequest = async (requestId: number, action: "accept" | "reject") 
       res = await client.api.friendRequest.respondRequest.$put({
         json: { requestId, action }
       });
+      toast.success("友達申請を承認しました");
     } else {
       // 拒否の場合はレコードを削除
       res = await client.api.friendRequest.deleteRequest.$delete({
         json: { requestId }
       });
+      toast.success("友達申請を拒否しました");
     }
     
     if (!res.ok) {

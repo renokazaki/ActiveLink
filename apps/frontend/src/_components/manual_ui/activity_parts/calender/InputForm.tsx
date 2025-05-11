@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { client } from "@/utils/client"; // Honoクライアントをインポート
 import { createActivityDetail } from "./action"; // サーバーアクションをインポート
+import { toast } from "sonner";
 
 export function InputForm({
     selectedDate,
@@ -86,6 +87,7 @@ export function InputForm({
       setError(error instanceof Error ? error.message : "エラーが発生しました");
     } finally {
       setIsSubmitting(false);
+      toast.success("活動を登録しました");
     }
   };
 
