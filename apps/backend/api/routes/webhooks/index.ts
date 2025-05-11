@@ -58,24 +58,37 @@ const webhookRouter = new Hono().post("/", async (c) => {
     }
   }
 
-  // if (evt.type === "user.updated") {
-  //   try {
-  //     await prisma.user.update({
-  //       where: { id: evt.data.id },
-  //       data: {
-  //         name: JSON.parse(body).data.username,
-  //         img: JSON.parse(body).data.image_url,
-  //       },
-  //     });
+  if (evt.type === "user.deleted") {
+    try {
+      await prisma.user.delete({
+        where: { clerk_id: evt.data.id },
+      });
 
-  //     return new Response("User updated successfully", { status: 200 });
-  //   } catch (err) {
-  //     console.error("Error updating user:", err);
-  //     return new Response("Error: Database operation failed", { status: 500 });
-  //   }
-  // }
+      return new Response("User deleted successfully", { status: 200 });
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      return new Response("Error: Database operation failed", { status: 500 });
+    }
+  }
 
-  // 他のイベント
+   if (evt.type === "user.updated") {
+    try {
+      await prisma.user.update({
+        where: { clerk_id: evt.data.id },
+        data: {
+          display_name: evt.data.username!,
+          profile_image: evt.data.image_url!,
+        },  
+      });
+
+      return new Response("User updated successfully", { status: 200 });
+    } catch (err) {
+      console.error("Error updating user:", err);
+      return new Response("Error: Database operation failed", { status: 500 });
+    }
+  }
+
+
   return c.json({ message: "Webhook received" }, 200);
 });
 export default webhookRouter;
