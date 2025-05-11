@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/_components/shadcn_ui/button";
 import { startActivity } from "./action";
-
+import { toast } from "sonner";
 export default function ActiveButton({ userId }: { userId: string }) {
 
 
@@ -10,7 +10,10 @@ export default function ActiveButton({ userId }: { userId: string }) {
       <p>活動時間はカレンダーの日付から登録</p>
       <div className="flex flex-col justify-center items-center">
         <Button
-          onClick={() => startActivity(userId)}
+          onClick={() => {
+            startActivity(userId);
+            toast.success("今日の活動を登録しました");
+          }}
           className="bg-green-500 hover:bg-green-600"
         >
           今日の活動を登録
