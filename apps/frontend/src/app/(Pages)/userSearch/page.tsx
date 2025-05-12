@@ -136,7 +136,7 @@ export default function UserSearch() {
           disabled={sending === user.clerk_id}
           className="bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700"
         >
-          {sending === user.clerk_id ? "送信中..." : "友達申請を送信"}
+          {sending === user.clerk_id ? "送信中..." : "申請"}
         </Button>
       );
     }
@@ -193,7 +193,7 @@ export default function UserSearch() {
     const otherUser = isSender ? request.receiver : request.sender;
     
     // ステータスの表示
-    const statusText = isSender ? "申請中" : "あなたの承認待ち";
+    const statusText = isSender ? "申請中" : "リクエスト";
     const statusClass = isSender 
       ? "bg-yellow-500/20 text-yellow-600" 
       : "bg-blue-500/20 text-blue-600";
@@ -241,50 +241,65 @@ const respondToRequest = async (requestId: number, action: "accept" | "reject") 
   }
 };
 
-      return (
-        <div key={request.id} className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between text-black">
-          <div className="flex items-center gap-2">
-            <img
-              src={otherUser.profile_image}
-              alt={otherUser.display_name}
-              className="w-10 h-10 rounded-full"
-            />
-            <div>
-              <h3 className="font-medium">{otherUser.display_name}</h3>
-          
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {!isSender && (
-              // 自分が受信者の場合だけ承認・拒否ボタンを表示
-              <div className="flex space-x-2">
-                       <Button
-                  onClick={() => respondToRequest(request.id, "reject")}
-                  disabled={responding === request.id.toString()}
-                  size="sm"
-                  className="bg-red-500 hover:bg-red-600 text-white"
-                >
-                  {responding === request.id.toString() ? "処理中..." : "拒否"}
-                </Button>
-                <Button
-                  onClick={() => respondToRequest(request.id, "accept")}
-                  disabled={responding === request.id.toString()}
-                  size="sm"
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  {responding === request.id.toString() ? "処理中..." : "承認"}
-                </Button>
-         
-              </div>
-            )}
-            <div className={`px-3 py-1 rounded-full ${statusClass}`}>
-              {statusText}
-            </div>
+return (
+  <div 
+    key={request.id} 
+    className="bg-gray-100 rounded-lg shadow p-4 text-black"
+  >
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
+      {/* ユーザー情報とステータス部分（左側） */}
+      <div className="flex items-center gap-2 mb-3 sm:mb-0">
+        <img
+          src={otherUser.profile_image}
+          alt={otherUser.display_name}
+          className="w-10 h-10 rounded-full"
+        />
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+          <h3 className="font-medium">{otherUser.display_name}</h3>
+          <div className={`px-3 py-1 rounded-full text-sm ${statusClass}`}>
+            {statusText}
           </div>
         </div>
-      );
-    };
+      </div>
+      
+      {/* ボタン部分（右側） */}
+      <div className="flex items-center justify-end">
+        {!isSender ? (
+          // 自分が受信者の場合（相手が送信者の場合）に承認・拒否ボタンを表示
+          <div className="flex space-x-2 w-full justify-end">
+            <Button
+              onClick={() => respondToRequest(request.id, "reject")}
+              disabled={responding === request.id.toString()}
+              size="sm"
+              className="bg-red-500 hover:bg-red-600 text-white"
+            >
+              {responding === request.id.toString() ? "処理中..." : "拒否"}
+            </Button>
+            <Button
+              onClick={() => respondToRequest(request.id, "accept")}
+              disabled={responding === request.id.toString()}
+              size="sm"
+              className="bg-green-500 hover:bg-green-600 text-white"
+            >
+              {responding === request.id.toString() ? "処理中..." : "承認"}
+            </Button>
+          </div>
+        ) : (
+          // 自分が送信者の場合（相手が受信者の場合）にキャンセルボタンを表示
+          <Button
+            onClick={() => respondToRequest(request.id, "reject")}
+            disabled={responding === request.id.toString()}
+            size="sm"
+            className="bg-gray-500 hover:bg-gray-600 text-white"
+          >
+            {responding === request.id.toString() ? "処理中..." : "キャンセル"}
+          </Button>
+        )}
+      </div>
+    </div>
+  </div>
+);
+  }
 
   return (
     <div className="space-y-8 p-16">
