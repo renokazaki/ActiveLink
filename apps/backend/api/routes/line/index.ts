@@ -55,7 +55,7 @@ async function sendLineMessage(value: string) {
 const line = new Hono()
 // CORSミドルウェアを追加
 .use('/*', cors({
-  origin: "*",  // 本番とローカル両方を許可
+  origin: ["*", "http://localhost:3000", "https://active-link.vercel.app","https://active-link.vercel.app/line"],  // 本番とローカル両方を許可
   allowMethods: ['POST', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
   exposeHeaders: ['Content-Length'],
