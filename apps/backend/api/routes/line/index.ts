@@ -6,6 +6,7 @@ import { Hono } from 'hono';
 
 // 以下はline.tsファイルから
 import axios from 'axios';
+import { cors } from 'hono/cors';
 
 interface LineMessageApiConfig {
   channelAccessToken: string;
@@ -52,7 +53,15 @@ async function sendLineMessage(value: string) {
 }
 
 const line = new Hono()
-
+// CORSミドルウェアを追加
+.use('/*', cors({
+  origin: "*",  // 本番とローカル両方を許可
+  allowMethods: ['POST', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  exposeHeaders: ['Content-Length'],
+  maxAge: 600,
+  credentials: true,  // 必要に応じて
+}))
 
 
 // メッセージ送信エンドポイント
