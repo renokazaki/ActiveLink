@@ -18,12 +18,14 @@ export const config = {
 
 const app = new Hono()
   .basePath("/api")
-  .use(
-    "*",
-    cors({
-      origin: "*",
-    })
-  )
+  .use('/*', cors({
+    origin: ["*", "http://localhost:3000", "https://active-link.vercel.app","https://active-link.vercel.app/line"],  // 本番とローカル両方を許可
+    allowMethods: ['POST', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,  // 必要に応じて
+  }))
   .get("/", (c) => {
     return c.json({ message: "Hello Hono!" });
   })
