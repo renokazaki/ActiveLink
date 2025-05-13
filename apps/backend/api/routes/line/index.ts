@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
-import { config } from 'dotenv';
-
-// .envファイルを読み込む
-config();
+//👷開発用
+// import { config } from 'dotenv';
+// // .envファイルを読み込む
+// config();
 
 // 以下はline.tsファイルから
 import axios from 'axios';
