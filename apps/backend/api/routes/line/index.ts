@@ -49,7 +49,6 @@ async function sendLineMessage(value: string) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${lineConfig.channelAccessToken}`,
       },
-      timeout: 5000, // 5秒でタイムアウト（Vercelの制限より十分短い）
     });
 
     console.log('LINE API response:', response.status, response.statusText);
