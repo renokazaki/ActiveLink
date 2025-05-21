@@ -1,5 +1,9 @@
 import { Hono } from "hono";
 import { prisma } from "../../../prisma/prisma";
+import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
+
+import { postActivityDetailSchema } from "../../../../types/schema";
 
 const activityDetail = new Hono()
   .get("/", async (c) => {
@@ -30,28 +34,14 @@ const activityDetail = new Hono()
 
     return c.json(activityDetail);
   })
-  .post("/", async (c) => {
+  .post("/", zValidator("json",postActivityDetailSchema), async (c) => {
+    
     try {
-      // リクエストボディを取得
-      const body = await c.req.json();
-      const { activity_id, description, duration_minutes, category } = body;
+      // バリデーション済みのデータを取得
+      const validData = c.req.valid('json');
+      const { activity_id, description, duration_minutes, category } = validData;
 
-      // バリデーション
-      if (!activity_id) {
-        return c.json({ error: "activity_id is required" }, 400);
-      }
 
-      if (!description) {
-        return c.json({ error: "description is required" }, 400);
-      }
-
-      if (!duration_minutes || duration_minutes <= 0) {
-        return c.json({ error: "valid duration_minutes is required" }, 400);
-      }
-
-      if (!category) {
-        return c.json({ error: "category is required" }, 400);
-      }
 
       // ActivityDetailを作成
       const newActivityDetail = await prisma.activityDetail.create({
