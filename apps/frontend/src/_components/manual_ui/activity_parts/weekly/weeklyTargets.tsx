@@ -23,13 +23,7 @@ export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
   const weeklyTargets = (await res.json()) as WeeklyTarget[];
   const hasWeeklyTargets = weeklyTargets && weeklyTargets.length > 0;
 
-  // 日付をフォーマットする関数
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("ja-JP", {
-      month: "short",
-      day: "numeric",
-    });
-  };
+  
 
   const createWeeklyTargetWithId = createWeeklyTarget.bind(null, data.clerk_id);
 
@@ -82,17 +76,6 @@ export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center text-xs text-slate-500 pt-2">
-                    <span className="flex items-center">
-                      <div className={`w-1.5 h-1.5 rounded-full  mr-1.5`}></div>
-                      開始: {formatDate(target.target_start_date.toString())}
-                    </span>
-                    <div className="flex items-center bg-slate-900/50 px-2 py-1 rounded-full"></div>
-                    <span className="flex items-center">
-                      <div className={`w-1.5 h-1.5 rounded-full mr-1.5`}></div>
-                      期限: {formatDate(target.target_end_date.toString())}
-                    </span>
-                  </div>
                   {isMyPage && (
                     <EditDelete target={target} />
                   )}
