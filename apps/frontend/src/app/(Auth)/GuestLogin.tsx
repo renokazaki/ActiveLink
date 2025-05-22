@@ -12,8 +12,8 @@ export default function GuestLogin() {
    if (!signIn) return;
 
    const result = await signIn.create({
-     identifier: 'testuser',
-     password: 'password123'
+     identifier: process.env.NEXT_PUBLIC_GUEST_USER!,
+     password: process.env.NEXT_PUBLIC_GUEST_PASSWORD!
    });
 
    if (result.status === 'complete') {
