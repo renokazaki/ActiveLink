@@ -8,6 +8,7 @@ import { client } from "@/utils/client"; // Honoクライアントをインポ�
 import { createActivityDetail } from "./action"; // サーバーアクションをインポート
 import { toast } from "sonner";
 
+
 export function InputForm({
     selectedDate,
     isEditModalOpen,
