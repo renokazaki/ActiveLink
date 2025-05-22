@@ -1,0 +1,31 @@
+"use client"
+import { useSignIn } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { Button } from "@/_components/shadcn_ui/button";
+
+export default function GuestLogin() {
+ const { signIn, setActive } = useSignIn();
+
+ const router = useRouter();
+
+ const handleGuestLogin = async () => {
+   if (!signIn) return;
+
+   const result = await signIn.create({
+     identifier: 'testuser',
+     password: 'password123'
+   });
+
+   if (result.status === 'complete') {
+     await setActive({ session: result.createdSessionId });
+     router.push('/');
+
+   }
+ };
+
+ return (
+    <Button onClick={handleGuestLogin} className="bg-green-500 hover:bg-green-600 cursor-pointer rounded-full text-white">
+     ゲストログイン
+   </Button>    
+ );
+}

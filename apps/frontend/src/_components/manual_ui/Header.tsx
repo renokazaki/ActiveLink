@@ -1,8 +1,9 @@
 "use client";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Home, Users } from "lucide-react";
 import { usePathname } from "next/navigation";
+import GuestLogin from "../../app/(Auth)/GuestLogin";
 
 export default function Header() {
   //use clientの設定していて、他コンポーネントに影響があるなら、pathの取得とボーダーはやめる
@@ -44,9 +45,10 @@ export default function Header() {
             <UserButton />
           </SignedIn>
           <SignedOut>
-            <SignInButton>
-            </SignInButton>
-          </SignedOut>
+        <div >
+         <GuestLogin />
+       </div>
+        </SignedOut>
         </div>
       </div>
     </div>
