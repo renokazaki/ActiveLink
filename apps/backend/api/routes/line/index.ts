@@ -4,8 +4,7 @@ import { Hono } from 'hono';
 // // .envファイルを読み込む
 // config();
 
-// 以下はline.tsファイルから
-import axios from 'axios';
+
 
 interface LineMessageApiConfig {
   channelAccessToken: string;
@@ -14,8 +13,8 @@ interface LineMessageApiConfig {
 
 // LINE API設定
 const lineConfig: LineMessageApiConfig = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
-  userId: process.env.LINE_USER_ID || '',
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
+  userId: process.env.LINE_USER_ID!
 };
 
 // メッセージ送信関数
@@ -43,27 +42,19 @@ async function sendLineMessage(value: string) {
   // LINE Messaging APIにリクエスト
   try {
     // タイムアウトを短く設定して早期失敗を可能に
-    const response = await axios.post('https://api.line.me/v2/bot/message/push', message, {
+    const response = await fetch('https://api.line.me/v2/bot/message/push', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${lineConfig.channelAccessToken}`,
       },
+      body: JSON.stringify(message),
     });
 
     console.log('LINE API response:', response.status, response.statusText);
-    return response.data;
+    return response;
   } catch (error) {
-    // エラー情報の詳細なロギング
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error details:', {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data,
-        code: error.code,
-        timeout: error.code === 'ECONNABORTED',
-      });
-    }
-    throw error;
+    console.error('Error sending LINE message:', error);
   }
 }
 
@@ -104,18 +95,6 @@ const line = new Hono()
     // エラータイプに応じたメッセージ
     if (error instanceof Error) {
       errorMessage = error.message;
-      
-      // タイムアウトエラーの特定
-      if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
-        statusCode = 504;
-        errorMessage = 'LINE API呼び出しがタイムアウトしました';
-      }
-      
-      // 認証エラーの特定
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        statusCode = 401;
-        errorMessage = 'LINE API認証エラー: チャネルアクセストークンを確認してください';
-      }
     }
     
     return c.json({ 
