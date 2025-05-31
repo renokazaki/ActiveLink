@@ -18,11 +18,12 @@ export const config = {
 
 const app = new Hono()
   .basePath("/api")
-  .use('/*', cors({
-    origin: '*',
-    allowHeaders: ['*'],
-    allowMethods: ['*'],
-  }))
+  .use(
+    "*",
+    cors({
+      origin: "*",
+    })
+  )
   .get("/", (c) => {
     return c.json({ message: "Hello Hono!" });
   })
