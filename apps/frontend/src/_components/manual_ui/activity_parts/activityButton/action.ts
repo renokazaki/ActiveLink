@@ -29,3 +29,19 @@ import { revalidatePath } from "next/cache";
       console.error("エラー:", error);
     }
   };
+
+
+  export const sendToFriends = async (userId: string) => {
+    try {
+      const response = await client.api.line.send_to_friends.$post({
+        json: {
+          clerk_id: userId,
+        },
+      });
+
+      if (!response.ok) throw new Error("送信に失敗しました");
+
+    } catch (error) {
+      console.error("エラー:", error);
+    }
+  };

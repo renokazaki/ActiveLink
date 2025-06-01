@@ -2,6 +2,7 @@
 import { Button } from "@/_components/shadcn_ui/button";
 import { startActivity } from "./action";
 import { toast } from "sonner";
+import { sendToFriends } from "./action";
 export default function ActiveButton({ userId }: { userId: string }) {
 
 
@@ -13,6 +14,7 @@ export default function ActiveButton({ userId }: { userId: string }) {
           onClick={() => {
             startActivity(userId);
             toast.success("今日の活動を登録しました");
+            sendToFriends(userId);
           }}
           className="bg-green-500 hover:bg-green-600"
         >
