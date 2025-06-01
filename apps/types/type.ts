@@ -53,10 +53,6 @@ export type WeeklyTarget = {
   user_clerk_id: string;
   title: string;
   description: string;
-  target_start_date: string;
-  target_end_date: string;
-  actual_start_date: string | null;
-  actual_end_date: string | null;
   status: WeeklyTargetStatus;
   created_at: string;
   updated_at: string;
