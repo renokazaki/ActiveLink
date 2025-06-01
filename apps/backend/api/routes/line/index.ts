@@ -3,7 +3,7 @@ import { prisma } from "../../../prisma/prisma";
 
 //👷開発用
 // import { config } from 'dotenv';
-// // .envファイルを読み込む
+// // // .envファイルを読み込む
 // config();
 
 interface LineMessageApiConfig {
