@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import GuestLogin from "../../app/(Auth)/GuestLogin";
 
 export default function Header() {
-  //use clientの設定していて、他コンポーネントに影響があるなら、pathの取得とボーダーはやめる
   const pathname = usePathname();
 
   const navigation = [
@@ -43,12 +42,11 @@ export default function Header() {
         <div className="flex items-center gap-4 mr-4">
           <SignedIn>
             <UserButton />
+          
           </SignedIn>
           <SignedOut>
-        <div >
-         <GuestLogin />
-       </div>
-        </SignedOut>
+            <GuestLogin />
+          </SignedOut>
         </div>
       </div>
     </div>
