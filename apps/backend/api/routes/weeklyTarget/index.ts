@@ -25,8 +25,6 @@ const weeklyTarget = new Hono()
       const {
         title,
         description,
-        target_start_date,
-        target_end_date,
         status,
         created_at,
         updated_at,
@@ -37,8 +35,6 @@ const weeklyTarget = new Hono()
       if (
         !title ||
         !description ||
-        !target_start_date ||
-        !target_end_date ||
         !clerk_id
       ) {
         return c.json({ error: "必須パラメータが不足しています" }, 400);
@@ -49,8 +45,6 @@ const weeklyTarget = new Hono()
         data: {
           title,
           description,
-          target_start_date: target_start_date,
-          target_end_date: target_end_date,
           status: status || "pending",
           created_at,
           updated_at,
