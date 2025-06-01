@@ -21,6 +21,12 @@ export default async function Friends() {
     <div className="text-black min-h-screen">
       <div className="container mx-auto py-8 px-4 space-y-8 mt-12">
         <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-blue-400">
+          <Link
+            href="/lineConnection"
+            className="py-2 px-4 w-auto bg-green-500 text-white rounded-full"
+          >
+            Line連携
+          </Link>
           <h1 className="text-2xl font-bold text-white">友達一覧</h1>
           <Link href="/userSearch">
             <Button>
@@ -29,7 +35,7 @@ export default async function Friends() {
             </Button>
           </Link>
         </div>
-        
+
         <Suspense fallback={<SkeletonCard />}>
           <FriendsData userId={userId} />
         </Suspense>
