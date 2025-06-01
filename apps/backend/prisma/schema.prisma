@@ -11,6 +11,8 @@ datasource db {
 model User {
   id            Int      @id @default(autoincrement())
   clerk_id      String   @unique
+  line_id       String?  @unique
+  user_name     String?  @unique
   display_name  String
   profile_image String
   target        String
@@ -69,10 +71,6 @@ model WeeklyTarget {
   user_clerk_id     String
   title             String
   description       String
-  target_start_date DateTime
-  target_end_date   DateTime
-  actual_start_date DateTime?
-  actual_end_date   DateTime?
   status            WeeklyTargetStatus @default(pending)
   created_at        DateTime           @default(now())
   updated_at        DateTime           @updatedAt
