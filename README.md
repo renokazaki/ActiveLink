@@ -6,7 +6,8 @@
 **[ActiveLink](https://active-link-frontend.vercel.app)** - デプロイされたアプリをお試しいただけます
 
 画面右上の「**ゲストログイン**」ボタンを押下することでゲストユーザーとしてログインできます。
-![ActiveLink Banner](https://github.com/user-attachments/assets/e8098880-5437-4abc-b441-bc2f78d00fa4)
+![image](https://github.com/user-attachments/assets/d9b04f6c-e067-40f3-a40a-398aef9d9704)
+
 
 
 ## 📝 概要
