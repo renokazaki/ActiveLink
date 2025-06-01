@@ -41,20 +41,20 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
           style={{ y: backgroundY }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
         />
         <motion.div
           style={{ y: useTransform(scrollY, [0, 1000], [0, 100]) }}
-          className="absolute top-1/2 -left-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          className="absolute top-1/2 -left-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
         />
         <motion.div
           style={{ y: useTransform(scrollY, [0, 1000], [0, -150]) }}
-          className="absolute bottom-0 right-1/4 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 right-1/4 w-64 h-64 bg-sky-500/20 rounded-full blur-3xl"
         />
       </div>
 
@@ -72,7 +72,7 @@ export default function LandingPage() {
           >
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               あなたの
-              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-400 bg-clip-text text-transparent">
                 毎日を可視化
               </span>
               <br />
@@ -93,10 +93,10 @@ export default function LandingPage() {
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)",
+                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-lg hover:from-blue-700 hover:to-sky-700 transition-all duration-300"
             >
               <Link href="/sign-up">無料で始める</Link>
               <ArrowRight className="inline ml-2 w-5 h-5" />
@@ -105,10 +105,10 @@ export default function LandingPage() {
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)",
+                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-600 rounded-full text-white font-semibold text-lg hover:from-blue-700 hover:to-blue-700 transition-all duration-300"
+              className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-600 rounded-full text-white font-semibold text-lg hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300"
             >
               <Link href="/sign-in">サインイン</Link>
               <ArrowRight className="inline ml-2 w-5 h-5" />
@@ -138,7 +138,7 @@ export default function LandingPage() {
           >
             <motion.h2
               variants={itemVariants}
-              className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+              className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
             >
               実際の画面
             </motion.h2>
@@ -166,32 +166,32 @@ export default function LandingPage() {
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-300">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                   週次目標の進捗を可視化
                 </li>
                 <li className="flex items-center text-gray-300">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                   活動時間の詳細な記録
                 </li>
                 <li className="flex items-center text-gray-300">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                   友達の活動状況をリアルタイム表示
                 </li>
               </ul>
             </motion.div>
 
-             <div className="flex justify-center lg:justify-end">
-            <div className="rounded-xl overflow-hidden shadow-lg max-w-full">
-              <Image
-                src="/DashBoard.PNG"
-                alt="ActiveLink ダッシュボード画面"
-                width={600}
-                height={450}
-                className="w-full h-auto object-cover"
-                priority
-              />
+            <div className="flex justify-center lg:justify-end">
+              <div className="rounded-xl overflow-hidden shadow-lg max-w-full">
+                <Image
+                  src="/DashBoard.PNG"
+                  alt="ActiveLink ダッシュボード画面"
+                  width={600}
+                  height={450}
+                  className="w-full h-auto object-cover"
+                  priority
+                />
+              </div>
             </div>
-          </div>
           </motion.div>
 
           <motion.div
@@ -231,7 +231,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-900/50 to-pink-900/50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-900/50 to-sky-900/50">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -242,7 +242,7 @@ export default function LandingPage() {
             <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-white">
               今すぐ始めて、
               <br />
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                 人生を変えよう
               </span>
             </h2>
@@ -252,10 +252,10 @@ export default function LandingPage() {
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 20px 40px rgba(139, 92, 246, 0.4)",
+                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="px-12 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white font-semibold text-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300"
+              className="px-12 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-xl hover:from-blue-700 hover:to-sky-700 transition-all duration-300"
             >
               無料でアカウント作成
               <ArrowRight className="inline ml-2 w-6 h-6" />
