@@ -25,8 +25,6 @@ export async function createWeeklyTarget(clerk_id: string, formData: FormData) {
       json: {
         title,
         description,
-        target_start_date: today.toISOString(),
-        target_end_date: endDate.toISOString(),
         status: "pending",
         created_at: today.toISOString(),
         updated_at: today.toISOString(),
