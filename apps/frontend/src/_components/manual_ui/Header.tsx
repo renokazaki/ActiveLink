@@ -44,7 +44,7 @@ export default function Header() {
           
           {/* 未認証ユーザー: アプリ名のみ表示 */}
           <SignedOut>
-            <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent px-4 py-1">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent px-4 py-1">
               ActiveLink
             </div>
           </SignedOut>
