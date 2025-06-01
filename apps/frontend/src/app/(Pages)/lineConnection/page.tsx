@@ -107,9 +107,7 @@ export default function LineConnectionPage() {
                 ✅ LINE連携済み
               </h2>
               <div className="space-y-2">
-                <p className="text-green-700">
-                  <strong>LINE User ID:</strong> {lineAccount.id}
-                </p>
+             
                 <div className="flex items-center gap-2">
                   {lineAccount.imageUrl && (
                     <img
