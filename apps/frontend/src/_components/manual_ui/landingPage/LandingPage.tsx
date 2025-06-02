@@ -76,10 +76,10 @@ export default function LandingPage() {
                 毎日を可視化
               </span>
               <br />
-              成長を加速する
+              友達と一緒に成長を加速する
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              友達と一緒に目標を設定し、日々の活動を記録。
+              目標を設定し、日々の活動を記録。
               <br />
             </p>
           </motion.div>
@@ -90,29 +90,32 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
+            <Link href="/sign-up">
             <motion.button
               whileHover={{
                 scale: 1.05,
                 boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-lg hover:from-blue-700 hover:to-sky-700 transition-all duration-300"
+              className="cursor-pointer px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-lg hover:from-blue-700 hover:to-sky-700 transition-all duration-300"
             >
-              <Link href="/sign-up">無料で始める</Link>
+              無料で始める
               <ArrowRight className="inline ml-2 w-5 h-5" />
             </motion.button>
-
+            </Link>
+            <Link href="/sign-in">
             <motion.button
               whileHover={{
                 scale: 1.05,
                 boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-600 rounded-full text-white font-semibold text-lg hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300"
+              className="cursor-pointer px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-600 rounded-full text-white font-semibold text-lg hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300"
             >
-              <Link href="/sign-in">サインイン</Link>
+              サインイン
               <ArrowRight className="inline ml-2 w-5 h-5" />
             </motion.button>
+            </Link>
           </motion.div>
 
           <motion.div

@@ -1,5 +1,5 @@
 "use client";
-import { UserProfile, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { client } from "@/utils/client"; // APIクライアント
 
@@ -125,7 +125,7 @@ export default function LineConnectionPage() {
 
             <div className="p-4 bg-blue-50 border border-blue-300 rounded-lg">
               <h3 className="text-lg font-medium text-blue-800 mb-4">
-                📱 ステップ1: 公式アカウント登録
+                📱 ステップ4: 公式アカウント登録
               </h3>
               <p className="text-blue-700 text-sm mb-4">
                 メッセージを受け取るために、まず公式アカウントを友だち追加してください。
@@ -141,10 +141,10 @@ export default function LineConnectionPage() {
 
             <div className="p-4 bg-blue-50 border border-blue-300 rounded-lg">
               <h3 className="text-lg font-medium text-blue-800 mb-4">
-                📱 ステップ2: 登録を完了する
+                📱 ステップ5: 登録を完了する
               </h3>
               <p className="text-blue-700 text-sm mb-4">
-                メッセージを送信して設定を完了してください。
+                メッセージを送信してLINEアカウントとの紐づけの設定を完了してください。
               </p>
               <button
                 onClick={sendTestMessage}
@@ -170,36 +170,28 @@ export default function LineConnectionPage() {
           </div>
         )}
 
-        {/* ClerkのUserProfileコンポーネント */}
-        <div className="bg-white rounded-lg shadow">
-          <UserProfile
-            routing="hash"
-            appearance={{
-              elements: {
-                rootBox: "w-full",
-                card: "shadow-none border-0",
-              },
-            }}
-          />
-        </div>
+   
 
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <h3 className="font-medium text-blue-800 mb-2">📱 LINE連携手順</h3>
           <ol className="text-blue-700 text-sm space-y-1 list-decimal list-inside">
             <li>
-              上の設定画面で <strong>「Connected accounts」</strong>
-              タブをクリック
+              右上のユーザーアイコンをクリックし、 <strong>「Manage account」</strong>
+              を選択
             </li>
             <li>
-              <strong>「Connect LINE」</strong> ボタンをクリック
+              <strong>「Profile」</strong>ページの<strong>「Connected accounts」</strong> でLINEを選択
             </li>
             <li>
               LINEの認証画面で <strong>「許可」</strong> をクリック
             </li>
             <li>
+            表示されるQRコードを読み取り、<strong>公式アカウントを友達追加</strong> する
+            </li>
+            <li>
               <strong>「テストメッセージ送信」</strong> ボタンを押す
             </li>
-            <li>🎉 設定完了！友達の活動通知をLINEで受け取れます</li>
+            <li>🎉 設定完了！<strong>友達が活動ボタンを押下したらリアルタイムで</strong>公式アカウントから通知を受け取れます🎊</li>
           </ol>
         </div>
       </div>
