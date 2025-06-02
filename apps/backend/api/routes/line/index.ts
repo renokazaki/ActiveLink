@@ -73,13 +73,11 @@ const line = new Hono()
       }, 400);
     }
 
-    console.log(`📱 Sending message to LINE user: ${lineUserId}`);
-    console.log(`📝 Message: ${message}`);
-    console.log(`👤 Sender: ${senderName}`);
+ 
 
     // 送信者名がある場合は署名を追加
     const formattedMessage = senderName 
-      ? `${message}\n\n- ${senderName}より`
+      ? `${message}\n\n- ${senderName}さん`
       : message;
 
     await sendLineMessageToUser(lineUserId, formattedMessage);
@@ -99,7 +97,7 @@ const line = new Hono()
   }
 })
 
-// LINEのIDをを設定
+// LINEのIDを設定
 .put("/update_line_id",async (c) => {
     try {
         const { clerk_id, line_id } = await c.req.json();
@@ -163,7 +161,7 @@ const line = new Hono()
     let successful = 0;
     for (const friend of friends) {
       try {
-        const message = `🏃‍♂️ 友達の活動通知\n\n${user.display_name} さんが活動を開始しました！\n\n一緒に頑張りましょう！💪`;
+        const message = `🏃‍♂️ 友達の活動通知\n\n${user.display_name} さんが活動を開始しました！\n\n一緒に頑張りましょう！💪\n\nhttps://active-link-frontend.vercel.app/`;
         
         await sendLineMessageToUser(friend.line_id!, message);
         successful++;
