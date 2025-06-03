@@ -201,4 +201,4 @@ erDiagram
 
 **ActiveLink**で友達と一緒に新しい習慣を始めませんか？ 💪
 
-[🔗 アプリを試す](https://active-link-frontend.vercel.app) | [🐛 Issue報告](https://github.com/renokazaki/ActiveLink/issues) | [💬 Discussion](https://github.com/renokazaki/ActiveLink/discussions)
+[🔗 アプリを試す](https://active-link-frontend.vercel.app) | [🐛 Issue報告](https://github.com/renokazaki/ActiveLink/issues)
