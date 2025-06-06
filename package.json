@@ -8,10 +8,17 @@
         "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
         "dev:frontend": "cd apps/frontend && bun run dev",
         "dev:backend": "cd apps/backend && bun run dev",
-        "format": "bunx prettier --write \"apps/frontend/src/**/*.{ts,tsx,js,jsx}\"",
-        "format:check": "bunx prettier --check \"apps/frontend/src/**/*.{ts,tsx,js,jsx}\"",
-        "lint": "cd apps/frontend && bun run lint",
-        "type-check": "cd apps/frontend && bunx tsc --noEmit"
+        "format:frontend": "bunx prettier --write \"apps/frontend/src/**/*.{ts,tsx,js,jsx}\"",
+        "format:backend": "bunx prettier --write \"apps/backend/**/*.{ts,js}\"",
+        "format": "bun run format:frontend && bun run format:backend",
+        "format:check:frontend": "bunx prettier --check \"apps/frontend/src/**/*.{ts,tsx,js,jsx}\"",
+        "format:check:backend": "bunx prettier --check \"apps/backend/**/*.{ts,js}\"",
+        "format:check": "bun run format:check:frontend && bun run format:check:backend",
+        "lint:frontend": "cd apps/frontend && bun run lint",
+        "lint": "bun run lint:frontend",
+        "type-check:frontend": "cd apps/frontend && bunx tsc --noEmit",
+        "type-check:backend": "cd apps/backend && bunx tsc --noEmit",
+        "type-check": "bun run type-check:frontend && bun run type-check:backend"
     },
     "devDependencies": {
         "concurrently": "^9.1.2",
