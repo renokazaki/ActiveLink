@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, ArrowRight } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ChevronDown, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,8 +16,8 @@ export default function LandingPage() {
     const handleScroll = () => {
       if (isMenuOpen) setIsMenuOpen(false);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [isMenuOpen]);
 
   const containerVariants = {
@@ -36,7 +36,7 @@ export default function LandingPage() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.6, ease: 'easeOut' },
     },
   };
 
@@ -60,10 +60,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          className="text-center max-w-5xl mx-auto"
-        >
+        <motion.div style={{ opacity: heroOpacity }} className="text-center max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -91,30 +88,30 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
             <Link href="/sign-up">
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="cursor-pointer px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-lg hover:from-blue-700 hover:to-sky-700 transition-all duration-300"
-            >
-              無料で始める
-              <ArrowRight className="inline ml-2 w-5 h-5" />
-            </motion.button>
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-lg hover:from-blue-700 hover:to-sky-700 transition-all duration-300"
+              >
+                無料で始める
+                <ArrowRight className="inline ml-2 w-5 h-5" />
+              </motion.button>
             </Link>
             <Link href="/sign-in">
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="cursor-pointer px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-600 rounded-full text-white font-semibold text-lg hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300"
-            >
-              サインイン
-              <ArrowRight className="inline ml-2 w-5 h-5" />
-            </motion.button>
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-600 rounded-full text-white font-semibold text-lg hover:from-cyan-700 hover:to-cyan-700 transition-all duration-300"
+              >
+                サインイン
+                <ArrowRight className="inline ml-2 w-5 h-5" />
+              </motion.button>
             </Link>
           </motion.div>
 
@@ -145,10 +142,7 @@ export default function LandingPage() {
             >
               実際の画面
             </motion.h2>
-            <motion.p
-              variants={itemVariants}
-              className="text-xl text-gray-300 max-w-3xl mx-auto"
-            >
+            <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto">
               シンプルで使いやすいインターフェース
             </motion.p>
           </motion.div>
@@ -161,9 +155,7 @@ export default function LandingPage() {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
             <motion.div variants={itemVariants} className="space-y-6">
-              <h3 className="text-3xl font-bold text-white">
-                直感的なダッシュボード
-              </h3>
+              <h3 className="text-3xl font-bold text-white">直感的なダッシュボード</h3>
               <p className="text-gray-300 text-lg">
                 日々の活動を一目で確認できる見やすいデザイン。目標達成状況や友達の活動も簡単にチェックできます。
               </p>
@@ -204,13 +196,8 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-20"
           >
-            <motion.div
-              variants={itemVariants}
-              className="space-y-6 lg:order-2"
-            >
-              <h3 className="text-3xl font-bold text-white">
-                友達と一緒に成長
-              </h3>
+            <motion.div variants={itemVariants} className="space-y-6 lg:order-2">
+              <h3 className="text-3xl font-bold text-white">友達と一緒に成長</h3>
               <p className="text-gray-300 text-lg">
                 フレンド機能で仲間とつながり、お互いの活動を確認可能。
                 競争と励まし合いでモチベーションを維持できます。
@@ -255,7 +242,7 @@ export default function LandingPage() {
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)",
+                boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)',
               }}
               whileTap={{ scale: 0.95 }}
               className="px-12 py-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full text-white font-semibold text-xl hover:from-blue-700 hover:to-sky-700 transition-all duration-300"

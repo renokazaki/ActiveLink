@@ -1,12 +1,12 @@
 // app/friends/page.tsx
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { Button } from "@/_components/shadcn_ui/button";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import FriendsData from "./FriendsData";
-import { SkeletonCard } from "@/_components/manual_ui/SkeltonCard";
+import Link from 'next/link';
+import { Plus } from 'lucide-react';
+import { Button } from '@/_components/shadcn_ui/button';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import FriendsData from './FriendsData';
+import { SkeletonCard } from '@/_components/manual_ui/SkeltonCard';
 
 export default async function Friends() {
   // Clerkから認証情報を取得
@@ -14,7 +14,7 @@ export default async function Friends() {
 
   // ユーザーIDがない場合はログインページにリダイレクト
   if (!userId) {
-    redirect("/sign-in");
+    redirect('/sign-in');
   }
 
   return (

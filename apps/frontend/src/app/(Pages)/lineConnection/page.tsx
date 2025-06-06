@@ -1,7 +1,7 @@
-"use client";
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import { client } from "@/utils/client"; // APIクライアント
+'use client';
+import { useUser } from '@clerk/nextjs';
+import { useEffect, useState } from 'react';
+import { client } from '@/utils/client'; // APIクライアント
 
 // 型定義
 interface LineAccount {
@@ -26,9 +26,7 @@ export default function LineConnectionPage() {
   }, [user]);
 
   const checkLineConnection = async () => {
-    const account = user?.externalAccounts?.find(
-      (acc) => acc.provider === "line"
-    );
+    const account = user?.externalAccounts?.find(acc => acc.provider === 'line');
 
     if (account) {
       setLineAccount({
@@ -37,11 +35,11 @@ export default function LineConnectionPage() {
         imageUrl: account.imageUrl,
       });
 
-      console.log("✅ LINE連携済み");
-      console.log("LINE User ID:", account.providerUserId);
+      console.log('✅ LINE連携済み');
+      console.log('LINE User ID:', account.providerUserId);
     } else {
       setLineAccount(null);
-      console.log("❌ LINE未連携");
+      console.log('❌ LINE未連携');
     }
   };
 
@@ -60,11 +58,10 @@ export default function LineConnectionPage() {
       });
 
       // 2. テストメッセージ送信
-      const response = await client.api.line["send-to-user"].$post({
+      const response = await client.api.line['send-to-user'].$post({
         json: {
           lineUserId: lineAccount.id,
-          message:
-            "🎉 LINE連携設定完了！\n\n友達の活動通知を受け取ることができます。",
+          message: '🎉 LINE連携設定完了！\n\n友達の活動通知を受け取ることができます。',
           senderName: lineAccount.firstName,
         },
       });
@@ -72,13 +69,13 @@ export default function LineConnectionPage() {
       const data = await response.json();
 
       if (data.success) {
-        setResult({ success: true, message: "✅ LINE連携が完了しました！" });
+        setResult({ success: true, message: '✅ LINE連携が完了しました！' });
       } else {
         setResult(data);
       }
     } catch (error) {
-      console.error("Error:", error);
-      setResult({ success: false, message: "設定に失敗しました" });
+      console.error('Error:', error);
+      setResult({ success: false, message: '設定に失敗しました' });
     } finally {
       setLoading(false);
     }
@@ -92,9 +89,7 @@ export default function LineConnectionPage() {
         {!lineAccount ? (
           // 未連携
           <div className="mb-6 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
-            <h2 className="text-lg font-medium text-yellow-800 mb-2">
-              ⚠️ LINE未連携
-            </h2>
+            <h2 className="text-lg font-medium text-yellow-800 mb-2">⚠️ LINE未連携</h2>
             <p className="text-yellow-700">
               Lineで友達の活動の通知を受け取りたい場合は下の設定画面からLINEアカウントを連携してください。
             </p>
@@ -103,11 +98,8 @@ export default function LineConnectionPage() {
           // 連携済み
           <div className="space-y-6">
             <div className="p-4 bg-green-100 border border-green-300 rounded-lg">
-              <h2 className="text-lg font-medium text-green-800 mb-2">
-                ✅ LINE連携済み
-              </h2>
+              <h2 className="text-lg font-medium text-green-800 mb-2">✅ LINE連携済み</h2>
               <div className="space-y-2">
-             
                 <div className="flex items-center gap-2">
                   {lineAccount.imageUrl && (
                     <img
@@ -151,7 +143,7 @@ export default function LineConnectionPage() {
                 disabled={loading}
                 className="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? "送信中..." : "🚀 テストメッセージ送信"}
+                {loading ? '送信中...' : '🚀 テストメッセージ送信'}
               </button>
             </div>
           </div>
@@ -161,16 +153,12 @@ export default function LineConnectionPage() {
         {result && (
           <div
             className={`mt-6 p-3 rounded-md ${
-              result.success
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
+              result.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
             }`}
           >
             {result.message}
           </div>
         )}
-
-   
 
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <h3 className="font-medium text-blue-800 mb-2">📱 LINE連携手順</h3>
@@ -180,18 +168,22 @@ export default function LineConnectionPage() {
               を選択
             </li>
             <li>
-              <strong>「Profile」</strong>ページの<strong>「Connected accounts」</strong> でLINEを選択
+              <strong>「Profile」</strong>ページの<strong>「Connected accounts」</strong>{' '}
+              でLINEを選択
             </li>
             <li>
               LINEの認証画面で <strong>「許可」</strong> をクリック
             </li>
             <li>
-            表示されるQRコードを読み取り、<strong>公式アカウントを友達追加</strong> する
+              表示されるQRコードを読み取り、<strong>公式アカウントを友達追加</strong> する
             </li>
             <li>
               <strong>「テストメッセージ送信」</strong> ボタンを押す
             </li>
-            <li>🎉 設定完了！<strong>友達が活動ボタンを押下したらリアルタイムで</strong>公式アカウントから通知を受け取れます🎊</li>
+            <li>
+              🎉 設定完了！<strong>友達が活動ボタンを押下したらリアルタイムで</strong>
+              公式アカウントから通知を受け取れます🎊
+            </li>
           </ol>
         </div>
       </div>

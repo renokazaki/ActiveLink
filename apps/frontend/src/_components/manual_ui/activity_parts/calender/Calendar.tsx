@@ -1,12 +1,12 @@
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import { DateClickArg } from "@fullcalendar/interaction";
-import { SmileIcon, Edit, X } from "lucide-react";
-import { Activity, ActivityDetail } from "types/type";
-import { Button } from "@/_components/shadcn_ui/button";
-import { DeleteDetail } from "./utils/utils";
-import { toast } from "sonner";
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { DateClickArg } from '@fullcalendar/interaction';
+import { SmileIcon, Edit, X } from 'lucide-react';
+import { Activity, ActivityDetail } from 'types/type';
+import { Button } from '@/_components/shadcn_ui/button';
+import { DeleteDetail } from './utils/utils';
+import { toast } from 'sonner';
 
 interface CalendarProps {
   activity: Activity[];
@@ -29,22 +29,17 @@ export function Calendar({
   setSelectedDetail,
   isMyPage,
 }: CalendarProps) {
-  
   // 選択した日付のActivityを取得
   const selectedActivity = selectedDate
     ? activity.find(
-        (item) =>
-          new Date(item.activity_date).toISOString().split("T")[0] ===
-          selectedDate
+        item => new Date(item.activity_date).toISOString().split('T')[0] === selectedDate
       )
     : null;
 
   // 選択した日付のActivityDetailを取得
   const selectedActivityDetails =
     selectedActivity && activityDetail
-      ? activityDetail.filter(
-          (detail) => detail.activity_id === selectedActivity.id
-        )
+      ? activityDetail.filter(detail => detail.activity_id === selectedActivity.id)
       : [];
 
   // 編集モードに切り替える
@@ -53,9 +48,6 @@ export function Calendar({
     setIsEditModalOpen(true);
   };
 
-
-
-
   // 選択をクリア
   const handleClearSelection = () => {
     setSelectedDate(null);
@@ -63,13 +55,11 @@ export function Calendar({
     setSelectedDetail(null);
   };
 
-
-
   // 日付だけを抽出した単純なイベント配列を作成
-  const events = activity.map((item) => ({
-    date: new Date(item.activity_date).toISOString().split("T")[0],
-    display: "background",
-    backgroundColor: "rgba(10, 300, 100)",
+  const events = activity.map(item => ({
+    date: new Date(item.activity_date).toISOString().split('T')[0],
+    display: 'background',
+    backgroundColor: 'rgba(10, 300, 100)',
   }));
 
   const renderEventContent = () => {
@@ -94,9 +84,9 @@ export function Calendar({
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           headerToolbar={{
-            left: "prev",
-            center: "title",
-            right: "today next",
+            left: 'prev',
+            center: 'title',
+            right: 'today next',
           }}
           events={events}
           eventContent={renderEventContent}
@@ -104,13 +94,13 @@ export function Calendar({
           contentHeight="auto"
           fixedWeekCount={false}
           showNonCurrentDates={true}
-          titleFormat={{ month: "numeric", year: "numeric" }}
-          dayHeaderFormat={{ weekday: "short" }}
+          titleFormat={{ month: 'numeric', year: 'numeric' }}
+          dayHeaderFormat={{ weekday: 'short' }}
           dayHeaderClassNames="text-slate-700 bg-white py-2 text-sm"
           dayMaxEventRows={3}
           nowIndicator={true}
           buttonText={{
-            today: "今日",
+            today: '今日',
           }}
           dateClick={handleDateClick}
         />
@@ -122,53 +112,39 @@ export function Calendar({
           <div className="bg-slate-800/90 border border-slate-600 p-4 rounded-lg shadow-lg text-white mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">{selectedDate} の活動</h3>
-              <button
-                onClick={handleClearSelection}
-                className="text-slate-400 hover:text-white"
-              >
+              <button onClick={handleClearSelection} className="text-slate-400 hover:text-white">
                 <X size={25} />
               </button>
             </div>
 
             {selectedActivityDetails.length > 0 ? (
               <div className="space-y-4">
-                {selectedActivityDetails.map((detail) => (
-                  <div
-                    key={detail.id}
-                    className="bg-slate-700/50 p-3 rounded-md"
-                  >
+                {selectedActivityDetails.map(detail => (
+                  <div key={detail.id} className="bg-slate-700/50 p-3 rounded-md">
                     <div className="flex justify-between items-center">
-                      <h4 className="font-medium">
-                        {detail.category || "未分類"}
-                      </h4>
+                      <h4 className="font-medium">{detail.category || '未分類'}</h4>
                       {isMyPage && (
-
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleEditDetail(detail)}
-                          className="text-blue-400 hover:text-blue-300"
-                        >
-                          <Edit size={20} />
-                        </button>
-                        <button
-                          onClick={async () =>{
-                            await DeleteDetail(detail.id.toString())
-                            toast.success("活動を削除しました");
-                          }
-                          }
-                          className="text-red-400 hover:text-red-300"
-                        >
-                          <X size={20} />
-                        </button>
-                      </div>
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleEditDetail(detail)}
+                            className="text-blue-400 hover:text-blue-300"
+                          >
+                            <Edit size={20} />
+                          </button>
+                          <button
+                            onClick={async () => {
+                              await DeleteDetail(detail.id.toString());
+                              toast.success('活動を削除しました');
+                            }}
+                            className="text-red-400 hover:text-red-300"
+                          >
+                            <X size={20} />
+                          </button>
+                        </div>
                       )}
                     </div>
-                    <p className="text-sm text-slate-300 mt-1">
-                      {detail.description}
-                    </p>
-                    <p className="text-sm text-slate-400 mt-2">
-                      {detail.duration_minutes}分
-                    </p>
+                    <p className="text-sm text-slate-300 mt-1">{detail.description}</p>
+                    <p className="text-sm text-slate-400 mt-2">{detail.duration_minutes}分</p>
                   </div>
                 ))}
               </div>
