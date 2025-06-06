@@ -1,10 +1,10 @@
-import { Hono } from "hono";
-import { prisma } from "../../../prisma/prisma";
+import { Hono } from 'hono';
+import { prisma } from '../../../prisma/prisma';
 
 const user = new Hono()
 
-  .get("/", async (c) => {
-    const clerk_id = c.req.query("clerk_id");
+  .get('/', async c => {
+    const clerk_id = c.req.query('clerk_id');
 
     const userData = await prisma.user.findFirst({
       where: { clerk_id },
@@ -12,8 +12,8 @@ const user = new Hono()
     return c.json(userData);
   })
 
-  .get("/allFriends", async (c) => {
-    const clerk_id = c.req.query("clerk_id");
+  .get('/allFriends', async c => {
+    const clerk_id = c.req.query('clerk_id');
 
     // clerk_idからユーザーを検索
     const currentUser = await prisma.user.findUnique({
@@ -21,7 +21,7 @@ const user = new Hono()
     });
 
     if (!currentUser) {
-      return c.json({ error: "ユーザーが見つかりません" }, 404);
+      return c.json({ error: 'ユーザーが見つかりません' }, 404);
     }
 
     // ユーザーIDを使用して、友達関係にあるユーザーを検索
@@ -33,7 +33,7 @@ const user = new Hono()
             received_friendships: {
               some: {
                 sender_clerk_id: currentUser.clerk_id,
-                status: "accepted",
+                status: 'accepted',
               },
             },
           },
@@ -42,7 +42,7 @@ const user = new Hono()
             sent_friendships: {
               some: {
                 receiver_clerk_id: currentUser.clerk_id,
-                status: "accepted",
+                status: 'accepted',
               },
             },
           },
@@ -52,8 +52,8 @@ const user = new Hono()
     return c.json(friends);
   })
 
-  .get("/friends/:clerk_id", async (c) => {
-    const clerk_id = c.req.param("clerk_id");
+  .get('/friends/:clerk_id', async c => {
+    const clerk_id = c.req.param('clerk_id');
 
     const friendData = await prisma.user.findUnique({
       where: {
@@ -62,7 +62,7 @@ const user = new Hono()
     });
 
     if (!friendData) {
-      return c.json({ error: "User not found" }, 404);
+      return c.json({ error: 'User not found' }, 404);
     }
 
     return c.json(friendData);
