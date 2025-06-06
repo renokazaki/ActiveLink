@@ -7,9 +7,15 @@
     "scripts": {
         "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
         "dev:frontend": "cd apps/frontend && bun run dev",
-        "dev:backend": "cd apps/backend && bun run dev"
+        "dev:backend": "cd apps/backend && bun run dev",
+        "format": "bunx prettier --write \"apps/frontend/src/**/*.{ts,tsx,js,jsx}\"",
+        "format:check": "bunx prettier --check \"apps/frontend/src/**/*.{ts,tsx,js,jsx}\"",
+        "lint": "cd apps/frontend && bun run lint",
+        "type-check": "cd apps/frontend && bunx tsc --noEmit"
     },
     "devDependencies": {
-        "concurrently": "^9.1.2"
+        "concurrently": "^9.1.2",
+        "prettier": "^3.5.3",
+        "prettier-plugin-tailwindcss": "^0.6.12"
     }
 }

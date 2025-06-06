@@ -1,9 +1,9 @@
-import { client } from "@/utils/client";
-import { User, WeeklyTarget } from "types/type";
-import { Card, CardContent } from "@/_components/shadcn_ui/card";
-import { Button } from "@/_components/shadcn_ui/button";
-import { createWeeklyTarget } from "./action";
-import EditDelete from "./editDelete";
+import { client } from '@/utils/client';
+import { User, WeeklyTarget } from 'types/type';
+import { Card, CardContent } from '@/_components/shadcn_ui/card';
+import { Button } from '@/_components/shadcn_ui/button';
+import { createWeeklyTarget } from './action';
+import EditDelete from './editDelete';
 
 interface WeeklyTargetsProps {
   data: User;
@@ -22,8 +22,6 @@ export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
 
   const weeklyTargets = (await res.json()) as WeeklyTarget[];
   const hasWeeklyTargets = weeklyTargets && weeklyTargets.length > 0;
-
-  
 
   const createWeeklyTargetWithId = createWeeklyTarget.bind(null, data.clerk_id);
 
@@ -44,41 +42,32 @@ export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-3 shadow-lg shadow-blue-900/20">
-                        <span className="text-xs font-bold text-white">
-                          {index + 1}
-                        </span>
+                        <span className="text-xs font-bold text-white">{index + 1}</span>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">
-                          {target.title}
-                        </h3>
-                        <p className="text-sm text-slate-400">
-                          {target.description}
-                        </p>
+                        <h3 className="font-semibold text-white">{target.title}</h3>
+                        <p className="text-sm text-slate-400">{target.description}</p>
                       </div>
                     </div>
-                    
+
                     <div
                       className={`px-2 py-1 rounded-full text-xs ${
-                        target.status === "completed"
-                          ? "bg-green-500/20 text-green-300"
-                          : target.status === "started"
-                          ? "bg-blue-500/20 text-blue-300"
-                          : "bg-yellow-500/20 text-yellow-300"
+                        target.status === 'completed'
+                          ? 'bg-green-500/20 text-green-300'
+                          : target.status === 'started'
+                            ? 'bg-blue-500/20 text-blue-300'
+                            : 'bg-yellow-500/20 text-yellow-300'
                       }`}
                     >
-                      
-                      {target.status === "completed"
-                        ? "完了"
-                        : target.status === "started"
-                        ? "進行中"
-                        : "未開始"}
+                      {target.status === 'completed'
+                        ? '完了'
+                        : target.status === 'started'
+                          ? '進行中'
+                          : '未開始'}
                     </div>
                   </div>
 
-                  {isMyPage && (
-                    <EditDelete target={target} />
-                  )}
+                  {isMyPage && <EditDelete target={target} />}
                 </CardContent>
               </Card>
             );
@@ -87,21 +76,16 @@ export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
       ) : (
         // 週間目標がない場合は登録フォームを表示
         <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-6 shadow-xl">
-          <h2 className="text-xl font-semibold text-white mb-4">
-            週間目標が設定されていません
-          </h2>
+          <h2 className="text-xl font-semibold text-white mb-4">週間目標が設定されていません</h2>
           <p className="text-slate-400 mb-6">目標が設定されてません。</p>
         </div>
       )}
 
-       {/* 自分のページの場合のみ目標作成フォームを表示 */}
-       {isMyPage && (
+      {/* 自分のページの場合のみ目標作成フォームを表示 */}
+      {isMyPage && (
         <form action={createWeeklyTargetWithId} className="space-y-4">
           <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-slate-300 mb-1"
-            >
+            <label htmlFor="title" className="block text-sm font-medium text-slate-300 mb-1">
               目標タイトル
             </label>
             <input
@@ -115,10 +99,7 @@ export async function WeeklyTargets({ data, isMyPage }: WeeklyTargetsProps) {
           </div>
 
           <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-slate-300 mb-1"
-            >
+            <label htmlFor="description" className="block text-sm font-medium text-slate-300 mb-1">
               詳細説明
             </label>
             <textarea

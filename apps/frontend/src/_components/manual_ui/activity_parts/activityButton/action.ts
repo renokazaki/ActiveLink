@@ -1,47 +1,43 @@
-"use server"
+'use server';
 
-import { client } from "@/utils/client";
-import { revalidatePath } from "next/cache";
+import { client } from '@/utils/client';
+import { revalidatePath } from 'next/cache';
 
-    // ISO-8601形式の日本時間を取得
-   const getJapanTimeISOString = () => {
-    const now = new Date();
-    // 日本時間に調整（UTC+9時間）
-    const jpTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-    return jpTime.toISOString();
-  };
+// ISO-8601形式の日本時間を取得
+const getJapanTimeISOString = () => {
+  const now = new Date();
+  // 日本時間に調整（UTC+9時間）
+  const jpTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return jpTime.toISOString();
+};
 
+export const startActivity = async (userId: string) => {
+  try {
+    const response = await client.api.activity.$post({
+      json: {
+        user_clerk_id: userId,
+        activity_date: getJapanTimeISOString(),
+      },
+    });
 
-  export const startActivity = async (userId: string) => {
+    if (!response.ok) throw new Error('登録に失敗しました');
 
-    try {
-      const response = await client.api.activity.$post({
-        json: {
-          user_clerk_id: userId,
-          activity_date: getJapanTimeISOString(),
-        },
-      });
+    revalidatePath('/');
+  } catch (error) {
+    console.error('エラー:', error);
+  }
+};
 
-      if (!response.ok) throw new Error("登録に失敗しました");
+export const sendToFriends = async (userId: string) => {
+  try {
+    const response = await client.api.line.send_to_friends.$post({
+      json: {
+        clerk_id: userId,
+      },
+    });
 
-      revalidatePath("/");
-    } catch (error) {
-      console.error("エラー:", error);
-    }
-  };
-
-
-  export const sendToFriends = async (userId: string) => {
-    try {
-      const response = await client.api.line.send_to_friends.$post({
-        json: {
-          clerk_id: userId,
-        },
-      });
-
-      if (!response.ok) throw new Error("送信に失敗しました");
-
-    } catch (error) {
-      console.error("エラー:", error);
-    }
-  };
+    if (!response.ok) throw new Error('送信に失敗しました');
+  } catch (error) {
+    console.error('エラー:', error);
+  }
+};

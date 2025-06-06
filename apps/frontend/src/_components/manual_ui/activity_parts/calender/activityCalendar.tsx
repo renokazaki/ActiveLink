@@ -1,11 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Activity, ActivityDetail } from "types/type";
-import { Calendar } from "./Calendar";
-import { InputForm } from "./InputForm";
-
-
+import { useState } from 'react';
+import { Activity, ActivityDetail } from 'types/type';
+import { Calendar } from './Calendar';
+import { InputForm } from './InputForm';
 
 export default function ActivityCalendar({
   activity,
@@ -20,11 +18,8 @@ export default function ActivityCalendar({
 }) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedDetail, setSelectedDetail] = useState<ActivityDetail | null>(
-    null
-  );
+  const [selectedDetail, setSelectedDetail] = useState<ActivityDetail | null>(null);
 
-  
   return (
     <div>
       {/* カレンダー部分 */}
