@@ -31,10 +31,10 @@ jobs:
         working-directory: ./apps/frontend
         
       - name: Prettier check frontend
-        run: bunx prettier --check "apps/frontend/src/**/*.{ts,tsx,js,jsx}"
+        run: bunx prettier --check "src/**/*.{ts,tsx,js,jsx}"
         working-directory: ./apps/frontend
         
-      #修正したコードを再コミット
+      # 修正したコードを再コミット
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
