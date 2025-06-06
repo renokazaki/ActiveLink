@@ -1,16 +1,16 @@
-"use client";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
-import { Home, Users } from "lucide-react";
-import { usePathname } from "next/navigation";
-import GuestLogin from "../../app/(Auth)/GuestLogin";
+'use client';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import Link from 'next/link';
+import { Home, Users } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import GuestLogin from '../../app/(Auth)/GuestLogin';
 
 export default function Header() {
   const pathname = usePathname();
 
   const navigation = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "Friends", href: "/friends", icon: Users },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Friends', href: '/friends', icon: Users },
   ];
 
   return (
@@ -20,7 +20,7 @@ export default function Header() {
           {/* 認証済みユーザー: ナビゲーションを表示 */}
           <SignedIn>
             <nav className="text-lg font-medium flex space-x-4">
-              {navigation.map((item) => {
+              {navigation.map(item => {
                 const isActive = pathname === item.href;
                 const Icon = item.icon;
 
@@ -30,8 +30,8 @@ export default function Header() {
                     href={item.href}
                     className={`flex items-center px-4 py-1 ${
                       isActive
-                        ? "border-b-2 border-blue-500 text-blue-400"
-                        : "text-gray-300 hover:text-white"
+                        ? 'border-b-2 border-blue-500 text-blue-400'
+                        : 'text-gray-300 hover:text-white'
                     }`}
                   >
                     <Icon className="mr-2 w-5 h-5" />
@@ -41,7 +41,7 @@ export default function Header() {
               })}
             </nav>
           </SignedIn>
-          
+
           {/* 未認証ユーザー: アプリ名のみ表示 */}
           <SignedOut>
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent px-4 py-1">
@@ -49,7 +49,7 @@ export default function Header() {
             </div>
           </SignedOut>
         </div>
-        
+
         <div className="flex items-center gap-4 mr-4">
           <SignedIn>
             <UserButton />

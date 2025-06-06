@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { client } from "@/utils/client";
-import { Activity } from "types/type";
+import { revalidatePath } from 'next/cache';
+import { client } from '@/utils/client';
+import { Activity } from 'types/type';
 
 // ISO-8601形式の日本時間を取得する関数
 function getJapanTimeISOString(dateStr?: string) {
@@ -25,13 +25,11 @@ function getJapanTimeISOString(dateStr?: string) {
  */
 export async function createActivityDetail(formData: FormData) {
   try {
-    const user_clerk_id = formData.get("user_clerk_id") as string;
-    const activity_date = formData.get("activity_date") as string;
-    const description = formData.get("description") as string;
-    const duration_minutes = parseInt(
-      formData.get("duration_minutes") as string
-    );
-    const category = formData.get("category") as string;
+    const user_clerk_id = formData.get('user_clerk_id') as string;
+    const activity_date = formData.get('activity_date') as string;
+    const description = formData.get('description') as string;
+    const duration_minutes = parseInt(formData.get('duration_minutes') as string);
+    const category = formData.get('category') as string;
 
     // 1. 指定された日付のActivityを検索
     const activityResponse = await client.api.activity.$get({
@@ -39,7 +37,7 @@ export async function createActivityDetail(formData: FormData) {
     });
 
     if (!activityResponse.ok) {
-      throw new Error("活動データの取得に失敗しました");
+      throw new Error('活動データの取得に失敗しました');
     }
 
     const responseData = await activityResponse.json();
@@ -47,7 +45,7 @@ export async function createActivityDetail(formData: FormData) {
     const activities = Array.isArray(responseData) ? responseData : [];
     // 指定した日付に一致するアクティビティを検索
     const targetActivity = activities.find((act: Activity) => {
-      return act.activity_date.split("T")[0] === activity_date;
+      return act.activity_date.split('T')[0] === activity_date;
     }) as Activity | undefined;
 
     let activityId;
@@ -65,7 +63,7 @@ export async function createActivityDetail(formData: FormData) {
       });
 
       if (!newActivityResponse.ok) {
-        throw new Error("活動の作成に失敗しました");
+        throw new Error('活動の作成に失敗しました');
       }
 
       // レスポンスを型アサーションを使って処理
@@ -89,14 +87,12 @@ export async function createActivityDetail(formData: FormData) {
     });
 
     if (!detailResponse.ok) {
-      throw new Error("活動詳細の登録に失敗しました");
+      throw new Error('活動詳細の登録に失敗しました');
     }
 
     // キャッシュの再検証
-    revalidatePath("/");
-    
+    revalidatePath('/');
   } catch (error) {
-    console.error("Error creating activity detail:", error);
-
+    console.error('Error creating activity detail:', error);
   }
 }
