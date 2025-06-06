@@ -1,7 +1,7 @@
 // app/_components/AuthenticatedHome.tsx
-import { SkeletonCard } from "@/_components/manual_ui/SkeltonCard";
-import UserData from "@/app/(Pages)/(user)/UserData";
-import { Suspense } from "react";
+import { SkeletonCard } from '@/_components/manual_ui/SkeltonCard';
+import UserData from '@/app/(Pages)/(user)/UserData';
+import { Suspense } from 'react';
 
 interface AuthenticatedHomeProps {
   userId: string;

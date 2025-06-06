@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Tabs, TabsList, TabsTrigger } from "@/_components/shadcn_ui/tabs";
-import { useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from '@/_components/shadcn_ui/tabs';
+import { useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -12,8 +12,8 @@ import {
   YAxis,
   Area,
   AreaChart,
-} from "recharts";
-import { Activity, ActivityDetail } from "types/type";
+} from 'recharts';
+import { Activity, ActivityDetail } from 'types/type';
 
 export function ActivityGraph({
   activity,
@@ -22,86 +22,82 @@ export function ActivityGraph({
   activity: Activity[];
   activityDetail: ActivityDetail[];
 }) {
-  const [period, setPeriod] = useState<"week" | "month" | "year">("week");
-  const [chartType, setChartType] = useState<"area" | "bar">("area");
+  const [period, setPeriod] = useState<'week' | 'month' | 'year'>('week');
+  const [chartType, setChartType] = useState<'area' | 'bar'>('area');
 
-// データを処理
-const processData = () => {
-  // Activity配列を日付でソート
-  const sortedActivities = [...activity].sort(
-    (a, b) =>
-      new Date(a.activity_date).getTime() -
-      new Date(b.activity_date).getTime()
-  );
-
-  // 現在の日付を取得
-  const today = new Date();
-
-  // 期間に基づいてデータをフィルタリング
-  let filteredActivities = sortedActivities;
-
-  if (period === "week") {
-    // 過去7日間のデータを取得
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(today.getDate() - 7);
-    filteredActivities = sortedActivities.filter(
-      (item) => new Date(item.activity_date) >= oneWeekAgo
+  // データを処理
+  const processData = () => {
+    // Activity配列を日付でソート
+    const sortedActivities = [...activity].sort(
+      (a, b) => new Date(a.activity_date).getTime() - new Date(b.activity_date).getTime()
     );
-  } else if (period === "month") {
-    // 過去30日間のデータを取得
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setDate(today.getDate() - 30);
-    filteredActivities = sortedActivities.filter(
-      (item) => new Date(item.activity_date) >= oneMonthAgo
-    );
-  } else if (period === "year") {
-    // 過去365日間のデータを取得
-    const oneYearAgo = new Date();
-    oneYearAgo.setDate(today.getDate() - 365);
-    filteredActivities = sortedActivities.filter(
-      (item) => new Date(item.activity_date) >= oneYearAgo
-    );
-  }
 
-  // データがなければ空の配列を返す
-  if (filteredActivities.length === 0) {
-    return [];
-  }
+    // 現在の日付を取得
+    const today = new Date();
 
-  // 日付ごとにグループ化して時間を集約
-  const groupedData: { [key: string]: number } = {};
+    // 期間に基づいてデータをフィルタリング
+    let filteredActivities = sortedActivities;
 
-  filteredActivities.forEach((item) => {
-    const dateKey = new Date(item.activity_date).toLocaleDateString("ja-JP", {
-      month: "numeric",
-      day: "numeric",
+    if (period === 'week') {
+      // 過去7日間のデータを取得
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(today.getDate() - 7);
+      filteredActivities = sortedActivities.filter(
+        item => new Date(item.activity_date) >= oneWeekAgo
+      );
+    } else if (period === 'month') {
+      // 過去30日間のデータを取得
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setDate(today.getDate() - 30);
+      filteredActivities = sortedActivities.filter(
+        item => new Date(item.activity_date) >= oneMonthAgo
+      );
+    } else if (period === 'year') {
+      // 過去365日間のデータを取得
+      const oneYearAgo = new Date();
+      oneYearAgo.setDate(today.getDate() - 365);
+      filteredActivities = sortedActivities.filter(
+        item => new Date(item.activity_date) >= oneYearAgo
+      );
+    }
+
+    // データがなければ空の配列を返す
+    if (filteredActivities.length === 0) {
+      return [];
+    }
+
+    // 日付ごとにグループ化して時間を集約
+    const groupedData: { [key: string]: number } = {};
+
+    filteredActivities.forEach(item => {
+      const dateKey = new Date(item.activity_date).toLocaleDateString('ja-JP', {
+        month: 'numeric',
+        day: 'numeric',
+      });
+
+      // この活動日に関連するすべてのActivityDetail
+      const relatedDetails = activityDetail.filter(detail => detail.activity_id === item.id);
+
+      // ActivityDetailの合計時間を計算
+      const totalDuration = relatedDetails.reduce(
+        (sum, detail) => sum + detail.duration_minutes,
+        0
+      );
+
+      // 同じ日付のデータがすでに存在する場合は加算する
+      if (groupedData[dateKey]) {
+        groupedData[dateKey] += totalDuration;
+      } else {
+        groupedData[dateKey] = totalDuration;
+      }
     });
 
-    // この活動日に関連するすべてのActivityDetail
-    const relatedDetails = activityDetail.filter(
-      (detail) => detail.activity_id === item.id
-    );
-
-    // ActivityDetailの合計時間を計算
-    const totalDuration = relatedDetails.reduce(
-      (sum, detail) => sum + detail.duration_minutes,
-      0
-    );
-
-    // 同じ日付のデータがすでに存在する場合は加算する
-    if (groupedData[dateKey]) {
-      groupedData[dateKey] += totalDuration;
-    } else {
-      groupedData[dateKey] = totalDuration;
-    }
-  });
-
-  // グループ化されたデータを配列に変換
-  return Object.entries(groupedData).map(([date, duration]) => ({
-    date,
-    duration,
-  }));
-};
+    // グループ化されたデータを配列に変換
+    return Object.entries(groupedData).map(([date, duration]) => ({
+      date,
+      duration,
+    }));
+  };
 
   const chartData = processData();
 
@@ -110,10 +106,7 @@ const processData = () => {
       {/* 期間選択タブ */}
       <div className="flex justify-between items-center">
         <h3 className="text-white font-medium">活動時間グラフ</h3>
-        <Tabs
-          value={period}
-          onValueChange={(v) => setPeriod(v as "week" | "month" | "year")}
-        >
+        <Tabs value={period} onValueChange={v => setPeriod(v as 'week' | 'month' | 'year')}>
           <TabsList className="bg-slate-800/50 border border-slate-700/50 rounded-full">
             <TabsTrigger
               value="week"
@@ -139,10 +132,7 @@ const processData = () => {
 
       {/* グラフタイプ選択 */}
       <div className="flex justify-end">
-        <Tabs
-          value={chartType}
-          onValueChange={(v) => setChartType(v as "area" | "bar")}
-        >
+        <Tabs value={chartType} onValueChange={v => setChartType(v as 'area' | 'bar')}>
           <TabsList className="bg-slate-800/50 border border-slate-700/50 rounded-full">
             <TabsTrigger
               value="area"
@@ -163,17 +153,17 @@ const processData = () => {
       {/* グラフ表示エリア */}
       <div className="h-[500px] w-full bg-slate-800/30 border border-slate-700/50 rounded-lg p-4 shadow-xl">
         <ResponsiveContainer width="100%" height="100%">
-          {chartType === "area" ? (
+          {chartType === 'area' ? (
             <AreaChart data={chartData}>
-              <XAxis dataKey="date" tick={{ fill: "#94a3b8" }} />
-              <YAxis tick={{ fill: "#94a3b8" }} />
+              <XAxis dataKey="date" tick={{ fill: '#94a3b8' }} />
+              <YAxis tick={{ fill: '#94a3b8' }} />
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#1e293b",
-                  border: "1px solid #334155",
-                  borderRadius: "0.5rem",
-                  color: "white",
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '0.5rem',
+                  color: 'white',
                 }}
               />
               <Area
@@ -186,15 +176,15 @@ const processData = () => {
             </AreaChart>
           ) : (
             <BarChart data={chartData}>
-              <XAxis dataKey="date" tick={{ fill: "#94a3b8" }} />
-              <YAxis tick={{ fill: "#94a3b8" }} />
+              <XAxis dataKey="date" tick={{ fill: '#94a3b8' }} />
+              <YAxis tick={{ fill: '#94a3b8' }} />
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#1e293b",
-                  border: "1px solid #334155",
-                  borderRadius: "0.5rem",
-                  color: "white",
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '0.5rem',
+                  color: 'white',
                 }}
               />
               <Bar dataKey="duration" fill="#3b82f6" radius={[4, 4, 0, 0]} />

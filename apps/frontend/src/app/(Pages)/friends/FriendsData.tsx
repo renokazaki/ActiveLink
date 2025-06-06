@@ -1,8 +1,8 @@
 // app/friends/_components/FriendsData.tsx
-import Link from "next/link";
-import { client } from "@/utils/client";
-import { User } from "types/type";
-import DeleteButton from "./deleteButton";
+import Link from 'next/link';
+import { client } from '@/utils/client';
+import { User } from 'types/type';
+import DeleteButton from './deleteButton';
 
 interface FriendsDataProps {
   userId: string;
@@ -24,9 +24,9 @@ export default async function FriendsData({ userId }: FriendsDataProps) {
     if (friendsData && friendsData.length > 0) {
       return (
         <div className="grid gap-4">
-          {friendsData.map((friend) => (
-            <div 
-              key={friend.id} 
+          {friendsData.map(friend => (
+            <div
+              key={friend.id}
               className="bg-gray-100 rounded-lg shadow p-4 flex items-center justify-between text-black"
             >
               <Link
@@ -42,10 +42,7 @@ export default async function FriendsData({ userId }: FriendsDataProps) {
                   <h3 className="font-medium">{friend.display_name}</h3>
                 </div>
               </Link>
-              <DeleteButton
-                friendClerkId={friend.clerk_id}
-                myClerkId={userId}
-              />
+              <DeleteButton friendClerkId={friend.clerk_id} myClerkId={userId} />
             </div>
           ))}
         </div>
@@ -54,7 +51,7 @@ export default async function FriendsData({ userId }: FriendsDataProps) {
       return <div className="text-white">友達がいません</div>;
     }
   } catch (error) {
-    console.error("友達データ取得エラー:", error);
+    console.error('友達データ取得エラー:', error);
     return <div className="text-white">データの取得中にエラーが発生しました。</div>;
   }
 }

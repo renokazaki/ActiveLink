@@ -1,28 +1,27 @@
-"use client";
+'use client';
 
-import { Button } from "@/_components/shadcn_ui/button";
-import { ActivityDetail } from "types/type";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { client } from "@/utils/client"; // Honoクライアントをインポート
-import { createActivityDetail } from "./action"; // サーバーアクションをインポート
-import { toast } from "sonner";
-
+import { Button } from '@/_components/shadcn_ui/button';
+import { ActivityDetail } from 'types/type';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { client } from '@/utils/client'; // Honoクライアントをインポート
+import { createActivityDetail } from './action'; // サーバーアクションをインポート
+import { toast } from 'sonner';
 
 export function InputForm({
-    selectedDate,
-    isEditModalOpen,
-    setIsEditModalOpen,
-    selectedDetail,
-    setSelectedDetail,
-    userId,
+  selectedDate,
+  isEditModalOpen,
+  setIsEditModalOpen,
+  selectedDetail,
+  setSelectedDetail,
+  userId,
 }: {
-    selectedDate: string | null;
-    isEditModalOpen: boolean;
-    setIsEditModalOpen: (open: boolean) => void;
-    selectedDetail: ActivityDetail | null;
-    setSelectedDetail: (detail: ActivityDetail | null) => void;
-    userId: string;
+  selectedDate: string | null;
+  isEditModalOpen: boolean;
+  setIsEditModalOpen: (open: boolean) => void;
+  selectedDetail: ActivityDetail | null;
+  setSelectedDetail: (detail: ActivityDetail | null) => void;
+  userId: string;
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,38 +31,38 @@ export function InputForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
-    
+
     try {
       setIsSubmitting(true);
       setError(null);
-      
+
       // フォームからデータを取得
       const form = e.currentTarget;
       const formData = new FormData(form);
-      
+
       // 更新か新規作成かを判断
       if (selectedDetail) {
         // PUT操作で更新 - 既存のActivityDetailを更新する場合
-        const description = formData.get("description") as string;
-        const duration_minutes = parseInt(formData.get("duration_minutes") as string, 10);
-        const category = formData.get("category") as string;
-        
+        const description = formData.get('description') as string;
+        const duration_minutes = parseInt(formData.get('duration_minutes') as string, 10);
+        const category = formData.get('category') as string;
+
         // バリデーション
         if (!description || !duration_minutes || !category) {
-          throw new Error("必須項目が入力されていません");
+          throw new Error('必須項目が入力されていません');
         }
-        
+
         const response = await client.api.activityDetail.$put({
           json: {
             id: selectedDetail.id,
             description,
             duration_minutes,
             category,
-          }
+          },
         });
-        
+
         if (!response.ok) {
-          console.error("Update failed");
+          console.error('Update failed');
         }
       } else {
         // 新規作成 - サーバーアクションを使用してActivityがない場合はそれも作成
@@ -71,24 +70,23 @@ export function InputForm({
           // サーバーアクションを使用
           await createActivityDetail(formData);
         } catch (error) {
-          console.error("Server action error:", error);
-          throw new Error("活動詳細の作成に失敗しました");
+          console.error('Server action error:', error);
+          throw new Error('活動詳細の作成に失敗しました');
         }
       }
-      
+
       // 成功時の処理
       setIsEditModalOpen(false);
       setSelectedDetail(null);
-      
+
       // ページの更新
       router.refresh();
-      
     } catch (error) {
-      console.error("送信エラー:", error);
-      setError(error instanceof Error ? error.message : "エラーが発生しました");
+      console.error('送信エラー:', error);
+      setError(error instanceof Error ? error.message : 'エラーが発生しました');
     } finally {
       setIsSubmitting(false);
-      toast.success("活動を登録しました");
+      toast.success('活動を登録しました');
     }
   };
 
@@ -105,7 +103,7 @@ export function InputForm({
         <div className="bg-slate-700/90 border border-slate-500 p-4 rounded-lg shadow-lg text-white">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium">
-              {selectedDetail ? "活動詳細を編集" : "新しい活動詳細を追加"}
+              {selectedDetail ? '活動詳細を編集' : '新しい活動詳細を追加'}
             </h3>
           </div>
 
@@ -115,28 +113,20 @@ export function InputForm({
             </div>
           )}
 
-          <form
-            id="activity-detail-form"
-            onSubmit={handleSubmit}
-            className="space-y-3"
-          >
+          <form id="activity-detail-form" onSubmit={handleSubmit} className="space-y-3">
             <input type="hidden" name="user_clerk_id" value={userId} />
-            <input type="hidden" name="activity_date" value={selectedDate || ""} />
-            {selectedDetail && (
-              <input type="hidden" name="id" value={selectedDetail.id} />
-            )}
+            <input type="hidden" name="activity_date" value={selectedDate || ''} />
+            {selectedDetail && <input type="hidden" name="id" value={selectedDetail.id} />}
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">
-                活動内容
-              </label>
+              <label className="block text-sm font-medium text-slate-300 mb-1">活動内容</label>
               <textarea
                 name="description"
                 required
                 rows={2}
                 className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-md text-white text-sm"
                 placeholder="どのような活動を行いましたか？"
-                defaultValue={selectedDetail?.description || ""}
+                defaultValue={selectedDetail?.description || ''}
               ></textarea>
             </div>
 
@@ -151,21 +141,19 @@ export function InputForm({
                 min="1"
                 className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-md text-white text-sm"
                 placeholder="例: 30"
-                defaultValue={selectedDetail?.duration_minutes || ""}
+                defaultValue={selectedDetail?.duration_minutes || ''}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">
-                カテゴリー
-              </label>
+              <label className="block text-sm font-medium text-slate-300 mb-1">カテゴリー</label>
               <input
                 type="text"
                 name="category"
                 required
                 className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-md text-white text-sm"
                 placeholder="例: 勉強、運動、趣味など"
-                defaultValue={selectedDetail?.category || ""}
+                defaultValue={selectedDetail?.category || ''}
                 list="category-suggestions"
               />
             </div>
@@ -185,11 +173,7 @@ export function InputForm({
                 className="flex-1 bg-green-600 hover:bg-green-500"
                 disabled={isSubmitting}
               >
-                {isSubmitting 
-                  ? "送信中..." 
-                  : selectedDetail 
-                    ? "更新" 
-                    : "追加"}
+                {isSubmitting ? '送信中...' : selectedDetail ? '更新' : '追加'}
               </Button>
             </div>
           </form>
