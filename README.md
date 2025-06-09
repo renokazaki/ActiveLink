@@ -15,7 +15,7 @@
 
 ActiveLinkは**友達と習慣形成を促進し合えるSNSアプリケーション**です。
 
-ユーザーは日々の活動を記録し、週次目標を設定して継続的な習慣作りをサポートします。友達とのつながりを通じてお互いの活動を共有し、モチベーションを高め合うことができます。
+ユーザーは日々の活動を記録し継続的な習慣作りをサポートします。友達とのつながりを通じてお互いの活動を共有し、モチベーションを高め合うことができます。
 
 ### 🎯 主な価値提案
 - **習慣の可視化**: 日々の活動を記録・分析
@@ -30,10 +30,6 @@ ActiveLinkは**友達と習慣形成を促進し合えるSNSアプリケーシ�
 - 日々の活動記録（時間・内容・カテゴリ）
 - 活動データの可視化（カレンダー・グラフ）
 
-#### 🎯 目標設定・進捗管理
-- 週次目標の設定
-- 進捗状況の追跡（未開始・進行中・完了）
-- 達成率の可視化
 
 #### 👥 ソーシャル機能
 - 友達申請・承認システム
@@ -59,8 +55,6 @@ ActiveLinkは**友達と習慣形成を促進し合えるSNSアプリケーシ�
 ### 活動時間(グラフ)
 ![Activity Recording](https://github.com/user-attachments/assets/5657c9b5-14f3-485c-92dd-0eef36019a86)
 
-### 週次目標
-![Progress Visualization](https://github.com/user-attachments/assets/418bf005-b960-4ae5-b084-c7dc1c14288d)
 
 ### フレンド機能
 ![image](https://github.com/user-attachments/assets/040e2c69-1116-4f1a-9fb9-52bab8fa0683)
@@ -137,7 +131,6 @@ Lineのアカウントと連携することで、**友達が活動を開始し�
 ```mermaid
 erDiagram
     User ||--o{ Activity : "has"
-    User ||--o{ WeeklyTarget : "has"
     User ||--o{ Friendship : "sends"
     User ||--o{ Friendship : "receives"
     Activity ||--o{ ActivityDetail : "contains"
@@ -149,8 +142,6 @@ erDiagram
         string user_name UK "ユーザー名"
         string display_name "表示名"
         string profile_image "プロフィール画像"
-        string target "目標"
-        boolean is_active "アクティブ状態"
         datetime created_at
         datetime updated_at
     }
@@ -169,16 +160,6 @@ erDiagram
         string description "活動内容"
         int duration_minutes "時間(分)"
         string category "カテゴリ"
-        datetime created_at
-        datetime updated_at
-    }
-    
-    WeeklyTarget {
-        int id PK
-        string user_clerk_id FK
-        string title "タイトル"
-        string description "説明"
-        enum status "pending/started/completed"
         datetime created_at
         datetime updated_at
     }
