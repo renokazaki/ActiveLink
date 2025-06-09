@@ -3,10 +3,9 @@ import { cors } from 'hono/cors';
 import { handle } from 'hono/vercel';
 import user from './routes/user';
 import webhookRouter from './routes/webhooks';
-import weeklyTarget from './routes/weeklyTarget';
 
 //👷開発用
-// import { serve } from "@hono/node-server";
+import { serve } from "@hono/node-server";
 import activity from './routes/activity';
 import activityDetail from './routes/activityDetail';
 import friendRequest from './routes/friendRequest';
@@ -28,7 +27,6 @@ const app = new Hono()
     return c.json({ message: 'Hello Hono!' });
   })
   .route('/user', user)
-  .route('/weeklyTarget', weeklyTarget)
   .route('/webhookRouter', webhookRouter)
   .route('/activity', activity)
   .route('/activityDetail', activityDetail)
@@ -36,13 +34,13 @@ const app = new Hono()
   .route('/line', line);
 
 // 👷開発用
-// const port = 8085;
-// console.log(`Server is running on http://localhost:${port}`);
+const port = 8085;
+console.log(`Server is running on http://localhost:${port}`);
 
-// serve({
-//   fetch: app.fetch,
-//   port,
-// });
+serve({
+  fetch: app.fetch,
+  port,
+});
 
 export type AppType = typeof app;
 
