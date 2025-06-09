@@ -1,4 +1,6 @@
 'use server';
+import { getActivities } from '@/_components/manual_ui/activity_parts/functions';
+import { calculateActivityStats } from '@/utils/calculateActivity';
 import { client } from '@/utils/client';
 import { revalidatePath } from 'next/cache';
 import { User } from 'types/type';
@@ -47,3 +49,30 @@ export const deleteFriend = async (myClerkId: string, friendClerkId: string) => 
     console.error('削除エラー:', error);
   }
 };
+
+// 各フレンドの活動データを取得
+export const getFriendsWithActivity = async (friendsData: User[]) =>
+  await Promise.all(
+    friendsData.map(async friend => {
+      try {
+        // 活動データを取得
+        const { activity, activityDetail } = await getActivities(friend.clerk_id);
+
+        // 活動統計を計算
+        const stats = calculateActivityStats(activity, activityDetail);
+
+        return {
+          ...friend,
+          totalActivityDays: stats.totalDays,
+          currentMonthActivityDays: stats.currentMonthDays,
+        };
+      } catch (error) {
+        console.error(`Error fetching activity for ${friend.display_name}:`, error);
+        return {
+          ...friend,
+          totalActivityDays: 0,
+          currentMonthActivityDays: 0,
+        };
+      }
+    })
+  );
