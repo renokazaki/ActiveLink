@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { Button } from '@/_components/shadcn_ui/button';
 import { deleteFriend } from './function';
 import { useState } from 'react';
@@ -10,7 +10,7 @@ const DeleteButton = ({
   friendClerkId: string;
   myClerkId: string;
 }) => {
-const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div className="ml-2">

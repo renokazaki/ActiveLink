@@ -7,21 +7,21 @@ import { getUserData } from './function';
 import { User } from 'types/type';
 
 export default async function UserData({ userId }: { userId: string }) {
- const userData  = await getUserData(userId) as User
+  const userData = (await getUserData(userId)) as User;
 
-    return (
-      <>
-        <Suspense fallback={<SkeletonCard />}>
-          <PageHeader>{userData.display_name}</PageHeader>
-        </Suspense>
+  return (
+    <>
+      <Suspense fallback={<SkeletonCard />}>
+        <PageHeader>{userData.display_name}</PageHeader>
+      </Suspense>
 
-        <Suspense fallback={<SkeletonCard />}>
-          <ActiveButton userId={userId} />
-        </Suspense>
+      <Suspense fallback={<SkeletonCard />}>
+        <ActiveButton userId={userId} />
+      </Suspense>
 
-        <Suspense fallback={<SkeletonTab />}>
-          <ActivityTabs data={userData} />
-        </Suspense>
-      </>
-    );
-  } 
+      <Suspense fallback={<SkeletonTab />}>
+        <ActivityTabs data={userData} />
+      </Suspense>
+    </>
+  );
+}
