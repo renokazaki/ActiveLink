@@ -25,11 +25,7 @@ export default function PendingRequestsList({ initialRequests, userId }: Props) 
       <div className="space-y-4">
         {initialRequests.length > 0 ? (
           initialRequests.map(request => (
-            <PendingRequestItem 
-              key={request.id} 
-              request={request} 
-              userId={userId} 
-            />
+            <PendingRequestItem key={request.id} request={request} userId={userId} />
           ))
         ) : (
           <div className="text-white">保留中の申請はありません</div>

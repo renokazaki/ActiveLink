@@ -43,10 +43,10 @@ export default function PendingRequestItem({ request, userId }: Props) {
     setResponding(true);
     try {
       await respondToRequest(request.id, action);
-      
+
       const message = action === 'accept' ? '友達申請を承認しました' : '友達申請を拒否しました';
       toast.success(message);
-      
+
       // ページを再読み込みして最新の状態を取得
       router.refresh();
     } catch (error) {

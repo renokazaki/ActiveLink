@@ -50,7 +50,7 @@ export default function UserSearchClient({ userId }: Props) {
     try {
       await sendFriendRequest(userId, friendsClerkId);
       toast.success('友達申請を送信しました');
-      
+
       // ローカル状態を更新
       setUsers(prevUsers =>
         prevUsers.map(user =>
@@ -105,7 +105,7 @@ export default function UserSearchClient({ userId }: Props) {
                 />
                 <span className="text-white">{user.display_name}</span>
               </div>
-              <FriendshipButton 
+              <FriendshipButton
                 user={user}
                 onSendRequest={() => handleSendRequest(user.clerk_id)}
               />
