@@ -5,7 +5,7 @@ import { DateClickArg } from '@fullcalendar/interaction';
 import { SmileIcon, Edit, X } from 'lucide-react';
 import { Activity, ActivityDetail } from 'types/type';
 import { Button } from '@/_components/shadcn_ui/button';
-import { DeleteDetail } from './utils/utils';
+import { DeleteDetail } from './action';
 import { toast } from 'sonner';
 
 interface CalendarProps {

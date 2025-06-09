@@ -1,5 +1,4 @@
 // ステータスの列挙型
-export type WeeklyTargetStatus = "pending" | "started" | "completed";
 export type FriendshipStatus = "pending" | "accepted" | "rejected";
 
 // ユーザーモデル
@@ -8,14 +7,11 @@ export type User = {
   clerk_id: string;
   display_name: string;
   profile_image: string;
-  target: string;
-  is_active: boolean;
   created_at: string;
   updated_at: string;
 
   // リレーション（オプション）
   activities?: Activity[];
-  weekly_targets?: WeeklyTarget[];
   sent_friendships?: Friendship[];
   received_friendships?: Friendship[];
 };
@@ -47,19 +43,7 @@ export type ActivityDetail = {
   activity?: Activity;
 };
 
-// 週間目標モデル
-export type WeeklyTarget = {
-  id: number;
-  user_clerk_id: string;
-  title: string;
-  description: string;
-  status: WeeklyTargetStatus;
-  created_at: string;
-  updated_at: string;
 
-  // リレーション（オプション）
-  user?: User;
-};
 
 // 友達関係モデル
 export type Friendship = {
@@ -75,25 +59,5 @@ export type Friendship = {
   receiver?: User;
 };
 
-// APIレスポンス用の集計データ型
-export type UserStats = {
-  total_activities: number;
-  total_activity_minutes: number;
-  activities_this_week: number;
-  activities_this_month: number;
-  current_streak: number;
-  longest_streak: number;
-};
 
-// フロントエンド表示用の拡張型
-export type UserWithStats = User & {
-  stats: UserStats;
-  friends: User[];
-  pending_friend_requests: Friendship[];
-};
 
-// フロントエンドのアクティビティ表示用
-export type ActivityWithDetails = Activity & {
-  total_duration: number;
-  details: ActivityDetail[];
-};

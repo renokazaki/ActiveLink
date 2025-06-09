@@ -1,25 +1,11 @@
-// app/friends/_components/FriendsData.tsx
+"use server"
 import Link from 'next/link';
-import { client } from '@/utils/client';
-import { User } from 'types/type';
 import DeleteButton from './deleteButton';
+import { getFriends } from './function';
+import { User } from 'types/type';
 
-interface FriendsDataProps {
-  userId: string;
-}
-
-export default async function FriendsData({ userId }: FriendsDataProps) {
-  try {
-    // ログイン中のユーザーのfriendデータを取得
-    const res = await client.api.user.allFriends.$get({
-      query: { clerk_id: userId },
-    });
-
-    if (!res.ok) {
-      throw new Error(`APIエラー: ${res.status}`);
-    }
-
-    const friendsData = (await res.json()) as User[];
+export default async function FriendsData({ userId }: {userId:string}) {
+  const friendsData = await getFriends(userId) as User[];
 
     if (friendsData && friendsData.length > 0) {
       return (
@@ -50,8 +36,4 @@ export default async function FriendsData({ userId }: FriendsDataProps) {
     } else {
       return <div className="text-white">友達がいません</div>;
     }
-  } catch (error) {
-    console.error('友達データ取得エラー:', error);
-    return <div className="text-white">データの取得中にエラーが発生しました。</div>;
-  }
 }

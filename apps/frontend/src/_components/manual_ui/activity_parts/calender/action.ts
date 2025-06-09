@@ -96,3 +96,22 @@ export async function createActivityDetail(formData: FormData) {
     console.error('Error creating activity detail:', error);
   }
 }
+
+
+// 活動詳細の削除ハンドラー
+export async function DeleteDetail(id: string) {
+  try {
+    const response = await client.api.activityDetail[':id'].$delete({
+      param: { id },
+    });
+
+    if (!response.ok) {
+      throw new Error('活動詳細の削除に失敗しました');
+    }
+
+    // 成功したらUIを更新
+    revalidatePath('/');
+  } catch (error) {
+    console.error('Error deleting activity detail:', error);
+  }
+}
