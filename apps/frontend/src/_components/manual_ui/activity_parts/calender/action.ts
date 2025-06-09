@@ -97,7 +97,6 @@ export async function createActivityDetail(formData: FormData) {
   }
 }
 
-
 // 活動詳細の削除ハンドラー
 export async function DeleteDetail(id: string) {
   try {

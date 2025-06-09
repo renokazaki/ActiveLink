@@ -2,7 +2,6 @@ import { Activity, ActivityDetail } from 'types/type';
 import { client } from '@/utils/client';
 
 export const getActivities = async (clerk_id: string) => {
-
   let activity: Activity[] = [];
   let activityDetail: ActivityDetail[] = [];
   try {

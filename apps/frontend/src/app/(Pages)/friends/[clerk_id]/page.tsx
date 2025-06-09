@@ -6,7 +6,7 @@ import { getFriendsData } from '../function';
 export default async function FriendsInfo({ params }: { params: Promise<{ clerk_id: string }> }) {
   const { clerk_id } = await params;
 
-  const friendsData = await getFriendsData(clerk_id) as User;
+  const friendsData = (await getFriendsData(clerk_id)) as User;
 
   return (
     <div className="min-h-screen text-white">

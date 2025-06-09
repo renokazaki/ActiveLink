@@ -1,4 +1,4 @@
-'use server'
+'use server';
 import { client } from '@/utils/client';
 import { revalidatePath } from 'next/cache';
 import { User } from 'types/type';
@@ -21,16 +21,14 @@ export const getFriends = async (userId: string) => {
   }
 };
 
-
 export const getFriendsData = async (clerk_id: string) => {
-const res = await client.api.user.friends[':clerk_id'].$get({
+  const res = await client.api.user.friends[':clerk_id'].$get({
     param: { clerk_id: clerk_id },
   });
 
   const friendsData = (await res.json()) as User;
   return friendsData;
 };
-
 
 export const deleteFriend = async (myClerkId: string, friendClerkId: string) => {
   try {
@@ -47,6 +45,5 @@ export const deleteFriend = async (myClerkId: string, friendClerkId: string) => 
     revalidatePath('/friends');
   } catch (error) {
     console.error('削除エラー:', error);
-  } 
+  }
 };
-

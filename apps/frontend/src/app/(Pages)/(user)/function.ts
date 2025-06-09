@@ -1,8 +1,8 @@
-import { client } from "@/utils/client";
-import { User } from "types/type";
+import { client } from '@/utils/client';
+import { User } from 'types/type';
 
 export const getUserData = async (userId: string) => {
- try {
+  try {
     const res = await client.api.user.$get({
       query: { clerk_id: userId },
     });
