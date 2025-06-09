@@ -5,7 +5,7 @@ import user from './routes/user';
 import webhookRouter from './routes/webhooks';
 
 //👷開発用
-import { serve } from "@hono/node-server";
+// import { serve } from "@hono/node-server";
 import activity from './routes/activity';
 import activityDetail from './routes/activityDetail';
 import friendRequest from './routes/friendRequest';
@@ -34,13 +34,13 @@ const app = new Hono()
   .route('/line', line);
 
 // 👷開発用
-const port = 8085;
-console.log(`Server is running on http://localhost:${port}`);
+// const port = 8085;
+// console.log(`Server is running on http://localhost:${port}`);
 
-serve({
-  fetch: app.fetch,
-  port,
-});
+// serve({
+//   fetch: app.fetch,
+//   port,
+// });
 
 export type AppType = typeof app;
 
