@@ -6,13 +6,7 @@ import { Input } from '@/_components/shadcn_ui/input';
 import { toast } from 'sonner';
 import { searchUsers, sendFriendRequest } from './function';
 import FriendshipButton from './friendshipButton';
-
-interface User {
-  id: number;
-  clerk_id: string;
-  display_name: string;
-  profile_image: string;
-}
+import { User } from 'types/type';
 
 interface UserWithFriendship extends User {
   friendship?: {
@@ -22,11 +16,7 @@ interface UserWithFriendship extends User {
   } | null;
 }
 
-interface Props {
-  userId: string;
-}
-
-export default function UserSearchClient({ userId }: Props) {
+export default function UserSearchClient({ userId }: { userId: string }) {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<UserWithFriendship[]>([]);
@@ -51,7 +41,6 @@ export default function UserSearchClient({ userId }: Props) {
       await sendFriendRequest(userId, friendsClerkId);
       toast.success('友達申請を送信しました');
 
-      // ローカル状態を更新
       setUsers(prevUsers =>
         prevUsers.map(user =>
           user.clerk_id === friendsClerkId

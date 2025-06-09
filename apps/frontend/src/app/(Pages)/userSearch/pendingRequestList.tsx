@@ -1,22 +1,13 @@
-import { User } from 'types/type';
+import { Friendship } from 'types/type';
 import PendingRequestItem from './pendingRequestItem';
 
-interface FriendRequest {
-  id: number;
-  sender_clerk_id: string;
-  receiver_clerk_id: string;
-  status: string;
-  created_at: string;
-  sender: User;
-  receiver: User;
-}
-
-interface Props {
-  initialRequests: FriendRequest[];
+export default function PendingRequestsList({
+  initialRequests,
+  userId,
+}: {
+  initialRequests: Friendship[];
   userId: string;
-}
-
-export default function PendingRequestsList({ initialRequests, userId }: Props) {
+}) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6 pb-2 border-b-2 border-blue-400">

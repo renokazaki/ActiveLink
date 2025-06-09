@@ -1,17 +1,9 @@
 'use server';
 
 import { client } from '@/utils/client';
+import { revalidatePath } from 'next/cache';
 import { User } from 'types/type';
-
-interface FriendRequest {
-  id: number;
-  sender_clerk_id: string;
-  receiver_clerk_id: string;
-  status: string;
-  created_at: string;
-  sender: User;
-  receiver: User;
-}
+import { Friendship } from 'types/type';
 
 interface UserWithFriendship extends User {
   friendship?: {
@@ -21,14 +13,14 @@ interface UserWithFriendship extends User {
   } | null;
 }
 
-export async function getPendingRequests(userId: string): Promise<FriendRequest[]> {
+export async function getPendingRequests(userId: string): Promise<Friendship[]> {
   try {
     const res = await client.api.friendRequest.pendingRequests.$get({
       query: { clerk_id: userId },
     });
 
     if (res.ok) {
-      return (await res.json()) as FriendRequest[];
+      return (await res.json()) as Friendship[];
     }
     return [];
   } catch (error) {
@@ -87,7 +79,7 @@ export async function respondToRequest(requestId: number, action: 'accept' | 're
     if (!res.ok) {
       throw new Error(action === 'accept' ? '承認に失敗しました' : '拒否に失敗しました');
     }
-
+    revalidatePath('/search');
     return { success: true };
   } catch (error) {
     console.error('友達申請応答エラー:', error);

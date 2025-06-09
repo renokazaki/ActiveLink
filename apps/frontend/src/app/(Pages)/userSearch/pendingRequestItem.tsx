@@ -4,33 +4,16 @@ import { useState } from 'react';
 import { Button } from '@/_components/shadcn_ui/button';
 import { toast } from 'sonner';
 import { respondToRequest } from './function';
-import { useRouter } from 'next/navigation';
+import { Friendship } from 'types/type';
 
-interface User {
-  id: number;
-  clerk_id: string;
-  display_name: string;
-  profile_image: string;
-}
-
-interface FriendRequest {
-  id: number;
-  sender_clerk_id: string;
-  receiver_clerk_id: string;
-  status: string;
-  created_at: string;
-  sender: User;
-  receiver: User;
-}
-
-interface Props {
-  request: FriendRequest;
+export default function PendingRequestItem({
+  request,
+  userId,
+}: {
+  request: Friendship;
   userId: string;
-}
-
-export default function PendingRequestItem({ request, userId }: Props) {
+}) {
   const [responding, setResponding] = useState(false);
-  const router = useRouter();
 
   const isSender = request.sender_clerk_id === userId;
   const otherUser = isSender ? request.receiver : request.sender;
@@ -46,9 +29,6 @@ export default function PendingRequestItem({ request, userId }: Props) {
 
       const message = action === 'accept' ? '友達申請を承認しました' : '友達申請を拒否しました';
       toast.success(message);
-
-      // ページを再読み込みして最新の状態を取得
-      router.refresh();
     } catch (error) {
       console.error('友達申請処理エラー:', error);
       const errorMessage = action === 'accept' ? '承認に失敗しました' : '拒否に失敗しました';
@@ -61,20 +41,18 @@ export default function PendingRequestItem({ request, userId }: Props) {
   return (
     <div className="bg-gray-100 rounded-lg shadow p-4 text-black">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full">
-        {/* ユーザー情報とステータス部分（左側） */}
         <div className="flex items-center gap-2 mb-3 sm:mb-0">
           <img
-            src={otherUser.profile_image}
-            alt={otherUser.display_name}
+            src={otherUser?.profile_image}
+            alt={otherUser?.display_name}
             className="w-10 h-10 rounded-full"
           />
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-            <h3 className="font-medium">{otherUser.display_name}</h3>
+            <h3 className="font-medium">{otherUser?.display_name}</h3>
             <div className={`px-3 py-1 rounded-full text-sm ${statusClass}`}>{statusText}</div>
           </div>
         </div>
 
-        {/* ボタン部分（右側） */}
         <div className="flex items-center justify-end">
           {!isSender ? (
             // 自分が受信者の場合に承認・拒否ボタンを表示
