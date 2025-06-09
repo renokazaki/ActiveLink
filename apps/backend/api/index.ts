@@ -3,7 +3,6 @@ import { cors } from 'hono/cors';
 import { handle } from 'hono/vercel';
 import user from './routes/user';
 import webhookRouter from './routes/webhooks';
-import weeklyTarget from './routes/weeklyTarget';
 
 //👷開発用
 // import { serve } from "@hono/node-server";
@@ -28,7 +27,6 @@ const app = new Hono()
     return c.json({ message: 'Hello Hono!' });
   })
   .route('/user', user)
-  .route('/weeklyTarget', weeklyTarget)
   .route('/webhookRouter', webhookRouter)
   .route('/activity', activity)
   .route('/activityDetail', activityDetail)

@@ -1,13 +1,8 @@
-// app/_components/AuthenticatedHome.tsx
 import { SkeletonCard } from '@/_components/manual_ui/SkeltonCard';
 import UserData from '@/app/(Pages)/(user)/UserData';
 import { Suspense } from 'react';
 
-interface AuthenticatedHomeProps {
-  userId: string;
-}
-
-export default function AuthenticatedHome({ userId }: AuthenticatedHomeProps) {
+export default function AuthenticatedHome({ userId }: { userId: string }) {
   return (
     <div className="min-h-screen text-white">
       <div className="container mx-auto py-8 px-4 space-y-8">

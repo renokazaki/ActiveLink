@@ -1,4 +1,3 @@
-// app/friends/page.tsx
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import { Button } from '@/_components/shadcn_ui/button';
@@ -9,10 +8,8 @@ import FriendsData from './FriendsData';
 import { SkeletonCard } from '@/_components/manual_ui/SkeltonCard';
 
 export default async function Friends() {
-  // Clerkから認証情報を取得
   const { userId } = await auth();
 
-  // ユーザーIDがない場合はログインページにリダイレクト
   if (!userId) {
     redirect('/sign-in');
   }

@@ -162,10 +162,6 @@ export default function LandingPage() {
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-300">
                   <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
-                  週次目標の進捗を可視化
-                </li>
-                <li className="flex items-center text-gray-300">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                   活動時間の詳細な記録
                 </li>
                 <li className="flex items-center text-gray-300">

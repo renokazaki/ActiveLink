@@ -17,7 +17,6 @@ export default function Header() {
     <div className="w-full sm:px-6 lg:px-8 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <div className="flex justify-between items-center h-12">
         <div className="flex">
-          {/* 認証済みユーザー: ナビゲーションを表示 */}
           <SignedIn>
             <nav className="text-lg font-medium flex space-x-4">
               {navigation.map(item => {
@@ -42,7 +41,6 @@ export default function Header() {
             </nav>
           </SignedIn>
 
-          {/* 未認証ユーザー: アプリ名のみ表示 */}
           <SignedOut>
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent px-4 py-1">
               ActiveLink
