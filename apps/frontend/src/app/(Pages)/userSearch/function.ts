@@ -28,7 +28,7 @@ export async function getPendingRequests(userId: string): Promise<FriendRequest[
     });
 
     if (res.ok) {
-      return await res.json() as FriendRequest[];
+      return (await res.json()) as FriendRequest[];
     }
     return [];
   } catch (error) {
@@ -46,7 +46,7 @@ export async function searchUsers(query: string, myClerkId: string): Promise<Use
       },
     });
 
-    return await res.json() as UserWithFriendship[];
+    return (await res.json()) as UserWithFriendship[];
   } catch (error) {
     console.error('検索エラー:', error);
     return [];

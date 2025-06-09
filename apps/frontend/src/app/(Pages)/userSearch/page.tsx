@@ -6,7 +6,7 @@ import { getPendingRequests } from './function';
 
 export default async function UserSearchPage() {
   const { userId } = await auth();
-  
+
   if (!userId) {
     redirect('/sign-in');
   }
@@ -27,10 +27,7 @@ export default async function UserSearchPage() {
       </div>
 
       {/* 友達申請状況（SSR + 部分的にクライアント） */}
-      <PendingRequestsList 
-        initialRequests={initialPendingRequests} 
-        userId={userId} 
-      />
+      <PendingRequestsList initialRequests={initialPendingRequests} userId={userId} />
     </div>
   );
 }

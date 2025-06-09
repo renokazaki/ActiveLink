@@ -76,11 +76,7 @@ export default function FriendshipButton({ user, onSendRequest }: Props) {
       );
     } else {
       return (
-        <Button
-          variant="outline"
-          disabled
-          className="bg-blue-500/20 text-blue-600 border-blue-500"
-        >
+        <Button variant="outline" disabled className="bg-blue-500/20 text-blue-600 border-blue-500">
           リクエスト待ち
         </Button>
       );
