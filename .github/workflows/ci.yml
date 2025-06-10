@@ -32,7 +32,7 @@ jobs:
         working-directory: ./apps/frontend
         
       - name: Prettier check frontend
-        run: bunx prettier --check "src/**/*.{ts,tsx,js,jsx}"
+        run: bunx prettier --write "src/**/*.{ts,tsx,js,jsx}"
         working-directory: ./apps/frontend
         
       # Backend checks
@@ -41,7 +41,7 @@ jobs:
         working-directory: ./apps/backend
         
       - name: Prettier check backend
-        run: bunx prettier --check "**/*.{ts,js}"
+        run: bunx prettier --write "**/*.{ts,js}"
         working-directory: ./apps/backend
         
       # 修正したコードを再コミット
