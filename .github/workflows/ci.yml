@@ -31,7 +31,7 @@ jobs:
         run: bunx tsc --noEmit
         working-directory: ./apps/frontend
         
-      - name: Prettier check frontend
+      - name: Prettier format frontend
         run: bunx prettier --write "src/**/*.{ts,tsx,js,jsx}"
         working-directory: ./apps/frontend
         
@@ -40,13 +40,8 @@ jobs:
         run: bunx tsc --noEmit
         working-directory: ./apps/backend
         
-      - name: Prettier check backend
+      - name: Prettier format backend
         run: bunx prettier --write "**/*.{ts,js}"
         working-directory: ./apps/backend
         
-      # 修正したコードを再コミット
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "ci: format and lint"
-          branch: main
+    
