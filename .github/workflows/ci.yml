@@ -9,6 +9,10 @@ on:
 jobs:
   lint-and-format:
     runs-on: ubuntu-latest
+    # PRに適切な権限を付与
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -44,4 +48,8 @@ jobs:
         run: bunx prettier --write "**/*.{ts,js}"
         working-directory: ./apps/backend
         
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'style: auto-format code'
     
