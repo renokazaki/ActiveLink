@@ -9,6 +9,8 @@ export default async function Home() {
   if (!userId) {
     return <LandingPage />;
   }
+
+  
   // 認証済みユーザーには既存のダッシュボードを表示
   return <AuthenticatedHome userId={userId} />;
 }
