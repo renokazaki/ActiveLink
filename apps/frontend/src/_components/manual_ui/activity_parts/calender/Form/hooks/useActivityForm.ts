@@ -9,10 +9,7 @@ export function useActivityForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submitForm = async (
-    formData: FormData,
-    selectedDetail: ActivityDetail | null
-  ) => {
+  const submitForm = async (formData: FormData, selectedDetail: ActivityDetail | null) => {
     try {
       setIsSubmitting(true);
 
@@ -33,10 +30,7 @@ export function useActivityForm() {
     }
   };
 
-  const updateActivityDetail = async (
-    formData: FormData,
-    selectedDetail: ActivityDetail
-  ) => {
+  const updateActivityDetail = async (formData: FormData, selectedDetail: ActivityDetail) => {
     const description = formData.get('description') as string;
     const duration_minutes = parseInt(formData.get('duration_minutes') as string, 10);
     const category = formData.get('category') as string;

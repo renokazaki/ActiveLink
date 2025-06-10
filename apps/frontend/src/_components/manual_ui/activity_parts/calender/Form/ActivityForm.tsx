@@ -31,9 +31,7 @@ export function ActivityForm({
 
       {/* Activity Description */}
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">
-          活動内容
-        </label>
+        <label className="block text-sm font-medium text-slate-300 mb-1">活動内容</label>
         <textarea
           name="description"
           required
@@ -46,9 +44,7 @@ export function ActivityForm({
 
       {/* Duration */}
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">
-          活動時間（分）
-        </label>
+        <label className="block text-sm font-medium text-slate-300 mb-1">活動時間（分）</label>
         <input
           type="number"
           name="duration_minutes"
@@ -62,9 +58,7 @@ export function ActivityForm({
 
       {/* Category */}
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">
-          カテゴリー
-        </label>
+        <label className="block text-sm font-medium text-slate-300 mb-1">カテゴリー</label>
         <input
           type="text"
           name="category"
