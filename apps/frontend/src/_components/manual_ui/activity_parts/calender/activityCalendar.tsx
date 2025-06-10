@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Activity, ActivityDetail } from 'types/type';
 import { Calendar } from './Calendar';
-import { InputForm } from './InputForm';
+import { InputForm } from './Form/InputForm';
 
 export default function ActivityCalendar({
   activity,
