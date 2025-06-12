@@ -1,4 +1,4 @@
-name: CI
+name: Run format typecheck lint
 
 on:
   push:
