@@ -18,11 +18,22 @@
         "lint": "bun run lint:frontend",
         "type-check:frontend": "cd apps/frontend && bunx tsc --noEmit",
         "type-check:backend": "cd apps/backend && bunx tsc --noEmit",
-        "type-check": "bun run type-check:frontend && bun run type-check:backend"
+        "type-check": "bun run type-check:frontend && bun run type-check:backend",
+        "test": "bun run test:frontend && bun run test:backend",
+        "test:frontend": "cd apps/frontend && bun run test",
+        "test:backend": "cd apps/backend && bun run test"
     },
     "devDependencies": {
+        "@testing-library/dom": "^10.4.0",
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.3.0",
+        "@testing-library/user-event": "^14.6.1",
+        "@vitejs/plugin-react": "^4.5.2",
         "concurrently": "^9.1.2",
+        "jsdom": "^26.1.0",
         "prettier": "^3.5.3",
-        "prettier-plugin-tailwindcss": "^0.6.12"
+        "prettier-plugin-tailwindcss": "^0.6.12",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.3"
     }
 }
