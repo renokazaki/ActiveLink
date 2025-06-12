@@ -26,33 +26,33 @@ describe('Button', () => {
   it('クリックイベントが正しく発火すること', async () => {
     const handleClick = vi.fn();
     const { button, user } = setup({ onClick: handleClick });
-    
+
     await user.click(button);
-    
+
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('異なるバリアントが正しく適用されること', () => {
     const { button } = setup({ variant: 'destructive' });
-    
+
     expect(button).toHaveClass('bg-destructive');
   });
 
   it('異なるサイズが正しく適用されること', () => {
     const { button } = setup({ size: 'sm' });
-    
+
     expect(button).toHaveClass('h-8');
   });
 
   it('無効状態が正しく適用されること', () => {
     const { button } = setup({ disabled: true });
-    
+
     expect(button).toBeDisabled();
   });
 
   it('カスタムクラス名が正しく適用されること', () => {
     const { button } = setup({ className: 'custom-class' });
-    
+
     expect(button).toHaveClass('custom-class');
   });
 });
