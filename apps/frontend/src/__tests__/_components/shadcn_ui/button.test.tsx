@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { Button } from '@/_components/shadcn_ui/button';
-
+import { Button } from '../../../_components/shadcn_ui/button';
+import React from 'react';
 // テスト用のセットアップ
 const setup = (props = {}) => {
   const user = userEvent.setup();
