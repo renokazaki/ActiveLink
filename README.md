@@ -49,11 +49,12 @@ ActiveLinkは**友達と習慣形成を促進し合えるSNSアプリケーシ�
 ## 🖼️ スクリーンショット
 
 
-### 活動記録(カレンダー)
-![Dashboard](https://github.com/user-attachments/assets/ebe3c651-8153-45dc-b029-440bdf4ba86e)
+### 活動記録
+![image](https://github.com/user-attachments/assets/5631c523-1bd2-41f0-af72-a077d36ede7c)
+
 
 ### 活動時間(グラフ)
-![Activity Recording](https://github.com/user-attachments/assets/5657c9b5-14f3-485c-92dd-0eef36019a86)
+![image](https://github.com/user-attachments/assets/d5766db8-5ea7-49f9-b750-1e7b26bca2f5)
 
 
 ### フレンド機能
@@ -125,6 +126,11 @@ Lineのアカウントと連携することで、**友達が活動を開始し�
 |-----|------|
 | **LINE Messaging API** | 通知機能 |
 | **LINE Login API** | アカウント連携 |
+
+### テスト
+| 技術 | 用途 |
+|------|------|
+|**Vitest**| テストライブラリ |
 
 ## 🗄️ データベース設計
 
