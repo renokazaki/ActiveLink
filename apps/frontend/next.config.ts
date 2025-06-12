@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Exclude test files and Vitest configuration from the build
+  webpack: (config) => {
+    // Exclude test files and Vitest configuration
+    config.module.rules.push({
+      test: /(__tests__|vitest\.config\.ts)/,
+      exclude: /node_modules/,
+      loader: 'ignore-loader',
+    });
+    return config;
+  },
    // Next.js 15のミドルウェア設定
   // API関連のヘッダーとCORSの設定
   async headers() {
