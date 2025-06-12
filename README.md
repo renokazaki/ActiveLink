@@ -51,6 +51,7 @@ ActiveLinkは**友達と習慣形成を促進し合えるSNSアプリケーシ�
 
 ### 活動記録
 ![image](https://github.com/user-attachments/assets/5631c523-1bd2-41f0-af72-a077d36ede7c)
+![image](https://github.com/user-attachments/assets/e5fd93d4-6241-4df3-a5df-0b52b37f5b79)
 
 
 ### 活動時間(グラフ)
