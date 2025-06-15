@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Active Link',
-  description: 'Let's active with friends',
+  description: 'do active with friends',
 };
 
 export default function RootLayout({
